@@ -1,0 +1,9 @@
+- sequence extractor
+- git
+- MediaLearnerLib
+- Unit test on media learner lib
+- User interface
+- Video extraction
+- website
+- Parler du projet
+- Mobile application
