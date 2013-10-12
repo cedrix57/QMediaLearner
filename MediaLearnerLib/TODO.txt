@@ -1,5 +1,3 @@
-- sequence extractor
-- git
 - MediaLearnerLib
 - Unit test on media learner lib
 - User interface

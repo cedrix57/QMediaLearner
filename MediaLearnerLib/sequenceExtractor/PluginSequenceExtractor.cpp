@@ -71,6 +71,9 @@ void AudioBuffer::init(QAudioBuffer &qtbuffer){
     this->var = meanOfSquare - this->mean*this->mean;
 }
 //====================================
+QList<PluginSequenceExtractor*>
+        PluginSequenceExtractor::extractors;
+//====================================
 //====================================
 QMap<QString, PluginSequenceExtractor*>
         PluginSequenceExtractor::getExtractors(){

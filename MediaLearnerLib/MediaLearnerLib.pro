@@ -13,6 +13,18 @@ TEMPLATE = lib
 
 DEFINES += MEDIALEARNERLIB_LIBRARY
 
+release:DESTDIR = ../release
+release:OBJECTS_DIR = ../../tmpcompil/release/obj
+release:MOC_DIR = ../../tmpcompil/release/moc
+release:RCC_DIR = ../../tmpcompil/release/rcc
+release:UI_DIR = ../../tmpcompil/release/ui
+
+debug:DESTDIR = ../debug
+debug:OBJECTS_DIR = ../../tmpcompil/debug/obj
+debug:MOC_DIR = ../../tmpcompil/debug/moc
+debug:RCC_DIR = ../../tmpcompil/debug/rcc
+debug:UI_DIR = ../../tmpcompil/debug/ui
+
 SOURCES += MediaLearnerLib.cpp \
     sequenceExtractor/SequenceExtractor.cpp \
     sequenceExtractor/PluginSequenceExtractor.cpp \
