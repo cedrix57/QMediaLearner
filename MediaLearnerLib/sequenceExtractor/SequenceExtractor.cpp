@@ -178,45 +178,6 @@ void SequenceExtractor::onBufferReadyThread(){
                 &PluginSequenceExtractor::onBufferReady,
                 &this->decoder);
 }
-/*
-//====================================
-void SequenceExtractor::onBufferReady(){
-    QAudioBuffer qtbuffer //TODO in thread
-            = this->decoder.read();
-    this->mutexBuffer.lock();
-    AudioBuffer buffer;
-    buffer.init(qtbuffer);
-    int positionInMs = this->decoder.position();
-    QList<Sequence> newSequences
-            = this->selectedExtractor
-            ->extractSequences(
-                buffer,
-                positionInMs);
-    if(this->allSequences.size() > 0
-            && newSequences.size() > 0){
-        Sequence lastExistingSequence
-                = this->allSequences.last();
-        Sequence firstNewSequence
-                = newSequences.first();
-        if(lastExistingSequence.maxInMs
-                == firstNewSequence.minInMs){
-            Sequence mergedSequence;
-            mergedSequence.minInMs
-                    = lastExistingSequence.minInMs;
-            mergedSequence.maxInMs
-                    = firstNewSequence.maxInMs;
-            this->allSequences.pop_back();
-            newSequences.pop_front();
-            this->allSequences << mergedSequence;
-        }
-    }
-    this->allSequences << newSequences;
-    this->durationProcessedInMs
-            += qtbuffer.duration();
-    this->extractQueuedSequences();
-    this->mutexBuffer.unlock();
-}
-//*/
 //====================================
 QSharedPointer<
 QList<Sequence> >
@@ -250,6 +211,7 @@ void SequenceExtractor::selectSequence(
     this->selectedSequence = position;
     Sequence selectedSequence
             = this->getSelectedSequence();
+    this->mediaPlayer.stop();
     this->mediaPlayer.setPosition(
                 selectedSequence.minInMs);
 }

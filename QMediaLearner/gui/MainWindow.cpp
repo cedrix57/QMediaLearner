@@ -30,20 +30,20 @@ void MainWindow::_initMediaPlayer(){
 }
 //====================================
 void MainWindow::_initExtractor(){
-        MediaLearner::SequenceExtractor *extractor
-                = this->mediaLearner
-                .getSequenceExtractor();
-        QMap<QString, MediaLearner::PluginSequenceExtractor*>
-                availableExtractors
-                = MediaLearner
-                ::PluginSequenceExtractor
-                ::getExtractors();
-        MediaLearner::PluginSequenceExtractor*
-                firstExtractor
-                = availableExtractors
-                .values()
-                .first();
-        extractor->setExtractor(firstExtractor);
+    QMap<QString, MediaLearner::PluginSequenceExtractor*>
+            availableExtractors
+            = MediaLearner
+            ::PluginSequenceExtractor
+            ::getExtractors();
+    MediaLearner::PluginSequenceExtractor*
+            firstExtractor
+            = availableExtractors
+            .values()
+            .first();
+    MediaLearner::SequenceExtractor *extractor
+            = this->mediaLearner
+            .getSequenceExtractor();
+    extractor->setExtractor(firstExtractor);
 }
 //====================================
 void MainWindow::_connectSlots(){

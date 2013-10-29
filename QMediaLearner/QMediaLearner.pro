@@ -21,6 +21,7 @@ UI_DIR = ../tmpcompil/$$TARGET/ui
 LIBS += -L$$DESTDIR -lMediaLearnerLib
 
 INCLUDEPATH += ../MediaLearnerLib
+INCLUDEPATH += gui/widgets
 DEPENDPATH += ../MediaLearnerLib
 
 SOURCES += main.cpp\
