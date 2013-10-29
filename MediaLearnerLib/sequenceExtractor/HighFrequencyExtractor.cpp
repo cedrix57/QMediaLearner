@@ -12,7 +12,7 @@ HighFrequencyExtractor::HighFrequencyExtractor(
 }
 //====================================
 QString HighFrequencyExtractor::getName(){
-    QString name = tr("High frequncy");
+    QString name = "High frequncy";
     return name;
 }
 //====================================
@@ -21,60 +21,133 @@ QString HighFrequencyExtractor::getDescription(){
     return description;
 }
 //====================================
-QList<Sequence> HighFrequencyExtractor::extractSequences(
-        AudioBuffer buffer,
-        int positionInMs){
-    QList<Sequence> sequences;
-    int minSpeachInMs = 1000;
-    int timeStartSpeachThreshold = 1000;
+void HighFrequencyExtractor::reset(){
+    PluginSequenceExtractor::reset();
+    this->nLowerFrequency = 0;
+    this->nHighFrequency = 0;
+    this->sumMean = 0;
+    this->sumSmallerMean = 0;
+    this->nIteration = 0;
+    this->inPhrase = false;
+    this->meanAtPhraseBegin = 0;
+    this->phraseDuration = 0;
+    this->lastValues.clear();
+}
+//====================================
+void HighFrequencyExtractor::analyseBuffer(
+        QAudioBuffer audioBuffer){
+    int timeMeanInMs = 600;
+    int timeSmallerMeanInMs = 300;
+    int timeStartSpeachThresholdInMs = 200;
+    int timeNoSpeachThresholdInMs = 200;
+    int minSpeachInMs = 500;
+    int maxSpeachInMs = 4000;
+    QAudioFormat format = audioBuffer.format();
+    int sampleRate = format.sampleRate();
     int nStartSpeachThreshold
-            = timeStartSpeachThreshold
-            * buffer.hzFreq / 1000.0 + 0.5;
-    int timeNoSpeachThreshold = 1000;
+            = timeStartSpeachThresholdInMs
+            * sampleRate / 1000.0 + 0.5;
     int nNoSpeachThreshold
-            = timeNoSpeachThreshold
-            * buffer.hzFreq / 1000.0 + 0.5;
+            = timeNoSpeachThresholdInMs
+            * sampleRate / 1000.0 + 0.5;
+    int nMinSpeach
+            = minSpeachInMs
+            * sampleRate / 1000.0 + 0.5;
+    int nMaxSpeach
+            = maxSpeachInMs
+            * sampleRate / 1000.0 + 0.5;
+    int sizeMeanInMs
+            = timeMeanInMs
+            * sampleRate / 1000.0 + 0.5;
+    int sizeSmallerMeanInMs
+            = timeSmallerMeanInMs
+            * sampleRate / 1000.0 + 0.5;
+    float percDiffMeans = 0.10;
+    QAudioFormat::SampleType sampleType
+            = format.sampleType();
+    int frameCount = audioBuffer.frameCount();
+    int nChannels = format.channelCount();
+    int bytesPerFrame = format.bytesPerFrame();
+    int bytesPerValue = bytesPerFrame/nChannels;
+    /*
     int frequencyThreshold
             = buffer.mean
-            * 0.5 * qSqrt(buffer.var);
-    int nLowerFrequency = 0;
-    int nHighFrequency = 0;
-    for(int i=0; i<buffer.bufferSize; i++){
-        //int val = (buffer.buffer.data())[i];
-        int val = buffer.buffer->buffer[i];
-        bool speach = false;
-        Sequence currentSequence;
-        if(val >= frequencyThreshold){
-            nLowerFrequency = 0;
-            nHighFrequency++;
-        }else{
-            nLowerFrequency++;
-            nHighFrequency--;
+            + 0.5 * buffer.sd;
+            //*/
+    int sizeBuffer = audioBuffer.byteCount();
+    for(int i=0; i<sizeBuffer; i++){
+        int currentValue =
+                this->getValue(
+                    audioBuffer,
+                    sampleType,
+                    i,
+                    nChannels,
+                    bytesPerFrame,
+                    bytesPerValue);
+        this->nIteration++;
+        this->lastValues.enqueue(currentValue);
+        this->sumMean += currentValue;
+        this->sumSmallerMean += currentValue;
+        if(this->nIteration > sizeSmallerMeanInMs){
+            int pos = this->lastValues.size() - sizeSmallerMeanInMs;
+            int olderSmallerValue
+                    = this->lastValues.at(pos);
+            this->sumSmallerMean -= olderSmallerValue;
         }
-        if(nLowerFrequency >= nNoSpeachThreshold){
-            if(speach){
-                currentSequence.maxInMs
-                        = positionInMs
-                        + i * 1000.0 / buffer.hzFreq + 0.5;
-                int speachDurationInMs
-                        = currentSequence.maxInMs
-                        -  currentSequence.minInMs;
-                if(speachDurationInMs >= minSpeachInMs){
-                    sequences << currentSequence;
+        if(this->nIteration > sizeMeanInMs){
+            int olderValue
+                    = this->lastValues.dequeue();
+            this->sumMean -= olderValue;
+            int mean = (this->sumMean - this->sumSmallerMean)
+                    / (sizeMeanInMs - sizeSmallerMeanInMs);
+            int smallerMean = this->sumSmallerMean / sizeSmallerMeanInMs;
+            if(!this->inPhrase){
+                if(smallerMean >= mean*percDiffMeans){
+                    this->nHighFrequency++;
+                }else{
+                    int duration = this->getCurrentTimeStampInMs();
+                    if(this->nHighFrequency > 10){
+                            //&& duration > 10500){
+                        int a = 10;
+                    }
+                    this->nHighFrequency = 0;
                 }
-                speach = false;
-            }
-        }else if(nHighFrequency >= nStartSpeachThreshold){
-            if(!speach){
-                int begin = qMin(0, i-nStartSpeachThreshold);
-                currentSequence.minInMs
-                        = positionInMs
-                        + begin * 1000.0 / buffer.hzFreq + 0.5;
-                speach = true;
+                if(this->nHighFrequency > nStartSpeachThreshold){
+                    this->nHighFrequency = 0;
+                    this->inPhrase = true;
+                    this->meanAtPhraseBegin = mean;
+                    this->phraseDuration = 0;
+                }
+            }else{
+                if(smallerMean <= mean*(1-percDiffMeans)){
+                    this->nLowerFrequency++;
+                }else{
+                    if(this->nLowerFrequency > 10){
+                        int a = 10;
+                    }
+                    this->nLowerFrequency = 0;
+                }
+                this->phraseDuration++;
+                if(this->nLowerFrequency > nNoSpeachThreshold
+                    || this->phraseDuration > nMaxSpeach){
+                    this->nLowerFrequency = 0;
+                    this->inPhrase = false;
+                    this->meanAtPhraseBegin = 0;
+                    if(this->phraseDuration >= nMinSpeach
+                            && this->phraseDuration <= nMaxSpeach){
+                        Sequence sequence;
+                        int nMax = this->nIteration;
+                        int nMin = nMax - this->phraseDuration;
+                        sequence.minInMs =
+                                nMin * 1.0 / sampleRate * 1000.0 + 0.5;
+                        sequence.maxInMs =
+                                nMax * 1.0 / sampleRate * 1000.0 + 0.5;
+                        *this->extractedSequences << sequence;
+                    }
+                }
             }
         }
     }
-    return sequences;
 }
 //====================================
 
