@@ -13,7 +13,7 @@ public:
     ~MediaLearnerLib();
     QMediaPlayer *getMediaPlayer();
     SequenceExtractor *getSequenceExtractor();
-    //void setMedia(QString mediaPath);
+    void setMedia(QString mediaPath);
 
 protected:
     QMediaPlayer mediaPlayer;
