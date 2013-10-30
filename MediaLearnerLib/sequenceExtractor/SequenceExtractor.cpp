@@ -21,6 +21,7 @@ SequenceExtractor::SequenceExtractor(
     this->lowerMaxShiftMs = 5000;
     this->upperNaxShiftMs = 5000;
     this->selectedSequence = -1;
+    this->_pausing = false;
     this->reset();
 }
 //====================================
@@ -33,10 +34,6 @@ void SequenceExtractor::reset(){
 }
 //====================================
 void SequenceExtractor::_connectSlots(){
-    //this->connect(
-             //&this->threadData.watcherSequence,
-             //SIGNAL(finished()),
-             //SLOT(onSequenceExtracted()));
     this->connect(
                 &this->decoder,
                 SIGNAL(bufferReady()),
@@ -227,10 +224,14 @@ void SequenceExtractor::_onPlayerPositionChanged(
         Sequence selectedSequence
                 = this->getSelectedSequence();
         if(position >= selectedSequence.maxInMs){
-            this->mediaPlayer.pause();
-            if(position > selectedSequence.maxInMs){
-                this->mediaPlayer.setPosition(
-                            selectedSequence.maxInMs);
+            if(!this->_pausing){
+                this->_pausing = true;
+                this->mediaPlayer.pause();
+                if(position > selectedSequence.maxInMs){
+                    this->mediaPlayer.setPosition(
+                                selectedSequence.minInMs);
+                }
+                this->_pausing = false;
             }
         }
     }

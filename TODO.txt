@@ -1,3 +1,4 @@
+- Edit extractions: finished dual slider + remove sequence
 - Revoir les TODO
 - Change playing position by clicking on the slider
 - Add extractions editing feature in the ui

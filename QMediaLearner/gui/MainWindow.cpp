@@ -234,6 +234,7 @@ void MainWindow::repeatMode(bool enabled){
 }
 //====================================
 void MainWindow::editExtractions(){
+    this->stop();
     delete this->editExtractionDialog;
     this->editExtractionDialog
             = new EditExtractionDialog(

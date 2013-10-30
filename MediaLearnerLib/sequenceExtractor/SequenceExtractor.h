@@ -81,6 +81,7 @@ protected:
     QFuture<void> futurBuffer;
     QMediaPlayer mediaPlayer;
     int selectedSequence;
+    bool _pausing;
 };
 
 }

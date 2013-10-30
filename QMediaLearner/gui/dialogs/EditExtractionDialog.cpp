@@ -14,6 +14,10 @@ EditExtractionDialog::EditExtractionDialog(
     this->_initVideoPlayer();
     this->_connectSlots();
     this->_loadExtractions();
+    this->ui->sliderBoundaries
+            ->setHandleMovementMode(
+                QxtSpanSlider
+                ::NoCrossing);
 }
 //====================================
 EditExtractionDialog::~EditExtractionDialog(){
@@ -40,10 +44,30 @@ void EditExtractionDialog::_connectSlots(){
                 SIGNAL(clicked()),
                 SLOT(playOrPause()));
     this->connect(
+                this->ui->buttonRemoveSequence,
+                SIGNAL(clicked()),
+                SLOT(removeSelectedSequence()));
+    this->connect(
                 this->mediaPlayer,
                 SIGNAL(stateChanged(QMediaPlayer::State)),
                 SLOT(_onMediaPlayerStateChanged(
                          QMediaPlayer::State)));
+    this->connect(
+                this->mediaPlayer,
+                SIGNAL(positionChanged(qint64)),
+                SLOT(_onPositionChanged(qint64)));
+    this->connect(
+                this->ui->sliderPosition,
+                SIGNAL(sliderMoved(int)),
+                SLOT(_onPositionSliderMoved(int)));
+    this->connect(
+                this->ui->sliderBoundaries,
+                SIGNAL(lowerPositionChanged(int)),
+                SLOT(_onLowerBoundarySliderChanged(int)));
+    this->connect(
+                this->ui->sliderBoundaries,
+                SIGNAL(upperPositionChanged(int)),
+                SLOT(_onUpperBoundarySliderChanged(int)));
 }
 //====================================
 void EditExtractionDialog::_loadExtractions(){
@@ -86,23 +110,29 @@ void EditExtractionDialog::_onSelectionChanged(int index){
             = qMax(
                 0l,
                 sequence.minInMs - 2000);
-    this->ui->sliderBoundaries
-            ->setMinimum(minSlider);
     long int duration = this->mediaPlayer->duration();
     int maxSlider
             = qMin(
                 duration,
                 sequence.maxInMs + 2000);
     this->ui->sliderBoundaries
-            ->setMaximum(maxSlider);
+            ->setMinimum(minSlider);
+    //span slider
     this->ui->sliderBoundaries
             ->setMinimum(minSlider);
     this->ui->sliderBoundaries
-            ->setLowerValue(
+            ->setMaximum(maxSlider);
+    this->ui->sliderBoundaries
+            ->setLowerPosition(
                 sequence.minInMs);
     this->ui->sliderBoundaries
-            ->setUpperValue(
+            ->setUpperPosition(
                 sequence.maxInMs);
+    this->_onLowerBoundarySliderChanged(
+                sequence.minInMs);
+    this->_onUpperBoundarySliderChanged(
+                sequence.maxInMs);
+    //Position
     this->ui->sliderPosition
             ->setMinimum(
                 sequence.minInMs);
@@ -110,7 +140,7 @@ void EditExtractionDialog::_onSelectionChanged(int index){
             ->setMaximum(
                 sequence.maxInMs);
     this->ui->sliderPosition
-            ->setMinimum(
+            ->setValue(
                 sequence.minInMs);
 }
 //====================================
@@ -125,6 +155,20 @@ void EditExtractionDialog::playOrPause(){
     }
 }
 //====================================
+void EditExtractionDialog::removeSelectedSequence(){
+    //TODO
+}
+//====================================
+void EditExtractionDialog::accept(){
+    //TODO quit
+    QDialog::accept();
+}
+//====================================
+void EditExtractionDialog::reject(){
+    //TODO restore originales sequences
+    QDialog::reject();
+}
+//====================================
 void EditExtractionDialog::_onMediaPlayerStateChanged(
         QMediaPlayer::State state){
     if(state == QMediaPlayer::PlayingState){
@@ -137,3 +181,93 @@ void EditExtractionDialog::_onMediaPlayerStateChanged(
     }
 }
 //====================================
+void EditExtractionDialog::_onPositionChanged(
+        qint64 position){
+    this->ui->sliderPosition
+            ->setValue(
+                position);
+    QTime time(0, 0, 0, 0);
+    time = time.addMSecs(position);
+    this->ui->timeEditPosition
+            ->setTime(
+                time);
+}
+//====================================
+void EditExtractionDialog::_onPositionSliderMoved(
+        int position){
+    this->mediaPlayer->setPosition(position);
+}
+
+//====================================
+void EditExtractionDialog::_onLowerBoundarySliderChanged(
+        int position){
+    QTime time(0, 0, 0, 0);
+    time = time.addMSecs(position);
+    this->ui->timeEditBegin
+            ->setTime(
+                time);
+    int minBoundarie
+            = this->ui->sliderBoundaries
+            ->minimum();
+    int newMinBoundarie = minBoundarie;
+    int shift = position - minBoundarie;
+    if(shift < 1000){
+        newMinBoundarie
+                = qMax(
+                    0,
+                    minBoundarie - 2000);
+    }else if(shift > 4000){
+        newMinBoundarie += 2000;
+    }
+    if(newMinBoundarie != minBoundarie){
+        this->ui->sliderBoundaries
+                ->setMinimum(
+                    newMinBoundarie);
+    }
+    this->ui->sliderPosition->setMinimum(
+                position);
+    this->mediaPlayer->setPosition(
+                position);
+}
+//====================================
+void EditExtractionDialog::_onUpperBoundarySliderChanged(
+        int position){
+    QTime time(0, 0, 0, 0);
+    time = time.addMSecs(position);
+    this->ui->timeEditEnd
+            ->setTime(
+                time);
+    int maxBoundarie
+            = this->ui->sliderBoundaries
+            ->maximum();
+    int shift = maxBoundarie - position;
+    if(shift < 1000){
+        int duration
+                = (int)this->mediaPlayer->duration();
+        maxBoundarie
+                = qMin(
+                    duration,
+                    maxBoundarie + 2000);
+        this->ui->sliderBoundaries
+                ->setMaximum(
+                    maxBoundarie);
+    }else if(shift > 4000){
+        maxBoundarie -= 2000;
+        this->ui->sliderBoundaries
+                ->setMaximum(
+                    maxBoundarie);
+    }
+    this->ui->sliderPosition->setMaximum(
+                position);
+    int currentPosition
+            = this->mediaPlayer->position();
+    if(currentPosition > position){
+        this->mediaPlayer->setPosition(
+                    position);
+    }
+}
+//====================================
+//TODO changer les bornes dans la liste de gauche + dans le modèle
+//Add sequence removing
+//If extractions are computing, I should display a progress dialog
+//I should add a export sequences button

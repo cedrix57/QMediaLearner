@@ -23,11 +23,20 @@ public slots:
     void addSequence(
             MediaLearner::Sequence sequence);
     void playOrPause();
+    void removeSelectedSequence();
 
 protected slots:
     void _onSelectionChanged(int index);
     void _onMediaPlayerStateChanged(
             QMediaPlayer::State state);
+    void _onPositionChanged(
+            qint64 position);
+    void _onPositionSliderMoved(
+            int position);
+    void _onLowerBoundarySliderChanged(
+            int position);
+    void _onUpperBoundarySliderChanged(
+            int position);
 
 protected:
     Ui::EditExtractionDialog *ui;
