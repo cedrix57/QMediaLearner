@@ -13,11 +13,15 @@ EditExtractionDialog::EditExtractionDialog(
     this->mediaLearner = mediaLearner;
     this->_initVideoPlayer();
     this->_connectSlots();
-    this->_loadExtractions();
     this->ui->sliderBoundaries
             ->setHandleMovementMode(
                 QxtSpanSlider
                 ::NoCrossing);
+}
+//====================================
+void EditExtractionDialog::showEvent(
+        QShowEvent * event){
+    this->_loadExtractions();
 }
 //====================================
 EditExtractionDialog::~EditExtractionDialog(){
@@ -48,6 +52,10 @@ void EditExtractionDialog::_connectSlots(){
                 SIGNAL(clicked()),
                 SLOT(removeSelectedSequence()));
     this->connect(
+                this->ui->buttonExport,
+                SIGNAL(clicked()),
+                SLOT(exportVideo()));
+    this->connect(
                 this->mediaPlayer,
                 SIGNAL(stateChanged(QMediaPlayer::State)),
                 SLOT(_onMediaPlayerStateChanged(
@@ -74,7 +82,6 @@ void EditExtractionDialog::_loadExtractions(){
     MediaLearner::SequenceExtractor *extractor
             = this->mediaLearner
             ->getSequenceExtractor();
-    extractor->getExtractedSequences();
     this->connect(
                 extractor,
                 SIGNAL(sequenceExtracted(MediaLearner::Sequence)),
@@ -82,6 +89,14 @@ void EditExtractionDialog::_loadExtractions(){
     QSharedPointer<QList<MediaLearner::Sequence> >
             sequences
             = extractor->getExtractedSequences();
+    this->backupSequences
+            = QSharedPointer<
+            QList<
+            MediaLearner::Sequence> >(
+                new QList<
+                MediaLearner::Sequence>);
+    *this->backupSequences
+            = *sequences;
     foreach(MediaLearner::Sequence sequence,
             *sequences){
         this->addSequence(sequence);
@@ -97,51 +112,53 @@ void EditExtractionDialog::addSequence(
 }
 //====================================
 void EditExtractionDialog::_onSelectionChanged(int index){
-    MediaLearner::SequenceExtractor *extractor
-            = this->mediaLearner
-            ->getSequenceExtractor();
-    extractor->selectSequence(index);
-    MediaLearner::Sequence
-            sequence
-            = extractor
-            ->getSelectedSequence();
-    int sequenceShift = 2000;
-    int minSlider
-            = qMax(
-                0l,
-                sequence.minInMs - 2000);
-    long int duration = this->mediaPlayer->duration();
-    int maxSlider
-            = qMin(
-                duration,
-                sequence.maxInMs + 2000);
-    this->ui->sliderBoundaries
-            ->setMinimum(minSlider);
-    //span slider
-    this->ui->sliderBoundaries
-            ->setMinimum(minSlider);
-    this->ui->sliderBoundaries
-            ->setMaximum(maxSlider);
-    this->ui->sliderBoundaries
-            ->setLowerPosition(
-                sequence.minInMs);
-    this->ui->sliderBoundaries
-            ->setUpperPosition(
-                sequence.maxInMs);
-    this->_onLowerBoundarySliderChanged(
-                sequence.minInMs);
-    this->_onUpperBoundarySliderChanged(
-                sequence.maxInMs);
-    //Position
-    this->ui->sliderPosition
-            ->setMinimum(
-                sequence.minInMs);
-    this->ui->sliderPosition
-            ->setMaximum(
-                sequence.maxInMs);
-    this->ui->sliderPosition
-            ->setValue(
-                sequence.minInMs);
+    if(index >= 0){
+        MediaLearner::SequenceExtractor *extractor
+                = this->mediaLearner
+                ->getSequenceExtractor();
+        extractor->selectSequence(index);
+        MediaLearner::Sequence
+                sequence
+                = extractor
+                ->getSelectedSequence();
+        int sequenceShift = 2000;
+        int minSlider
+                = qMax(
+                    0l,
+                    sequence.minInMs - 2000);
+        long int duration = this->mediaPlayer->duration();
+        int maxSlider
+                = qMin(
+                    duration,
+                    sequence.maxInMs + 2000);
+        this->ui->sliderBoundaries
+                ->setMinimum(minSlider);
+        //span slider
+        this->ui->sliderBoundaries
+                ->setMinimum(minSlider);
+        this->ui->sliderBoundaries
+                ->setMaximum(maxSlider);
+        this->ui->sliderBoundaries
+                ->setLowerPosition(
+                    sequence.minInMs);
+        this->ui->sliderBoundaries
+                ->setUpperPosition(
+                    sequence.maxInMs);
+        this->_adjustLowerBoundary(
+                    sequence.minInMs);
+        this->_adjustUpperBoundary(
+                    sequence.maxInMs);
+        //Position
+        this->ui->sliderPosition
+                ->setMinimum(
+                    sequence.minInMs);
+        this->ui->sliderPosition
+                ->setMaximum(
+                    sequence.maxInMs);
+        this->ui->sliderPosition
+                ->setValue(
+                    sequence.minInMs);
+    }
 }
 //====================================
 void EditExtractionDialog::playOrPause(){
@@ -156,17 +173,34 @@ void EditExtractionDialog::playOrPause(){
 }
 //====================================
 void EditExtractionDialog::removeSelectedSequence(){
-    //TODO
+    MediaLearner::SequenceExtractor *extractor
+            = this->mediaLearner
+            ->getSequenceExtractor();
+    int currentPosition
+            = this->ui->listSequences
+            ->currentRow();
+    this->ui->listSequences->takeItem(
+                currentPosition);
+    extractor->deleteSequence(currentPosition);
 }
 //====================================
 void EditExtractionDialog::accept(){
-    //TODO quit
+    this->mediaPlayer->stop();
     QDialog::accept();
 }
 //====================================
 void EditExtractionDialog::reject(){
-    //TODO restore originales sequences
+    this->mediaPlayer->stop();
+    MediaLearner::SequenceExtractor *extractor
+            = this->mediaLearner
+            ->getSequenceExtractor();
+    extractor->setSequences(
+                this->backupSequences);
     QDialog::reject();
+}
+//====================================
+void EditExtractionDialog::exportVideo(){
+    //TODO
 }
 //====================================
 void EditExtractionDialog::_onMediaPlayerStateChanged(
@@ -201,6 +235,11 @@ void EditExtractionDialog::_onPositionSliderMoved(
 //====================================
 void EditExtractionDialog::_onLowerBoundarySliderChanged(
         int position){
+    this->_adjustLowerBoundary(position);
+}
+//====================================
+void EditExtractionDialog::_adjustLowerBoundary(
+        int position){
     QTime time(0, 0, 0, 0);
     time = time.addMSecs(position);
     this->ui->timeEditBegin
@@ -228,9 +267,42 @@ void EditExtractionDialog::_onLowerBoundarySliderChanged(
                 position);
     this->mediaPlayer->setPosition(
                 position);
+    MediaLearner::SequenceExtractor *extractor
+            = this->mediaLearner
+            ->getSequenceExtractor();
+    int currentRow
+            = this->ui->listSequences
+            ->currentRow();
+    extractor->changeMinSequence(
+                currentRow,
+                position);
 }
 //====================================
 void EditExtractionDialog::_onUpperBoundarySliderChanged(
+        int position){
+    this->_adjustUpperBoundary(position);
+    MediaLearner::SequenceExtractor *extractor
+            = this->mediaLearner
+            ->getSequenceExtractor();
+    int currentRow
+            = this->ui->listSequences
+            ->currentRow();
+    extractor->changeMaxSequence(
+                currentRow,
+                position);
+    QListWidgetItem *item
+            = this->ui->listSequences
+            ->item(currentRow);
+    MediaLearner::Sequence
+            selectedSequence
+            = extractor
+            ->getSelectedSequence();
+    QString sequenceString
+            = selectedSequence.toString();
+    item->setText(sequenceString);
+}
+//====================================
+void EditExtractionDialog::_adjustUpperBoundary(
         int position){
     QTime time(0, 0, 0, 0);
     time = time.addMSecs(position);
@@ -240,11 +312,12 @@ void EditExtractionDialog::_onUpperBoundarySliderChanged(
     int maxBoundarie
             = this->ui->sliderBoundaries
             ->maximum();
+    int newMaxBoundarie = maxBoundarie;
     int shift = maxBoundarie - position;
     if(shift < 1000){
         int duration
                 = (int)this->mediaPlayer->duration();
-        maxBoundarie
+        newMaxBoundarie
                 = qMin(
                     duration,
                     maxBoundarie + 2000);
@@ -252,10 +325,12 @@ void EditExtractionDialog::_onUpperBoundarySliderChanged(
                 ->setMaximum(
                     maxBoundarie);
     }else if(shift > 4000){
-        maxBoundarie -= 2000;
+        newMaxBoundarie -= 2000;
+    }
+    if(newMaxBoundarie != maxBoundarie){
         this->ui->sliderBoundaries
                 ->setMaximum(
-                    maxBoundarie);
+                    newMaxBoundarie);
     }
     this->ui->sliderPosition->setMaximum(
                 position);
@@ -267,7 +342,3 @@ void EditExtractionDialog::_onUpperBoundarySliderChanged(
     }
 }
 //====================================
-//TODO changer les bornes dans la liste de gauche + dans le modèle
-//Add sequence removing
-//If extractions are computing, I should display a progress dialog
-//I should add a export sequences button

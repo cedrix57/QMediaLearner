@@ -42,8 +42,18 @@ public:
     void changeSequence(
             int position,
             Sequence newSequence);
+    void changeMinSequence(
+            int position,
+            int newMin);
+    void changeMaxSequence(
+            int position,
+            int newMax);
     void selectSequence(
             int position);
+    void setSequences(
+            QSharedPointer<
+            QList<Sequence> >
+            sequences);
     Sequence getSelectedSequence();
     QMediaPlayer *getMediaPlayer();
 

@@ -24,6 +24,9 @@ public slots:
             MediaLearner::Sequence sequence);
     void playOrPause();
     void removeSelectedSequence();
+    void exportVideo();
+    void accept();
+    void reject();
 
 protected slots:
     void _onSelectionChanged(int index);
@@ -41,10 +44,17 @@ protected slots:
 protected:
     Ui::EditExtractionDialog *ui;
     MediaLearner::MediaLearnerLib *mediaLearner;
+    QMediaPlayer *mediaPlayer;
+    QSharedPointer<QList<MediaLearner::Sequence> >
+            backupSequences;
     void _connectSlots();
     void _loadExtractions();
     void _initVideoPlayer();
-    QMediaPlayer *mediaPlayer;
+    void showEvent(QShowEvent * event);
+    void _adjustUpperBoundary(
+            int position);
+    void _adjustLowerBoundary(
+            int position);
 };
 
 #endif // EDITEXTRACTIONDIALOG_H

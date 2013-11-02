@@ -193,6 +193,10 @@ void SequenceExtractor::deleteSequence(
     this->extractedSequences
             ->removeAt(
                 position);
+    if(this->selectedSequence
+            >= position){
+        this->selectedSequence--;
+    }
 }
 //====================================
 void SequenceExtractor::changeSequence(
@@ -201,6 +205,22 @@ void SequenceExtractor::changeSequence(
     (*this->extractedSequences)
             [position]
             = newSequence;
+}
+//====================================
+void SequenceExtractor::changeMinSequence(
+        int position,
+        int newMin){
+    (this->extractedSequences
+            ->begin() + position)
+            ->minInMs = newMin;
+}
+//====================================
+void SequenceExtractor::changeMaxSequence(
+        int position,
+        int newMax){
+    (this->extractedSequences
+            ->begin() + position)
+            ->maxInMs = newMax;
 }
 //====================================
 void SequenceExtractor::selectSequence(
@@ -242,6 +262,14 @@ Sequence SequenceExtractor::getSelectedSequence(){
             = (*this->extractedSequences)
             [this->selectedSequence];
     return selectedSequence;
+}
+//====================================
+void SequenceExtractor::setSequences(
+        QSharedPointer<
+        QList<Sequence> >
+        sequences){
+    this->extractedSequences
+            = sequences;
 }
 //====================================
 QMediaPlayer *SequenceExtractor::getMediaPlayer(){

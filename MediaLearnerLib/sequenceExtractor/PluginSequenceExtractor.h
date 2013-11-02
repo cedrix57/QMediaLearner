@@ -44,12 +44,12 @@ struct Sequence{
         minTime
                 = minTime
                 .addMSecs(
-                    this->minInMs + 500);
+                    this->minInMs);
         QTime maxTime(0, 0, 0, 0);
         maxTime
                 = maxTime
                 .addMSecs(
-                    this->maxInMs + 500);
+                    this->maxInMs);
         QString res
                 = minTime.toString("hh:mm:ss");
         res += " -> ";
