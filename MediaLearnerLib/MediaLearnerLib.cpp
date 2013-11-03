@@ -18,6 +18,10 @@ SequenceExtractor
 *MediaLearnerLib::getSequenceExtractor(){
     return &this->sequenceExtractor;
 }
+SubtitlesManager
+*MediaLearnerLib::getSubtitlesManager(){
+    return &this->subtitlesManager;
+}
 //====================================
 void MediaLearnerLib::setMedia(QString mediaPath){
     QUrl url = QUrl::fromLocalFile(mediaPath);

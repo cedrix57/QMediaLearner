@@ -4,15 +4,35 @@
 #include <QObject>
 #include <QFont>
 #include <QColor>
+#include <QFile>
+#include <QTextStream>
+#include <QRect>
+#include <QTime>
+
+#define N_MAX_SUBTRACK 3
 
 namespace MediaLearner{
 
-struct SubtitleDrawSettings{
+struct DrawingSettings{
     QFont font;
     QColor fontColor;
-    SubtitleDrawSettings(){
+    DrawingSettings(){
         this->fontColor = Qt::yellow;
     }
+};
+
+struct SubtitleInfo{
+    qint64 startPosition;
+    qint64 endPosition;
+    QStringList texts;
+};
+
+struct DrawingText : DrawingSettings{
+    DrawingText()
+        : DrawingSettings(){
+    }
+    QStringList texts;
+    QRect rect;
 };
 
 class SubtitlesManager : public QObject{
@@ -23,17 +43,32 @@ public:
     int getNTracks();
     void setTrack(QString subtitleFilePath);
     void setTrack(QString subtitleFilePath, int position);
-    void setSubtitleDrawSettings(
+    //TODO feature to enable/disable track
+    void enableTrack(int position);
+    void disableTrack(int position);
+    void setDrawingSettings(
             int position,
-            SubtitleDrawSettings &subtitleDrawSettings);
-    SubtitleDrawSettings getSubtitleDrawSettings(int position);
+            DrawingSettings &drawingSettings);
+    DrawingSettings getDrawingSettings(
+            int position);
+    QList<DrawingText> getTexts(
+            qint64 positionInMs);
+    DrawingText getText(
+            qint64 positionInMs,
+            int trackPosition);
 
 signals:
     
 public slots:
 
 protected:
-    QList<SubtitleDrawSettings> allSubtitleDrawSettings;
+    QList<DrawingSettings> drawingSettings;
+    bool enabledTracks[N_MAX_SUBTRACK];
+    DrawingText drawingTexts[N_MAX_SUBTRACK];
+    QMap<int, QList<SubtitleInfo> > texts;
+    SubtitleInfo _getNextSubtitleInfo(
+            QTextStream &textStream);
+    QTime _zeroTime;
 };
 
 }

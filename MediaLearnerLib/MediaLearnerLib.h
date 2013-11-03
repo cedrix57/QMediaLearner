@@ -4,6 +4,7 @@
 #include "medialearnerlib_global.h"
 #include <QMediaPlayer>
 #include "sequenceExtractor/SequenceExtractor.h"
+#include "subtitles/SubtitlesManager.h"
 
 namespace MediaLearner{
 class MEDIALEARNERLIBSHARED_EXPORT MediaLearnerLib{
@@ -13,11 +14,13 @@ public:
     ~MediaLearnerLib();
     QMediaPlayer *getMediaPlayer();
     SequenceExtractor *getSequenceExtractor();
+    SubtitlesManager *getSubtitlesManager();
     void setMedia(QString mediaPath);
 
 protected:
     QMediaPlayer mediaPlayer;
     SequenceExtractor sequenceExtractor;
+    SubtitlesManager subtitlesManager;
 };
 
 }
