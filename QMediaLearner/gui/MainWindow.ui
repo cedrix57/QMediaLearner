@@ -6,32 +6,29 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>871</width>
-    <height>591</height>
+    <width>887</width>
+    <height>797</height>
    </rect>
+  </property>
+  <property name="acceptDrops">
+   <bool>true</bool>
   </property>
   <property name="windowTitle">
    <string>QMediaLearner</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QVBoxLayout" name="verticalLayout">
-    <item>
-     <widget class="QVideoWidget" name="videoWidget" native="true">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="SubVideoWidget" name="graphicsViewVideo">
       <property name="palette">
        <palette>
         <active>
          <colorrole role="Base">
           <brush brushstyle="SolidPattern">
            <color alpha="255">
-            <red>255</red>
-            <green>255</green>
-            <blue>255</blue>
+            <red>0</red>
+            <green>0</green>
+            <blue>0</blue>
            </color>
           </brush>
          </colorrole>
@@ -49,9 +46,9 @@
          <colorrole role="Base">
           <brush brushstyle="SolidPattern">
            <color alpha="255">
-            <red>255</red>
-            <green>255</green>
-            <blue>255</blue>
+            <red>0</red>
+            <green>0</green>
+            <blue>0</blue>
            </color>
           </brush>
          </colorrole>
@@ -90,9 +87,15 @@
       <property name="autoFillBackground">
        <bool>true</bool>
       </property>
+      <property name="verticalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOff</enum>
+      </property>
+      <property name="horizontalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOff</enum>
+      </property>
      </widget>
     </item>
-    <item>
+    <item row="1" column="0">
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
        <widget class="QLabel" name="labelPlayingPosition">
@@ -117,7 +120,7 @@
       </item>
      </layout>
     </item>
-    <item>
+    <item row="2" column="0">
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <widget class="QPushButton" name="buttonPlayPause">
@@ -279,7 +282,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>871</width>
+     <width>887</width>
      <height>25</height>
     </rect>
    </property>
@@ -302,6 +305,39 @@
     <property name="title">
      <string>&amp;Subtitles</string>
     </property>
+    <widget class="QMenu" name="menuFirst_subtrack">
+     <property name="tearOffEnabled">
+      <bool>false</bool>
+     </property>
+     <property name="title">
+      <string>&amp;First subtrack</string>
+     </property>
+     <addaction name="actionEnabled1"/>
+     <addaction name="actionSubFile1"/>
+    </widget>
+    <widget class="QMenu" name="menu_secondSubtrack">
+     <property name="title">
+      <string>&amp;Second subtrack</string>
+     </property>
+     <addaction name="actionEnabled2"/>
+     <addaction name="actionSubFile2"/>
+    </widget>
+    <widget class="QMenu" name="menuThird_subtrack">
+     <property name="title">
+      <string>&amp;Third subtrack</string>
+     </property>
+     <addaction name="actionEnabled3"/>
+     <addaction name="actionSubFile3"/>
+    </widget>
+    <widget class="QMenu" name="menuSubEmbedded">
+     <property name="title">
+      <string>&amp;Embedded</string>
+     </property>
+    </widget>
+    <addaction name="menuFirst_subtrack"/>
+    <addaction name="menu_secondSubtrack"/>
+    <addaction name="menuThird_subtrack"/>
+    <addaction name="menuSubEmbedded"/>
    </widget>
    <widget class="QMenu" name="menuEffets">
     <property name="title">
@@ -389,14 +425,66 @@
     <string>&amp;About</string>
    </property>
   </action>
+  <action name="actionSubFile1">
+   <property name="text">
+    <string>&amp;Open a file</string>
+   </property>
+  </action>
+  <action name="actionEnabled1">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Enabled</string>
+   </property>
+  </action>
+  <action name="actionEnabled2">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Enabled</string>
+   </property>
+  </action>
+  <action name="actionEnabled3">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Enabled</string>
+   </property>
+  </action>
+  <action name="actionSubFile2">
+   <property name="text">
+    <string>&amp;Open a file</string>
+   </property>
+  </action>
+  <action name="actionSubFile3">
+   <property name="text">
+    <string>&amp;Open a file</string>
+   </property>
+  </action>
+  <action name="actionE">
+   <property name="text">
+    <string>e</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>QVideoWidget</class>
-   <extends>QWidget</extends>
-   <header location="global">QVideoWidget</header>
-   <container>1</container>
+   <class>SubVideoWidget</class>
+   <extends>QGraphicsView</extends>
+   <header>SubVideoWidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

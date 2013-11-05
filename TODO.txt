@@ -1,12 +1,10 @@
-- Edit extractions: finished dual slider + remove sequence
 - Revoir les TODO
+- Unit tests on the subtitles features
+- Multi subtitles tracks
 - Change playing position by clicking on the slider
-- Add extractions editing feature in the ui
 - Allow to play selected extraction
-- Dual slider
 - Subtitles feature
 - Save cutted video
-- MediaLearnerLib
 - Unit test on media learner lib
 - Voice activity detection algorithm test application
 - User interface

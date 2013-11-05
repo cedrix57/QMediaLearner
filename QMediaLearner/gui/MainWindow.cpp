@@ -3,6 +3,8 @@
 #include <QFileDialog>
 #include <QMediaPlaylist>
 #include <QTime>
+#include <QDragEnterEvent>
+#include <QMimeData>
 #include <sequenceExtractor/PluginSequenceExtractor.h>
 
 //====================================
@@ -23,10 +25,12 @@ MainWindow::~MainWindow(){
 void MainWindow::_initMediaPlayer(){
     this->mediaPlayer
             = this->mediaLearner.getMediaPlayer();
-    this->mediaPlayer->setVideoOutput(
-                this->ui->videoWidget);
+    //this->mediaPlayer->setVideoOutput(
+                //this->ui->videoWidget);
     this->_onMediaPlayerStateChanged(
                 QMediaPlayer::StoppedState);
+    this->ui->graphicsViewVideo->
+            init(&this->mediaLearner);
 }
 //====================================
 void MainWindow::_initExtractor(){
@@ -126,6 +130,10 @@ void MainWindow::_connectMenaBarSlots(){
                 this->ui->actionClose,
                 SIGNAL(triggered()),
                 SLOT(close()));
+    this->connect(
+                this->ui->graphicsViewVideo,
+                SIGNAL(urlsDropped(QList<QUrl>)),
+                SLOT(openUrls(QList<QUrl>)));
     //Extractions
     //Subtitles
     //Tools
@@ -158,6 +166,44 @@ void MainWindow::_connectMenaBarSlots(){
 //====================================
 //Media
 //====================================
+//*
+void MainWindow::dragEnterEvent(QDragEnterEvent* event){
+    SubVideoWidget::onDragEnterEvent(event);
+}
+//====================================
+void MainWindow::dropEvent(QDropEvent* event){
+    QList<QUrl> urls = event->mimeData()->urls();
+    this->openUrls(urls);
+}
+//*/
+//====================================
+void MainWindow::openUrls(QList<QUrl> urls){
+    foreach(QUrl url, urls){
+        QString path = url.path();
+        QString lowerPath = path.toLower();
+        if(lowerPath.endsWith("srt")){
+            //TODO add subtitle track in position 1
+            MediaLearner::SubtitlesManager
+                    *subtitlesManager
+                    = this->mediaLearner
+                    .getSubtitlesManager();
+            subtitlesManager->setTrack(path);
+
+        }else if(lowerPath.endsWith("avi")
+                || lowerPath.endsWith("ts")
+                || lowerPath.endsWith("mp2")
+                || lowerPath.endsWith("mp3")
+                || lowerPath.endsWith("mp4")
+                || lowerPath.endsWith("ogg")
+                || lowerPath.endsWith("ogv")
+                || lowerPath.endsWith("flv")
+                || lowerPath.endsWith("mkv")){
+            this->playVideo(path);
+        }
+        //TODO
+    }
+}
+//====================================
 void MainWindow::openFile(){
     QString filePath
             = QFileDialog::getOpenFileName(
@@ -166,9 +212,14 @@ void MainWindow::openFile(){
                 tr("."));
     //TODO add filter according available formats
     if(!filePath.isEmpty()){
-        this->mediaLearner.setMedia(filePath);
-        this->playOrPause();
+        this->playVideo(filePath);
     }
+}
+//====================================
+void MainWindow::playVideo(
+        QString fileName){
+        this->mediaLearner.setMedia(fileName);
+        this->playOrPause();
 }
 //====================================
 void MainWindow::openFiles(){
@@ -202,7 +253,6 @@ void MainWindow::_onMediaPlayerStateChanged(
         this->ui->buttonPlayPause
                 ->setText(tr("Play"));
         if(state == QMediaPlayer::StoppedState){
-            this->ui->videoWidget->update();
             this->ui->sliderPosition->setValue(0);
             this->ui->sliderPosition->setEnabled(false);
             this->ui->buttonExtract->setEnabled(false);
@@ -235,6 +285,7 @@ void MainWindow::repeatMode(bool enabled){
 //====================================
 void MainWindow::editExtractions(){
     this->stop();
+    //TODO launch a progress dialog if extractions not finished yet
     delete this->editExtractionDialog;
     this->editExtractionDialog
             = new EditExtractionDialog(

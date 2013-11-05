@@ -24,6 +24,8 @@ public slots:
 
     //Bottom tool bar
     void playOrPause();
+    void playVideo(QString fileName);
+    void openUrls(QList<QUrl> urls);
     void stop();
     void repeatMode(bool enabled);
     void editExtractions();
@@ -52,6 +54,8 @@ protected:
     void _connectMediaPlayerSlots();
     void _connectToolBarSlots();
     void _connectMenaBarSlots();
+    virtual void dragEnterEvent(QDragEnterEvent* event);
+    virtual void dropEvent(QDropEvent* event);
 
 protected slots:
     void _onMediaPlayerStateChanged(
