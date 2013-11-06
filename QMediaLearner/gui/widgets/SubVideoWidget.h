@@ -23,6 +23,8 @@ protected slots:
             qint64 position);
     void _onMediaPlayerStateChanged(
             QMediaPlayer::State state);
+    void _drawSubtitles(
+            qint64 position);
 
 protected:
     QGraphicsVideoItem videoItem;

@@ -1,6 +1,10 @@
+- Refactoring text, texts => phrase, phrases, phrasesList
+- Make the subtitle code more clear
+- Bug Drag and drop
+- Manage all of the subtitle tracks
+- Ajouter les options de logiciel
 - Revoir les TODO
 - Unit tests on the subtitles features
-- Multi subtitles tracks
 - Change playing position by clicking on the slider
 - Allow to play selected extraction
 - Subtitles feature

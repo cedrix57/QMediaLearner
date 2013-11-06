@@ -33,6 +33,13 @@ struct DrawingText : DrawingSettings{
     }
     QStringList texts;
     QRect rect;
+    void assessSizes(
+            QSize parentSize,
+            int bottomCoord);
+    void _assessMaxWidth(
+        int &maxWidth,
+        QFontMetrics &fontMetrics,
+        QString &phrase);
 };
 
 class SubtitlesManager : public QObject{
@@ -52,10 +59,8 @@ public:
     DrawingSettings getDrawingSettings(
             int position);
     QList<DrawingText> getTexts(
-            qint64 positionInMs);
-    DrawingText getText(
             qint64 positionInMs,
-            int trackPosition);
+            QSize screenSize);
 
 signals:
     
@@ -69,6 +74,9 @@ protected:
     SubtitleInfo _getNextSubtitleInfo(
             QTextStream &textStream);
     QTime _zeroTime;
+    DrawingText getText(
+            qint64 positionInMs,
+            int trackPosition);
 };
 
 }

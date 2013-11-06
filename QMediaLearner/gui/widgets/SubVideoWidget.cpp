@@ -42,10 +42,18 @@ void SubVideoWidget::init(
 //====================================
 void SubVideoWidget::_onPlayerPositionChanged(
         qint64 position){
+    this->_drawSubtitles(
+                position);
+}
+//====================================
+void SubVideoWidget::_drawSubtitles(
+        qint64 position){
+    QSize size = this->size();
     QList<MediaLearner::DrawingText>
             drawingTexts
             = this->subtitlesManager
-            ->getTexts(position);
+            ->getTexts(position,
+                       size);
     int i=0;
     foreach(MediaLearner::DrawingText drawingText,
             drawingTexts){
@@ -53,7 +61,9 @@ void SubVideoWidget::_onPlayerPositionChanged(
                 = drawingText.texts.join("\n");
         this->texts[i].setPlainText(
                     text);
-        //this->texts[i].show();
+        QPoint topLeft = drawingText.rect.topLeft();
+        this->texts[i].setPos(
+                    topLeft);
         this->texts[i].setDefaultTextColor(
                     drawingText.fontColor);
         this->texts[i].setFont(
@@ -78,6 +88,11 @@ void SubVideoWidget::resizeEvent(
     QSize currentSize = currentRect.size();
     this->videoItem.setPos(0, 0);
     this->videoItem.setSize(currentSize);
+    QMediaPlayer *mediaPlayer
+    = this->mediaLearner->getMediaPlayer();
+    qint64 position = mediaPlayer->position();
+    this->_drawSubtitles(
+                position);
 }
 //====================================
 //*
