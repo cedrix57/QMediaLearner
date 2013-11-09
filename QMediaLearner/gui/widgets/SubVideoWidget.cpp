@@ -16,8 +16,8 @@ SubVideoWidget::SubVideoWidget(QWidget *parent) :
     this->videoItem.setAcceptDrops(true);
     for(int i=0; i<N_MAX_SUBTRACK; i++){
         scene->addItem(
-                &this->texts[i]);
-        this->texts[i].setAcceptDrops(true);
+                &this->textItems[i]);
+        this->textItems[i].setAcceptDrops(true);
         //this->texts[i].hide();
     }
 }
@@ -58,16 +58,18 @@ void SubVideoWidget::_drawSubtitles(
     foreach(MediaLearner::DrawingText drawingText,
             drawingTexts){
         QString text
-                = drawingText.texts.join("\n");
-        this->texts[i].setPlainText(
+                = drawingText.getLines().join("\n");
+        this->textItems[i].setPlainText(
                     text);
-        QPoint topLeft = drawingText.rect.topLeft();
-        this->texts[i].setPos(
+        QPoint topLeft = drawingText.getRect().topLeft();
+        this->textItems[i].setPos(
                     topLeft);
-        this->texts[i].setDefaultTextColor(
-                    drawingText.fontColor);
-        this->texts[i].setFont(
-                    drawingText.font);
+        MediaLearner::DrawingSettings drawingSettings
+                = drawingText.getDrawingSettings();
+        this->textItems[i].setDefaultTextColor(
+                    drawingSettings.fontColor);
+        this->textItems[i].setFont(
+                    drawingSettings.font);
         i++;
     }
 }

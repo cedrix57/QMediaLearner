@@ -28,6 +28,7 @@ SOURCES += MediaLearnerLib.cpp \
     subtitles/SubtitlesManager.cpp \
     ffmpeg/ffmpegInterface.cpp \
     sequenceExtractor/HighFrequencyExtractor.cpp \
+    subtitles/DrawingText.cpp
 
 HEADERS += MediaLearnerLib.h\
         medialearnerlib_global.h \
@@ -37,6 +38,7 @@ HEADERS += MediaLearnerLib.h\
     subtitles/SubtitleTrack.h \
     ffmpeg/ffmpegInterface.h \
     sequenceExtractor/HighFrequencyExtractor.h \
+    subtitles/DrawingText.h
 
 unix:!symbian {
     maemo5 {

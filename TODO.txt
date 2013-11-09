@@ -1,5 +1,3 @@
-- Refactoring text, texts => phrase, phrases, phrasesList
-- Make the subtitle code more clear
 - Bug Drag and drop
 - Manage all of the subtitle tracks
 - Ajouter les options de logiciel

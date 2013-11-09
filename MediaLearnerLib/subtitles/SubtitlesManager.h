@@ -2,45 +2,11 @@
 #define SUBTITLESMANAGER_H
 
 #include <QObject>
-#include <QFont>
-#include <QColor>
-#include <QFile>
-#include <QTextStream>
-#include <QRect>
-#include <QTime>
+#include "SubtitleTrack.h"
 
 #define N_MAX_SUBTRACK 3
 
 namespace MediaLearner{
-
-struct DrawingSettings{
-    QFont font;
-    QColor fontColor;
-    DrawingSettings(){
-        this->fontColor = Qt::yellow;
-    }
-};
-
-struct SubtitleInfo{
-    qint64 startPosition;
-    qint64 endPosition;
-    QStringList texts;
-};
-
-struct DrawingText : DrawingSettings{
-    DrawingText()
-        : DrawingSettings(){
-    }
-    QStringList texts;
-    QRect rect;
-    void assessSizes(
-            QSize parentSize,
-            int bottomCoord);
-    void _assessMaxWidth(
-        int &maxWidth,
-        QFontMetrics &fontMetrics,
-        QString &phrase);
-};
 
 class SubtitlesManager : public QObject{
     Q_OBJECT
@@ -69,11 +35,7 @@ public slots:
 protected:
     QList<DrawingSettings> drawingSettings;
     bool enabledTracks[N_MAX_SUBTRACK];
-    DrawingText drawingTexts[N_MAX_SUBTRACK];
-    QMap<int, QList<SubtitleInfo> > texts;
-    SubtitleInfo _getNextSubtitleInfo(
-            QTextStream &textStream);
-    QTime _zeroTime;
+    SubtitleTrack subtitleTracks[N_MAX_SUBTRACK];
     DrawingText getText(
             qint64 positionInMs,
             int trackPosition);

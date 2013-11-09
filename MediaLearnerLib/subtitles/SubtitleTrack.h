@@ -3,17 +3,33 @@
 
 #include <QObject>
 #include <QString>
+#include <QStringList>
+#include <QList>
+#include <QSharedPointer>
+#include <QTextStream>
+#include <QTime>
+#include "DrawingText.h"
 
 namespace MediaLearner{
 
+struct SubtitleInfo{
+    qint64 startPosition;
+    qint64 endPosition;
+    QStringList lines;
+};
 
-class SubtitleTrack : public QObject
-{
+class SubtitleTrack : public QObject{
     Q_OBJECT
 public:
     explicit SubtitleTrack(QObject *parent = 0);
-    void parseSubtitleFileName(QString subtitleFileName);
-    QString getText(int positionInMs);
+    void setDrawingSettings(
+            DrawingSettings drawingSettings);
+    void parseSubtitleFileName(
+            QString subtitleFilePath);
+    void parseSubtitleFileNameSrt(
+            QString subtitleFilePath);
+    DrawingText getText(
+            qint64 positionInMs);
 
     
 signals:
@@ -21,7 +37,12 @@ signals:
 public slots:
     
 protected:
-    QString subtitleFileName;
+    QSharedPointer<QList<SubtitleInfo> >
+        subInfos;
+    QTime _zeroTime;
+    SubtitleInfo _getNextSubtitleInfoSrt(
+            QTextStream &textStream);
+    DrawingText drawingText;
 };
 
 }
