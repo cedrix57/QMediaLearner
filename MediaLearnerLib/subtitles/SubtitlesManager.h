@@ -4,14 +4,13 @@
 #include <QObject>
 #include "SubtitleTrack.h"
 
-#define N_MAX_SUBTRACK 3
 
 namespace MediaLearner{
 
 class SubtitlesManager : public QObject{
     Q_OBJECT
 public:
-    static const int N_MAX_TRACKS = 5;
+    static const int N_MAX_TRACKS = 3;
     explicit SubtitlesManager(QObject *parent = 0);
     int getNTracks();
     void setTrack(QString subtitleFilePath);
@@ -32,10 +31,12 @@ signals:
     
 public slots:
 
+protected slots:
+    void _initDrawingSettings();
+
 protected:
-    QList<DrawingSettings> drawingSettings;
-    bool enabledTracks[N_MAX_SUBTRACK];
-    SubtitleTrack subtitleTracks[N_MAX_SUBTRACK];
+    bool enabledTracks[N_MAX_TRACKS];
+    SubtitleTrack subtitleTracks[N_MAX_TRACKS];
     DrawingText getText(
             qint64 positionInMs,
             int trackPosition);

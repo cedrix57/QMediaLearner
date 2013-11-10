@@ -28,7 +28,8 @@ protected slots:
 
 protected:
     QGraphicsVideoItem videoItem;
-    QGraphicsTextItem textItems[N_MAX_SUBTRACK];
+    QGraphicsTextItem textItems[
+    MediaLearner::SubtitlesManager::N_MAX_TRACKS];
     MediaLearner::MediaLearnerLib *mediaLearner;
     MediaLearner::SubtitlesManager *subtitlesManager;
     virtual void resizeEvent(QResizeEvent * event);

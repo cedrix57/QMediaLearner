@@ -16,8 +16,8 @@ SubtitleTrack::SubtitleTrack(QObject *parent) :
 //====================================
 void SubtitleTrack::setDrawingSettings(
         DrawingSettings drawingSettings){
-    *( (DrawingSettings *)&this->drawingText )
-            = drawingSettings;
+    this->drawingText.setDrawingSettings(
+                drawingSettings);
 }
 //====================================
 void SubtitleTrack::parseSubtitleFileName(

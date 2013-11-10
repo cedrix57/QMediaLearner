@@ -1,6 +1,8 @@
 #include "SubtitlesManager.h"
+#include "../SettingsManagerSingleton.h"
 
 #include <QFontMetrics>
+#include <QDebug>
 namespace MediaLearner{
 
 //====================================
@@ -8,6 +10,38 @@ SubtitlesManager::SubtitlesManager(QObject *parent) :
     QObject(parent){
     for(int i=0; i<N_MAX_TRACKS; i++){
         this->enabledTracks[i] = false;
+    }
+    SettingsManagerSingleton
+            *settingsManager
+            = SettingsManagerSingleton::getInstance();
+    this->connect(
+                settingsManager,
+                SIGNAL(subSettingsChanged()),
+                SLOT(_initDrawingSettings()));
+    this->_initDrawingSettings();
+}
+//====================================
+void SubtitlesManager::_initDrawingSettings(){
+    SettingsManagerSingleton
+            *settingsManager
+            = SettingsManagerSingleton::getInstance();
+    for(int i=0; i<N_MAX_TRACKS; i++){
+        QFont defaultFont
+                = settingsManager
+                ->getSubFont(i);
+        qDebug() << "Default font: " << defaultFont.family();
+        QColor defaultColor
+                = settingsManager
+                ->getSubColor(i);
+        qDebug() << "Default color: " << defaultColor.toRgb();
+        DrawingSettings drawingSettings;
+        drawingSettings.font
+                = defaultFont;
+        drawingSettings.fontColor
+                = defaultColor;
+        this->subtitleTracks[i].
+                setDrawingSettings(
+                    drawingSettings);
     }
 }
 //====================================

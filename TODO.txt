@@ -1,5 +1,17 @@
+- In the drag an drop of a subtitle track,
+  new transparent area should appear and
+  allow to put a new subtitle track on
+  the bottom or on top, and on a new
+  place, or replacing an existing one.
+  The replacement would be automatic if
+  openin a subtitle for the second place
+  on a different place
+- The application shouldn't crash if using a
+  subtitle file with mistake
+- Settings manager
+- Settings in UI
 - Bug Drag and drop
-- Manage all of the subtitle tracks
+- pause shortcut: doesn't work when button have focus
 - Ajouter les options de logiciel
 - Revoir les TODO
 - Unit tests on the subtitles features

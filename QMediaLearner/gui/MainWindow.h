@@ -22,6 +22,21 @@ public slots:
     void openFiles();
     void close();
 
+    //Subtitles
+    void openSubtrack(int position);
+    void openSubtrack(
+            int position,
+            QString filePath);
+    void openSubtrack1();
+    void openSubtrack2();
+    void openSubtrack3();
+    void setEnabledSubtrack(
+            int position,
+            bool enabled);
+    void setEnabledSubtrack1(bool enable);
+    void setEnabledSubtrack2(bool enable);
+    void setEnabledSubtrack3(bool enable);
+
     //Bottom tool bar
     void playOrPause();
     void playVideo(QString fileName);
@@ -54,8 +69,9 @@ protected:
     void _connectMediaPlayerSlots();
     void _connectToolBarSlots();
     void _connectMenaBarSlots();
-    virtual void dragEnterEvent(QDragEnterEvent* event);
-    virtual void dropEvent(QDropEvent* event);
+    virtual void dragEnterEvent(QDragEnterEvent *event);
+    virtual void dropEvent(QDropEvent *event);
+    virtual void keyReleaseEvent(QKeyEvent *event);
 
 protected slots:
     void _onMediaPlayerStateChanged(

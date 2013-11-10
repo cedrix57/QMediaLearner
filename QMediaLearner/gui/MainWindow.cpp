@@ -5,6 +5,7 @@
 #include <QTime>
 #include <QDragEnterEvent>
 #include <QMimeData>
+#include <QFileDialog>
 #include <sequenceExtractor/PluginSequenceExtractor.h>
 
 //====================================
@@ -16,6 +17,9 @@ MainWindow::MainWindow(QWidget *parent) :
     this->_initMediaPlayer();
     this->_initExtractor();
     this->_connectSlots();
+    //this->ui->buttonExtract
+            //->setAttribute(
+                //Qt::WA_); //TODO voir la pour focus + désactiver event
 }
 //====================================
 MainWindow::~MainWindow(){
@@ -136,6 +140,30 @@ void MainWindow::_connectMenaBarSlots(){
                 SLOT(openUrls(QList<QUrl>)));
     //Extractions
     //Subtitles
+    this->connect(
+                this->ui->actionSubFile1,
+                SIGNAL(triggered()),
+                SLOT(openSubtrack1()));
+    this->connect(
+                this->ui->actionSubFile2,
+                SIGNAL(triggered()),
+                SLOT(openSubtrack2()));
+    this->connect(
+                this->ui->actionSubFile3,
+                SIGNAL(triggered()),
+                SLOT(openSubtrack3()));
+    this->connect(
+                this->ui->actionEnabled1,
+                SIGNAL(toggled(bool)),
+                SLOT(setEnabledSubtrack1(bool)));
+    this->connect(
+                this->ui->actionEnabled2,
+                SIGNAL(toggled(bool)),
+                SLOT(setEnabledSubtrack2(bool)));
+    this->connect(
+                this->ui->actionEnabled3,
+                SIGNAL(toggled(bool)),
+                SLOT(setEnabledSubtrack3(bool)));
     //Tools
     this->connect(
                 this->ui->actionPlayingList,
@@ -164,7 +192,7 @@ void MainWindow::_connectMenaBarSlots(){
                 SLOT(about()));
 }
 //====================================
-//Media
+// Media
 //====================================
 //*
 void MainWindow::dragEnterEvent(QDragEnterEvent* event){
@@ -175,6 +203,17 @@ void MainWindow::dropEvent(QDropEvent* event){
     QList<QUrl> urls = event->mimeData()->urls();
     this->openUrls(urls);
 }
+//====================================
+void MainWindow::keyReleaseEvent(
+        QKeyEvent *event){
+    QMainWindow::keyReleaseEvent(
+                event);
+    int key = event->key();
+    if(key == Qt::Key_Space){
+        //event->accept();
+        this->playOrPause();
+    }
+}
 //*/
 //====================================
 void MainWindow::openUrls(QList<QUrl> urls){
@@ -183,11 +222,9 @@ void MainWindow::openUrls(QList<QUrl> urls){
         QString lowerPath = path.toLower();
         if(lowerPath.endsWith("srt")){
             //TODO add subtitle track in position 1
-            MediaLearner::SubtitlesManager
-                    *subtitlesManager
-                    = this->mediaLearner
-                    .getSubtitlesManager();
-            subtitlesManager->setTrack(path);
+            this->openSubtrack(
+                        0,
+                        path);
 
         }else if(lowerPath.endsWith("avi")
                 || lowerPath.endsWith("ts")
@@ -226,6 +263,84 @@ void MainWindow::openFiles(){
 }
 //====================================
 void MainWindow::close(){
+}
+//====================================
+// Subtitle files
+//====================================
+void MainWindow::openSubtrack1(){
+    this->openSubtrack(0);
+}
+//====================================
+void MainWindow::openSubtrack(int position){
+    QString filePath =
+            QFileDialog::getOpenFileName(
+                this,
+                tr("Open a subtitle file"),
+                "", //TODO current video directory
+                "SubRip (*.srt)");
+    if(!filePath.isNull()){
+        this->openSubtrack(
+                    position,
+                    filePath);
+    }
+}
+//====================================
+void MainWindow::openSubtrack(
+        int position,
+        QString filePath){
+    MediaLearner::SubtitlesManager
+            *subtitlesManager
+            = this->mediaLearner
+            .getSubtitlesManager();
+    subtitlesManager->setTrack(
+                filePath,
+                position);
+    if(position == 0){
+        this->ui->actionEnabled1->setChecked(
+                    true);
+    }else if(position == 1){
+        this->ui->actionEnabled2->setChecked(
+                    true);
+    }else if(position == 2){
+        this->ui->actionEnabled3->setChecked(
+                    true);
+    }
+    //subtitlesManager->enableTrack(
+                //position);
+}
+//====================================
+void MainWindow::openSubtrack2(){
+    this->openSubtrack(1);
+}
+//====================================
+void MainWindow::openSubtrack3(){
+    this->openSubtrack(2);
+}
+//====================================
+void MainWindow::setEnabledSubtrack1(bool enable){
+    this->setEnabledSubtrack(0, enable);
+}
+//====================================
+void MainWindow::setEnabledSubtrack(
+        int position,
+        bool enabled){
+    MediaLearner::SubtitlesManager
+            *subtitlesManager
+            = this->mediaLearner
+            .getSubtitlesManager();
+    if(enabled){
+        subtitlesManager->enableTrack(position);
+    }else{
+        subtitlesManager->disableTrack(position);
+    }
+}
+//====================================
+void MainWindow::setEnabledSubtrack2(bool enable){
+    this->setEnabledSubtrack(1, enable);
+}
+//====================================
+void MainWindow::setEnabledSubtrack3(bool enable){
+    this->setEnabledSubtrack(2, enable);
 }
 //====================================
 //Bottom tool bar

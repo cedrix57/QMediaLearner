@@ -14,7 +14,10 @@ SubVideoWidget::SubVideoWidget(QWidget *parent) :
     scene->addItem(
                 &this->videoItem);
     this->videoItem.setAcceptDrops(true);
-    for(int i=0; i<N_MAX_SUBTRACK; i++){
+    for(
+        int i=0;
+        i<MediaLearner::SubtitlesManager::N_MAX_TRACKS;
+        i++){
         scene->addItem(
                 &this->textItems[i]);
         this->textItems[i].setAcceptDrops(true);

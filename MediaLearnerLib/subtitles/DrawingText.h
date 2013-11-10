@@ -14,6 +14,11 @@ struct DrawingSettings{
     DrawingSettings(){
         this->fontColor = Qt::yellow;
     }
+    DrawingSettings &operator=(const DrawingSettings &other){
+        this->font = other.font;
+        this->fontColor = other.fontColor;
+        return *this;
+    }
 };
 
 
