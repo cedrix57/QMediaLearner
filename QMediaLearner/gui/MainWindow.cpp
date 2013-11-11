@@ -6,6 +6,7 @@
 #include <QDragEnterEvent>
 #include <QMimeData>
 #include <QFileDialog>
+#include <QApplication>
 #include <sequenceExtractor/PluginSequenceExtractor.h>
 
 //====================================
@@ -13,13 +14,12 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow){
     ui->setupUi(this);
+    QApplication::instance()
+            ->installEventFilter(this);
     this->editExtractionDialog = NULL;
     this->_initMediaPlayer();
     this->_initExtractor();
     this->_connectSlots();
-    //this->ui->buttonExtract
-            //->setAttribute(
-                //Qt::WA_); //TODO voir la pour focus + désactiver event
 }
 //====================================
 MainWindow::~MainWindow(){
@@ -130,6 +130,10 @@ void MainWindow::_connectMenaBarSlots(){
                 this->ui->actionOpenFiles,
                 SIGNAL(triggered()),
                 SLOT(openFiles()));
+    this->ui->graphicsViewVideo->connect(
+                this->ui->actionFullScreen,
+                SIGNAL(triggered()),
+                SLOT(showFullScreenOrNormal()));
     this->connect(
                 this->ui->actionClose,
                 SIGNAL(triggered()),
@@ -194,7 +198,7 @@ void MainWindow::_connectMenaBarSlots(){
 //====================================
 // Media
 //====================================
-//*
+/*
 void MainWindow::dragEnterEvent(QDragEnterEvent* event){
     SubVideoWidget::onDragEnterEvent(event);
 }
@@ -203,29 +207,28 @@ void MainWindow::dropEvent(QDropEvent* event){
     QList<QUrl> urls = event->mimeData()->urls();
     this->openUrls(urls);
 }
-//====================================
-void MainWindow::keyReleaseEvent(
-        QKeyEvent *event){
-    QMainWindow::keyReleaseEvent(
-                event);
-    int key = event->key();
-    if(key == Qt::Key_Space){
-        //event->accept();
-        this->playOrPause();
-    }
-}
 //*/
+//====================================
+bool MainWindow::eventFilter(QObject *object, QEvent *event) {
+    if(event->type() == QEvent::KeyRelease){
+        QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
+        int key = keyEvent->key();
+        if(key == Qt::Key_Space){
+            this->playOrPause();
+            return true;
+        }
+    }
+    return false;
+}
 //====================================
 void MainWindow::openUrls(QList<QUrl> urls){
     foreach(QUrl url, urls){
         QString path = url.path();
         QString lowerPath = path.toLower();
         if(lowerPath.endsWith("srt")){
-            //TODO add subtitle track in position 1
             this->openSubtrack(
                         0,
                         path);
-
         }else if(lowerPath.endsWith("avi")
                 || lowerPath.endsWith("ts")
                 || lowerPath.endsWith("mp2")
@@ -237,7 +240,6 @@ void MainWindow::openUrls(QList<QUrl> urls){
                 || lowerPath.endsWith("mkv")){
             this->playVideo(path);
         }
-        //TODO
     }
 }
 //====================================
@@ -305,8 +307,6 @@ void MainWindow::openSubtrack(
         this->ui->actionEnabled3->setChecked(
                     true);
     }
-    //subtitlesManager->enableTrack(
-                //position);
 }
 //====================================
 void MainWindow::openSubtrack2(){
@@ -440,7 +440,7 @@ void MainWindow::_onPlaybackRateChanged(
     QString rateString
             = QString::number(
                 rate,
-                'h', //TODO check letter
+                'h',
                 1);
     rateString += "x";
     this->ui->labelPlaybackRate

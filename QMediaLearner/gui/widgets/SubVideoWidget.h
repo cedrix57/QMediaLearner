@@ -15,6 +15,9 @@ public:
             MediaLearner::MediaLearnerLib *mediaLearner);
     static void onDragEnterEvent(QDragEnterEvent* event);
 
+public slots:
+    void showFullScreenOrNormal();
+
 signals:
     void urlsDropped(QList<QUrl> urls);
     
@@ -32,9 +35,14 @@ protected:
     MediaLearner::SubtitlesManager::N_MAX_TRACKS];
     MediaLearner::MediaLearnerLib *mediaLearner;
     MediaLearner::SubtitlesManager *subtitlesManager;
-    virtual void resizeEvent(QResizeEvent * event);
-    virtual void dragEnterEvent(QDragEnterEvent* event);
-    virtual void dropEvent(QDropEvent* event);
+    virtual void resizeEvent(
+            QResizeEvent * event);
+    virtual void dragEnterEvent(
+            QDragEnterEvent* event);
+    virtual void dropEvent(
+            QDropEvent* event);
+    virtual void mouseDoubleClickEvent(
+            QMouseEvent *event);
 };
 
 #endif // SUBVIDEOWIDGET_H

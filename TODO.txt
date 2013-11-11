@@ -1,3 +1,17 @@
+- Settings in UI
+- Update the video widget so it can support video effects
+- Full screen mode for linux/mac
+- Change the background color of the application
+- The application shouldn't crash if using a
+  subtitle file with mistake
+- Change playing position by clicking on the slider
+- Restore session if the application crashes
+- Save cutted video
+- Revoir les TODO
+- Video extraction
+- Unit tests on the subtitles features
+- Unit test on media learner lib
+- Voice activity detection algorithm test application
 - In the drag an drop of a subtitle track,
   new transparent area should appear and
   allow to put a new subtitle track on
@@ -6,23 +20,6 @@
   The replacement would be automatic if
   openin a subtitle for the second place
   on a different place
-- The application shouldn't crash if using a
-  subtitle file with mistake
-- Settings manager
-- Settings in UI
-- Bug Drag and drop
-- pause shortcut: doesn't work when button have focus
-- Ajouter les options de logiciel
-- Revoir les TODO
-- Unit tests on the subtitles features
-- Change playing position by clicking on the slider
-- Allow to play selected extraction
-- Subtitles feature
-- Save cutted video
-- Unit test on media learner lib
-- Voice activity detection algorithm test application
-- User interface
-- Video extraction
 - Website
 - Marketing
 - Mobile application

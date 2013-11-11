@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="acceptDrops">
-   <bool>true</bool>
+   <bool>false</bool>
   </property>
   <property name="windowTitle">
    <string>QMediaLearner</string>
@@ -83,6 +83,9 @@
          </colorrole>
         </disabled>
        </palette>
+      </property>
+      <property name="acceptDrops">
+       <bool>true</bool>
       </property>
       <property name="autoFillBackground">
        <bool>true</bool>
@@ -298,6 +301,9 @@
     </property>
     <addaction name="actionOpenFile"/>
     <addaction name="actionOpenFiles"/>
+    <addaction name="separator"/>
+    <addaction name="actionFullScreen"/>
+    <addaction name="separator"/>
     <addaction name="actionClose"/>
    </widget>
    <widget class="QMenu" name="menuExtractions">
@@ -482,6 +488,11 @@
   <action name="actionE">
    <property name="text">
     <string>e</string>
+   </property>
+  </action>
+  <action name="actionFullScreen">
+   <property name="text">
+    <string>&amp;Full screen</string>
    </property>
   </action>
  </widget>

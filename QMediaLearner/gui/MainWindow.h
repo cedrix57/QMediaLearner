@@ -69,9 +69,9 @@ protected:
     void _connectMediaPlayerSlots();
     void _connectToolBarSlots();
     void _connectMenaBarSlots();
-    virtual void dragEnterEvent(QDragEnterEvent *event);
-    virtual void dropEvent(QDropEvent *event);
-    virtual void keyReleaseEvent(QKeyEvent *event);
+    //virtual void dragEnterEvent(QDragEnterEvent *event);
+    //virtual void dropEvent(QDropEvent *event);
+    virtual bool eventFilter(QObject *object, QEvent *event);
 
 protected slots:
     void _onMediaPlayerStateChanged(

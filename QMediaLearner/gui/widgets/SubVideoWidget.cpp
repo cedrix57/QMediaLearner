@@ -105,9 +105,11 @@ void SubVideoWidget::resizeEvent(
 void SubVideoWidget::dragEnterEvent(QDragEnterEvent* event){
     SubVideoWidget::onDragEnterEvent(event);
 }
+//*/
 //====================================
 void SubVideoWidget::onDragEnterEvent(
         QDragEnterEvent* event){
+    const QMimeData *data = event->mimeData();
     QList<QUrl> urls = event->mimeData()->urls();
     foreach(QUrl url, urls){
         QString path = url.path();
@@ -127,10 +129,29 @@ void SubVideoWidget::onDragEnterEvent(
         }
     }
 }
+//*
 //====================================
 void SubVideoWidget::dropEvent(QDropEvent* event){
     QList<QUrl> urls = event->mimeData()->urls();
     this->urlsDropped(urls);
+}
+//====================================
+void SubVideoWidget::mouseDoubleClickEvent(
+        QMouseEvent *event){
+    QGraphicsView:: mouseDoubleClickEvent(
+                event);
+    this->showFullScreenOrNormal();
+}
+//====================================
+void SubVideoWidget::showFullScreenOrNormal(){
+    if(this->isFullScreen()){
+        this->showNormal();
+    }else{
+#ifdef Q_OS_WINDOWS
+        this->showFullScreen();
+#else
+#endif
+    }
 }
 //====================================
 //*/
