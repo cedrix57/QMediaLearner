@@ -8,6 +8,8 @@
 #include <QFileDialog>
 #include <QApplication>
 #include <sequenceExtractor/PluginSequenceExtractor.h>
+#include "dialogs/SettingsDialog.h"
+#include "dialogs/EditExtractionDialog.h"
 
 //====================================
 MainWindow::MainWindow(QWidget *parent) :
@@ -17,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QApplication::instance()
             ->installEventFilter(this);
     this->editExtractionDialog = NULL;
+    this->settingsDialog = NULL;
     this->_initMediaPlayer();
     this->_initExtractor();
     this->_connectSlots();
@@ -174,13 +177,9 @@ void MainWindow::_connectMenaBarSlots(){
                 SIGNAL(triggered()),
                 SLOT(showPlayingList()));
     this->connect(
-                this->ui->actionVideoEffects,
+                this->ui->actionEffects,
                 SIGNAL(triggered()),
-                SLOT(showVideoEffects()));
-    this->connect(
-                this->ui->actionAudioEffects,
-                SIGNAL(triggered()),
-                SLOT(showAudioEffects()));
+                SLOT(showEffects()));
     this->connect(
                 this->ui->actionSettings,
                 SIGNAL(triggered()),
@@ -509,13 +508,15 @@ void MainWindow::_setVolume(
 void MainWindow::showPlayingList(){
 }
 //====================================
-void MainWindow::showVideoEffects(){
-}
-//====================================
-void MainWindow::showAudioEffects(){
+void MainWindow::showEffects(){
 }
 //====================================
 void MainWindow::showSettings(){
+    delete this->settingsDialog;
+    this->settingsDialog
+            = new SettingsDialog(
+                this);
+    this->settingsDialog->show();
 }
 //====================================
 //Help

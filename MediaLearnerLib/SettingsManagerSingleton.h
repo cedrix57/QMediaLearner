@@ -7,15 +7,22 @@
 #include <QFont>
 #include <QColor>
 
+namespace MediaLearner{
 
 class SettingsManagerSingleton : public QObject{
     Q_OBJECT
 public:
+    enum SubSize{Small, Medium, Big};
+    enum SubPosition{Top, Center, Bottom};
     static SettingsManagerSingleton *getInstance();
     QString getLanguage();
-    QFont getSubFont(
+    QString getSubFontFamily(
             int subPosition);
     QColor getSubColor(
+            int subPosition);
+    SubSize getSubSize(
+            int subPosition);
+    SubPosition getSubPosition(
             int subPosition);
 
 signals:
@@ -25,12 +32,18 @@ signals:
 
 public slots:
     void setLanguage(QString language);
-    void setSubFont(
+    void setSubFontFamily(
             int subPosition,
-            QFont font);
+            QString family);
     void setSubColor(
             int subPosition,
             QColor color);
+    void setSubSize(
+            int subPosition,
+            SubSize size);
+    void setSubPosition(
+            int subPosition,
+            SubPosition position);
 
 protected:
     explicit SettingsManagerSingleton(
@@ -40,4 +53,5 @@ protected:
     QSettings *settings;
 };
 
+}
 #endif // SETTINGSMANAGERSINGLETON_H

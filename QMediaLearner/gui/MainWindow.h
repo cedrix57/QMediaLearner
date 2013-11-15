@@ -3,7 +3,9 @@
 
 #include <QMainWindow>
 #include <MediaLearnerLib.h>
-#include "dialogs/EditExtractionDialog.h"
+
+class SettingsDialog;
+class EditExtractionDialog;
 
 namespace Ui {
 class MainWindow;
@@ -50,8 +52,7 @@ public slots:
 
     //Tools
     void showPlayingList();
-    void showVideoEffects();
-    void showAudioEffects();
+    void showEffects();
     void showSettings();
 
     //Help
@@ -63,6 +64,7 @@ protected:
     MediaLearner::MediaLearnerLib mediaLearner;
     QMediaPlayer *mediaPlayer;
     EditExtractionDialog *editExtractionDialog;
+    SettingsDialog *settingsDialog;
     void _initMediaPlayer();
     void _initExtractor();
     void _connectSlots();

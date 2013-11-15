@@ -3,6 +3,8 @@
 
 #include <QGraphicsView>
 #include <QGraphicsVideoItem>
+//#include <QGraphicsProxyWidget>
+//#include <QVideoWidget>
 #include <QGraphicsTextItem>
 #include <QList>
 #include <MediaLearnerLib.h>
@@ -31,6 +33,8 @@ protected slots:
 
 protected:
     QGraphicsVideoItem videoItem;
+    //QGraphicsProxyWidget *proxyWidget;
+    //QVideoWidget videoWidget;
     QGraphicsTextItem textItems[
     MediaLearner::SubtitlesManager::N_MAX_TRACKS];
     MediaLearner::MediaLearnerLib *mediaLearner;

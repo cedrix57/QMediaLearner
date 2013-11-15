@@ -26,9 +26,11 @@ void SubtitlesManager::_initDrawingSettings(){
             *settingsManager
             = SettingsManagerSingleton::getInstance();
     for(int i=0; i<N_MAX_TRACKS; i++){
-        QFont defaultFont
+        QString defaultFamily
                 = settingsManager
-                ->getSubFont(i);
+                ->getSubFontFamily(i);
+        QFont defaultFont;
+        defaultFont.setFamily(defaultFamily);
         qDebug() << "Default font: " << defaultFont.family();
         QColor defaultColor
                 = settingsManager

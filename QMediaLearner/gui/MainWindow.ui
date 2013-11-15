@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>887</width>
-    <height>797</height>
+    <width>891</width>
+    <height>592</height>
    </rect>
   </property>
   <property name="acceptDrops">
@@ -291,7 +291,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>887</width>
+     <width>891</width>
      <height>25</height>
     </rect>
    </property>
@@ -356,8 +356,7 @@
      <string>&amp;Tools</string>
     </property>
     <addaction name="actionPlayingList"/>
-    <addaction name="actionVideoEffects"/>
-    <addaction name="actionAudioEffects"/>
+    <addaction name="actionEffects"/>
     <addaction name="actionSettings"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
@@ -366,6 +365,7 @@
     </property>
     <addaction name="actionHelp"/>
     <addaction name="actionAbout"/>
+    <addaction name="actionAboutQt5"/>
    </widget>
    <addaction name="menuMedia"/>
    <addaction name="menuExtractions"/>
@@ -407,9 +407,9 @@
     <string>E&amp;dit extraction</string>
    </property>
   </action>
-  <action name="actionVideoEffects">
+  <action name="actionEffects">
    <property name="text">
-    <string>&amp;Video effect</string>
+    <string>&amp;Video &amp;&amp; Audio effects</string>
    </property>
   </action>
   <action name="actionAudioEffects">
@@ -495,6 +495,11 @@
     <string>&amp;Full screen</string>
    </property>
   </action>
+  <action name="actionAboutQt5">
+   <property name="text">
+    <string>About Qt5</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
@@ -505,5 +510,22 @@
   </customwidget>
  </customwidgets>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>actionClose</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>445</x>
+     <y>295</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

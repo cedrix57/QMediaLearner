@@ -1,5 +1,7 @@
-- Settings in UI
+- Effects settings
 - Update the video widget so it can support video effects
+- Settings in UI
+- Color combo box
 - Full screen mode for linux/mac
 - Change the background color of the application
 - The application shouldn't crash if using a

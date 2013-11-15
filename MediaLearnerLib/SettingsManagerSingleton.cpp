@@ -2,6 +2,8 @@
 #include <QDebug>
 
 
+namespace MediaLearner{
+
 //====================================
 //====================================
 QSharedPointer<SettingsManagerSingleton> SettingsManagerSingleton::instance;
@@ -42,34 +44,40 @@ void SettingsManagerSingleton::setLanguage(
 }
 //====================================
 //====================================
-const QString KEY_SUBFONT = "lang";
+const QString KEY_SUBFONTFAMILY = "fontFamily";
 //====================================
-QFont SettingsManagerSingleton::getSubFont(
+QString SettingsManagerSingleton::getSubFontFamily(
         int subPosition){
-    QString key = KEY_SUBFONT + subPosition;
-    QFont defaultFont("Arial");
+    QString key = KEY_SUBFONTFAMILY + subPosition;
+    QString defaultFamily("Arial");
+    QString family
+            = this->settings->value(
+                key,
+                defaultFamily).toString();
+    /*
     QVariant fontVariant
             = this->settings->value(
                 key,
                 defaultFont);
     QFont font = fontVariant.value<QFont>();
     font = defaultFont;
-    return font;
+    //*/
+    return family;
 }
 //====================================
-void SettingsManagerSingleton::setSubFont(
+void SettingsManagerSingleton::setSubFontFamily(
         int subPosition,
-        QFont font){
-    QString key = KEY_SUBFONT + subPosition;
+        QString family){
+    QString key = KEY_SUBFONTFAMILY + subPosition;
     this->settings->setValue(
                 key,
-                font);
+                family);
     this->subSettingsChanged();
     this->subSettingsChanged(subPosition);
 }
 //====================================
 //====================================
-const QString KEY_SUBCOLOR = "lang";
+const QString KEY_SUBCOLOR = "subColor";
 //====================================
 QColor SettingsManagerSingleton::getSubColor(
         int subPosition){
@@ -99,5 +107,56 @@ void SettingsManagerSingleton::setSubColor(
     this->subSettingsChanged(subPosition);
 }
 //====================================
+const QString KEY_SUBSIZE = "subSize";
+//====================================
+SettingsManagerSingleton::SubSize
+SettingsManagerSingleton::getSubSize(
+        int subPosition){
+    QString key = KEY_SUBSIZE + subPosition;
+    SubSize defaultSize = Medium;
+    SubSize size
+            = (SubSize)this->settings->value(
+                key,
+                (int)defaultSize).toInt();
+    return size;
+}
+//====================================
+void SettingsManagerSingleton::setSubSize(
+        int subPosition,
+        SubSize size){
+    QString key = KEY_SUBSIZE + subPosition;
+    this->settings->setValue(
+                key,
+                (int)size);
+    this->subSettingsChanged();
+    this->subSettingsChanged(subPosition);
+}
+//====================================
+const QString KEY_SUBPOSITION = "lang";
+//====================================
+SettingsManagerSingleton::SubPosition
+SettingsManagerSingleton::getSubPosition(
+        int subPosition){
+    QString key = KEY_SUBPOSITION + subPosition;
+    SubPosition defaultPosition = Bottom;
+    SubPosition size
+            = (SubPosition)this->settings->value(
+                key,
+                (int)defaultPosition).toInt();
+    return size;
+}
+//====================================
+void SettingsManagerSingleton::setSubPosition(
+        int subPosition,
+        SubPosition position){
+    QString key = KEY_SUBPOSITION + subPosition;
+    this->settings->setValue(
+                key,
+                (int)position);
+    this->subSettingsChanged();
+    this->subSettingsChanged(subPosition);
+}
+//====================================
 
+}
 

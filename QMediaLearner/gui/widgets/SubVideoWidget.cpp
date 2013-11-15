@@ -10,9 +10,11 @@ SubVideoWidget::SubVideoWidget(QWidget *parent) :
     QGraphicsView(parent){
     QGraphicsScene *scene
             = new QGraphicsScene(this);
-    this->setScene(scene);
+    //this->proxyWidget
+            //= scene->addWidget(&this->videoWidget);
     scene->addItem(
                 &this->videoItem);
+    this->setScene(scene);
     this->videoItem.setAcceptDrops(true);
     for(
         int i=0;
@@ -21,7 +23,6 @@ SubVideoWidget::SubVideoWidget(QWidget *parent) :
         scene->addItem(
                 &this->textItems[i]);
         this->textItems[i].setAcceptDrops(true);
-        //this->texts[i].hide();
     }
 }
 //====================================
@@ -91,8 +92,12 @@ void SubVideoWidget::resizeEvent(
     QGraphicsView::resizeEvent(event);
     QRect currentRect = this->rect();
     QSize currentSize = currentRect.size();
+    //QSizeF size = this->proxyWidget->size();
+    //QRectF boundingRect = this->proxyWidget->boundingRect();
     this->videoItem.setPos(0, 0);
     this->videoItem.setSize(currentSize);
+    //QGraphicsScene *scene = this->scene();
+    //scene->update(scene->sceneRect());
     QMediaPlayer *mediaPlayer
     = this->mediaLearner->getMediaPlayer();
     qint64 position = mediaPlayer->position();

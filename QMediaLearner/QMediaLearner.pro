@@ -29,7 +29,8 @@ SOURCES += main.cpp\
     gui/dialogs/EditExtractionDialog.cpp \
     gui/widgets/qxtspanslider.cpp \
     gui/widgets/qxtglobal.cpp \
-    gui/widgets/SubVideoWidget.cpp
+    gui/widgets/SubVideoWidget.cpp \
+    gui/dialogs/SettingsDialog.cpp
 
 HEADERS  += gui/MainWindow.h \
     gui/dialogs/EditExtractionDialog.h \
@@ -37,7 +38,9 @@ HEADERS  += gui/MainWindow.h \
     gui/widgets/qxtspanslider_p.h \
     gui/widgets/qxtnamespace.h \
     gui/widgets/qxtglobal.h \
-    gui/widgets/SubVideoWidget.h
+    gui/widgets/SubVideoWidget.h \
+    gui/dialogs/SettingsDialog.h
 
 FORMS    += gui/MainWindow.ui \
-    gui/dialogs/EditExtractionDialogs.ui
+    gui/dialogs/EditExtractionDialogs.ui \
+    gui/dialogs/SettingsDialog.ui
