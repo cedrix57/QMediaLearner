@@ -1,3 +1,7 @@
+- encoder: set sequences and subtitles
+- exporter algorithm
+- encoding window
+- Use the function rightJustified for text alignement
 - Effects settings
 - Update the video widget so it can support video effects
 - Settings in UI
@@ -11,6 +15,8 @@
 - Save cutted video
 - Revoir les TODO
 - Video extraction
+- When sequences are being extracted a progress dialog shall appear
+  but not when phrase detection is running
 - Unit tests on the subtitles features
 - Unit test on media learner lib
 - Voice activity detection algorithm test application
