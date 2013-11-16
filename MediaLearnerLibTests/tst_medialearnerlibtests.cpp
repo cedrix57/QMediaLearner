@@ -2,7 +2,9 @@
 #include <QtTest>
 #include <QCoreApplication>
 #include <MediaLearnerLib.h>
-#include <QThread>s
+#include <QThread>
+#include <QSignalSpy>
+#include <encoders/FFmpegEncoder.h>
 
 class MediaLearnerLibTests : public QObject{
     Q_OBJECT
@@ -15,6 +17,10 @@ private Q_SLOTS:
     void testExtractorExists();
     void testExtractorPluginsExist();
     void testSequencesExtractions();
+    void testFFmpegFormats();
+    void testFFmpegSubEncoders();
+    void testFFmpegVideoEncoders();
+    void testFFmpegAudioEncoders();
 };
 //====================================
 MediaLearnerLibTests::MediaLearnerLibTests(){
@@ -65,17 +71,14 @@ void MediaLearnerLibTests::testSequencesExtractions(){
             //= "/home/cedric/Vidéos/toBeginAgain.mp3";
     extractor->setMediaSource(
                 videoFilePath);
+
+    //qRegisterMetaType<MediaLearner::Sequence>();
+    QSignalSpy spy(
+                extractor,
+                SIGNAL(sequencesExtracted()));
     extractor->analyseMediaSource();
-    //*
-    //QThread::sleep(5);
-    QTime finalTime
-            = QTime::currentTime().addSecs(15);
-    while(QTime::currentTime() < finalTime){
-        QCoreApplication::processEvents(
-                    QEventLoop::AllEvents,
-                    100);
-    }
-    //*/
+    QTRY_COMPARE_WITH_TIMEOUT(spy.count(), 1, 50000);
+
     //extractor->waitForExtractionFinished();
     QSharedPointer<QList<MediaLearner::Sequence> >
             sequences
@@ -83,6 +86,46 @@ void MediaLearnerLibTests::testSequencesExtractions(){
     int nSequences = sequences->size();
     qDebug() << "nSequences: " << nSequences;
     QVERIFY(nSequences > 0);
+}
+//====================================
+void MediaLearnerLibTests::testFFmpegFormats(){
+    MediaLearner::EncoderInterface
+            *encoder = new MediaLearner::FFmpegEncoder();
+    QList<MediaLearner::EncodingInfo> formats
+            = encoder->getAvailableFormats();
+    int nFormats = formats.size();
+    QVERIFY(nFormats > 0);
+    delete encoder;
+}
+//====================================
+void MediaLearnerLibTests::testFFmpegSubEncoders(){
+    MediaLearner::EncoderInterface
+            *encoder = new MediaLearner::FFmpegEncoder();
+    QList<MediaLearner::EncodingInfo> subEncoders
+            = encoder->getAvailableSubtitlesCodecs();
+    int nSubEncoders = subEncoders.size();
+    QVERIFY(nSubEncoders > 0);
+    delete encoder;
+}
+//====================================
+void MediaLearnerLibTests::testFFmpegAudioEncoders(){
+    MediaLearner::EncoderInterface
+            *encoder = new MediaLearner::FFmpegEncoder();
+    QList<MediaLearner::EncodingInfo> audioCodecs
+            = encoder->getAvailableAudioCodecs();
+    int nAudioCodecs = audioCodecs.size();
+    QVERIFY(nAudioCodecs > 0);
+    delete encoder;
+}
+//====================================
+void MediaLearnerLibTests::testFFmpegVideoEncoders(){
+    MediaLearner::EncoderInterface
+            *encoder = new MediaLearner::FFmpegEncoder();
+    QList<MediaLearner::EncodingInfo> videoCodecs
+            = encoder->getAvailableVideoCodecs();
+    int nVideoCodecs = videoCodecs.size();
+    QVERIFY(nVideoCodecs > 0);
+    delete encoder;
 }
 //====================================
 QTEST_MAIN(MediaLearnerLibTests)
