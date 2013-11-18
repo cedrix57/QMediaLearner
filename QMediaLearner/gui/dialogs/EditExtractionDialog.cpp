@@ -1,6 +1,7 @@
 #include "EditExtractionDialog.h"
 #include "ui_EditExtractionDialogs.h"
 #include <sequenceExtractor/PluginSequenceExtractor.h>
+#include "ExportVideoDialog.h"
 
 //====================================
 EditExtractionDialog::EditExtractionDialog(
@@ -11,6 +12,7 @@ EditExtractionDialog::EditExtractionDialog(
     ui(new Ui::EditExtractionDialog){
     ui->setupUi(this);
     this->mediaLearner = mediaLearner;
+    this->exportVideoDialog = NULL;
     this->_initVideoPlayer();
     this->_connectSlots();
     this->ui->sliderBoundaries
@@ -22,6 +24,7 @@ EditExtractionDialog::EditExtractionDialog(
 void EditExtractionDialog::showEvent(
         QShowEvent * event){
     this->_loadExtractions();
+    this->_hideExportButtonEventually();
 }
 //====================================
 EditExtractionDialog::~EditExtractionDialog(){
@@ -100,6 +103,15 @@ void EditExtractionDialog::_loadExtractions(){
     foreach(MediaLearner::Sequence sequence,
             *sequences){
         this->addSequence(sequence);
+    }
+}
+//====================================
+void EditExtractionDialog::_hideExportButtonEventually(){
+    int nSequences = this->ui->listSequences->count();
+    if(nSequences > 0){
+        this->ui->buttonExport->setEnabled(true);
+    }else{
+        this->ui->buttonExport->setEnabled(false);
     }
 }
 //====================================
@@ -182,6 +194,7 @@ void EditExtractionDialog::removeSelectedSequence(){
     this->ui->listSequences->takeItem(
                 currentPosition);
     extractor->deleteSequence(currentPosition);
+    this->_hideExportButtonEventually();
 }
 //====================================
 void EditExtractionDialog::accept(){
@@ -200,7 +213,10 @@ void EditExtractionDialog::reject(){
 }
 //====================================
 void EditExtractionDialog::exportVideo(){
-    //TODO
+    delete this->exportVideoDialog;
+    this->exportVideoDialog
+            = new ExportVideoDialog(this);
+    this->exportVideoDialog->show();
 }
 //====================================
 void EditExtractionDialog::_onMediaPlayerStateChanged(

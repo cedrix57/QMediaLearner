@@ -41,11 +41,7 @@ void SequenceExtractor::_connectSlots(){
     this->connect(
                 &this->decoder,
                 SIGNAL(finished()),
-                SLOT(extractQueuedSequences()));
-    this->connect(
-                &this->decoder,
-                SIGNAL(finished()),
-                SLOT(onDecodingFinished()));
+                SLOT(onDecodingFinished())); //TODO Shouldn't block the main thread
     this->connect(
                 &this->mediaPlayer,
                 SIGNAL(positionChanged(qint64)),
@@ -160,11 +156,13 @@ void SequenceExtractor::waitForExtractionFinished(){
 }
 //====================================
 void SequenceExtractor::onDecodingFinished(){
+    this->extractQueuedSequences();
     this->futurBuffer.waitForFinished();
     this->allSequences
             = this->selectedExtractor
             ->getExtractedSequences();
     this->_isExtractionFinished = true;
+    this->sequencesExtracted();
 }
 //====================================
 void SequenceExtractor::onBufferReadyThread(){

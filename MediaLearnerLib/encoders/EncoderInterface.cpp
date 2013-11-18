@@ -1,4 +1,7 @@
 #include "EncoderInterface.h"
+#include <QStandardPaths>
+#include <QFile>
+#include <QDir>
 
 namespace MediaLearner{
 //====================================
@@ -37,5 +40,32 @@ void EncoderInterface::setInVideoFilePath(
             = inVideoFilePath;
 }
 //====================================
-
+void EncoderInterface::setSequences(
+        QSharedPointer<QList<Sequence> >
+        sequences){
+    this->sequences = sequences;
+}
+//====================================
+void EncoderInterface::setTexts(
+        QList<QList<DrawingSubtitleInfo> > texts){
+    this->texts = texts;
+}
+//====================================
+QString EncoderInterface::getFontPath(QString fontName){
+    QStringList fontDirPaths
+            = QStandardPaths::standardLocations(
+                QStandardPaths::FontsLocation);
+    QString fontFilePath = fontName;
+    foreach(QString fontDirPath, fontDirPaths){
+        QDir fontDir = fontDirPath;
+        QString tempFontFilePath
+                = fontDir.filePath(fontName);
+        if(QFile::exists(tempFontFilePath)){
+            fontFilePath = tempFontFilePath;
+            break;
+        }
+    }
+    return fontFilePath;
+}
+//====================================
 }

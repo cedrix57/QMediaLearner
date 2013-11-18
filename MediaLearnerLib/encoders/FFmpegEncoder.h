@@ -20,16 +20,22 @@ public:
     virtual QList<EncodingInfo> getAvailableAudioCodecs();
     virtual QList<EncodingInfo> getAvailableSubtitlesCodecs();
     virtual void encode(QString outFilePath);
+    int getFrameRate();
+    int getNFrame(qint64 ms, int frameRate);
+    QString getFormatedTime(qint64 ms);
     //*/
 
 signals:
 
-public slots:
-
+protected slots:
+    void _onProcessFinished(
+            int exitCode,
+            QProcess::ExitStatus exitStatus);
 protected:
     QString getFFmpegFilePath();
     QList<EncodingInfo> _getAvailableCodecs(
             QChar type);
+    QProcess encodingProcess;
 
 };
 

@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include "SubtitleTrack.h"
+#include "../sequenceExtractor/SequenceExtractor.h"
 
 
 namespace MediaLearner{
@@ -26,6 +27,11 @@ public:
     QList<DrawingText> getTexts(
             qint64 positionInMs,
             QSize screenSize);
+    QList<QList<DrawingSubtitleInfo> > getTexts(
+            QSharedPointer<QList<Sequence> >
+            sequences,
+            QSize screenSize);
+    //TODO get all draming settings
 
 signals:
     

@@ -4,6 +4,8 @@
 #include <QDialog>
 #include <MediaLearnerLib.h>
 
+class ExportVideoDialog;
+
 namespace Ui {
 class EditExtractionDialog;
 }
@@ -47,8 +49,10 @@ protected:
     QMediaPlayer *mediaPlayer;
     QSharedPointer<QList<MediaLearner::Sequence> >
             backupSequences;
+    ExportVideoDialog *exportVideoDialog;
     void _connectSlots();
     void _loadExtractions();
+    void _hideExportButtonEventually();
     void _initVideoPlayer();
     void showEvent(QShowEvent * event);
     void _adjustUpperBoundary(

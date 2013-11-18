@@ -18,6 +18,12 @@ struct SubtitleInfo{
     QStringList lines;
 };
 
+struct DrawingSubtitleInfo{
+    qint64 startPosition;
+    qint64 endPosition;
+    DrawingText text;
+};
+
 class SubtitleTrack : public QObject{
     Q_OBJECT
 public:

@@ -60,7 +60,9 @@ public:
 signals:
     void sequenceExtracted(
             MediaLearner::Sequence sequence);
-    
+    void sequencesExtracted();
+    void sequencesExtractionFailed();
+
 public slots:
 
 protected slots:

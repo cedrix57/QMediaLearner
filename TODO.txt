@@ -1,6 +1,8 @@
-- encoder: set sequences and subtitles
+- Try to cut a video with the subtitles
+- Subtitle: take account of the position + font size
 - exporter algorithm
 - encoding window
+- Think about a way to reload data when the application crashes
 - Use the function rightJustified for text alignement
 - Effects settings
 - Update the video widget so it can support video effects

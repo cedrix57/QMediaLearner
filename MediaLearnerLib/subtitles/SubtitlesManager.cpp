@@ -3,6 +3,7 @@
 
 #include <QFontMetrics>
 #include <QDebug>
+#include <QSet>
 namespace MediaLearner{
 
 //====================================
@@ -31,11 +32,9 @@ void SubtitlesManager::_initDrawingSettings(){
                 ->getSubFontFamily(i);
         QFont defaultFont;
         defaultFont.setFamily(defaultFamily);
-        qDebug() << "Default font: " << defaultFont.family();
         QColor defaultColor
                 = settingsManager
                 ->getSubColor(i);
-        qDebug() << "Default color: " << defaultColor.toRgb();
         DrawingSettings drawingSettings;
         drawingSettings.font
                 = defaultFont;
@@ -92,5 +91,52 @@ QList<DrawingText> SubtitlesManager::getTexts(
     }
     return drawingTexts;
 }
-
+//====================================
+QList<QList<DrawingSubtitleInfo> >
+SubtitlesManager::getTexts(
+        QSharedPointer<QList<Sequence> >
+        sequences,
+        QSize screenSize){
+    QList<QList<DrawingSubtitleInfo> >
+            drawingSubtitleInfosList;
+    QSet<long> boundaries;
+    foreach(Sequence sequence, *sequences){
+        boundaries << sequence.minInMs;
+        boundaries << sequence.maxInMs;
+    }
+    QList<long> sortedBoundaries
+            = QList<long>::fromSet(boundaries);
+    qSort(sortedBoundaries);
+    for(QList<long>::iterator it
+        =sortedBoundaries.begin() + 1;
+        it != sortedBoundaries.end();
+        ++it){
+        long begin = *(it-1);
+        long end = *it;
+        long middle = begin + (end - begin)/2;
+        if(middle == begin){
+            middle++;
+        }
+        QList<DrawingText> drawingTexts
+                = this->getTexts(
+                    middle,
+                    screenSize);
+        QList<DrawingSubtitleInfo>
+                drawingSubtitleInfos;
+        foreach(DrawingText drawingText,
+                drawingTexts){
+            DrawingSubtitleInfo info;
+            info.startPosition = begin;
+            info.endPosition = end;
+            info.text = drawingText;
+            drawingSubtitleInfos << info;
+        }
+        if(!drawingSubtitleInfos.isEmpty()){
+            drawingSubtitleInfosList
+                    << drawingSubtitleInfos;
+        }
+    }
+    return drawingSubtitleInfosList; //TODO shared pointer?
+}
+//====================================
 }

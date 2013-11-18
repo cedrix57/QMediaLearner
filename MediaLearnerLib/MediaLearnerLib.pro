@@ -26,10 +26,11 @@ SOURCES += MediaLearnerLib.cpp \
     sequenceExtractor/PluginSequenceExtractor.cpp \
     subtitles/SubtitleTrack.cpp \
     subtitles/SubtitlesManager.cpp \
-    ffmpeg/ffmpegInterface.cpp \
+    encoders/FFmpegEncoder.cpp \
     sequenceExtractor/HighFrequencyExtractor.cpp \
     subtitles/DrawingText.cpp \
-    SettingsManagerSingleton.cpp
+    SettingsManagerSingleton.cpp \
+    encoders/EncoderInterface.cpp
 
 HEADERS += MediaLearnerLib.h\
         medialearnerlib_global.h \
@@ -37,10 +38,11 @@ HEADERS += MediaLearnerLib.h\
     sequenceExtractor/PluginSequenceExtractor.h \
     subtitles/SubtitlesManager.h \
     subtitles/SubtitleTrack.h \
-    ffmpeg/ffmpegInterface.h \
+    encoders/FFmpegEncoder.h \
     sequenceExtractor/HighFrequencyExtractor.h \
     subtitles/DrawingText.h \
-    SettingsManagerSingleton.h
+    SettingsManagerSingleton.h \
+    encoders/EncoderInterface.h
 
 unix:!symbian {
     maemo5 {
