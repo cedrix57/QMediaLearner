@@ -1,4 +1,10 @@
+- Finir le refactoring: sous-titre + ffmpeg info
+- Trouver comment faire plusieurs de -ss
+- Voir pourquoi la commande ne marche pas depuis Qt
+- Créer un péertoire avec des fonts pour les sous titres
+- Add a log feature
 - Try to cut a video with the subtitles
+- Option pour mettre les séquences dans l'ordre et supprimer les intercections
 - Subtitle: take account of the position + font size
 - exporter algorithm
 - encoding window

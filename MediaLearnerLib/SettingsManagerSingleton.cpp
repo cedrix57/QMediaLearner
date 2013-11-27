@@ -109,7 +109,7 @@ void SettingsManagerSingleton::setSubColor(
 //====================================
 const QString KEY_SUBSIZE = "subSize";
 //====================================
-SettingsManagerSingleton::SubSize
+SubSize
 SettingsManagerSingleton::getSubSize(
         int subPosition){
     QString key = KEY_SUBSIZE + subPosition;
@@ -134,7 +134,7 @@ void SettingsManagerSingleton::setSubSize(
 //====================================
 const QString KEY_SUBPOSITION = "lang";
 //====================================
-SettingsManagerSingleton::SubPosition
+SubPosition
 SettingsManagerSingleton::getSubPosition(
         int subPosition){
     QString key = KEY_SUBPOSITION + subPosition;

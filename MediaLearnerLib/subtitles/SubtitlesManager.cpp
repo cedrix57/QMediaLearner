@@ -27,19 +27,19 @@ void SubtitlesManager::_initDrawingSettings(){
             *settingsManager
             = SettingsManagerSingleton::getInstance();
     for(int i=0; i<N_MAX_TRACKS; i++){
-        QString defaultFamily
-                = settingsManager
-                ->getSubFontFamily(i);
-        QFont defaultFont;
-        defaultFont.setFamily(defaultFamily);
-        QColor defaultColor
+        DrawingSettings drawingSettings;
+        drawingSettings.colorText
                 = settingsManager
                 ->getSubColor(i);
-        DrawingSettings drawingSettings;
-        drawingSettings.font
-                = defaultFont;
-        drawingSettings.fontColor
-                = defaultColor;
+        drawingSettings.fontFamily
+                = settingsManager
+                ->getSubFontFamily(i);
+        drawingSettings.subPosition
+                = settingsManager
+                ->getSubPosition(i);
+        drawingSettings.subSize
+                = settingsManager
+                ->getSubSize(i);
         this->subtitleTracks[i].
                 setDrawingSettings(
                     drawingSettings);
@@ -67,33 +67,36 @@ void SubtitlesManager::setTrack(
     this->enabledTracks[position] = true;
 }
 //====================================
-QList<DrawingText> SubtitlesManager::getTexts(
+QList<SubSequenceDrawable> SubtitlesManager::getSubsAt(
         qint64 positionInMs,
         QSize screenSize){
-    QList<DrawingText> drawingTexts;
+    QList<SubSequenceDrawable> drawingTexts;
     int phrasesSpacing = screenSize.height() * 0.04;
-    int bottomCoord = phrasesSpacing;
+    int firstCoord = phrasesSpacing;
     for(int i=0; i<N_MAX_TRACKS; i++){
         if(this->enabledTracks[i]){
-            DrawingText drawingText
+            //TODO better height calculation
+            SubSequenceDrawable drawingText
                     = this->subtitleTracks[i]
                     .getText(positionInMs);
-            drawingText.assessSizes(
+            drawingText.setContext(
                         screenSize,
-                        bottomCoord);
+                        firstCoord);
             drawingTexts.
                     append(
                         drawingText);
-            bottomCoord
-                    += drawingText.getRect().height()
+            int heightLines = drawingText.getHeightLines();
+            firstCoord
+                    += heightLines
                     + phrasesSpacing;
         }
     }
     return drawingTexts;
 }
+/*
 //====================================
 QList<QList<DrawingSubtitleInfo> >
-SubtitlesManager::getTexts(
+SubtitlesManager::getSubsAt(
         QSharedPointer<QList<Sequence> >
         sequences,
         QSize screenSize){
@@ -117,19 +120,22 @@ SubtitlesManager::getTexts(
         if(middle == begin){
             middle++;
         }
-        QList<DrawingText> drawingTexts
-                = this->getTexts(
+        QList<SubSequenceDrawable> drawingTexts
+                = this->getSubsAt(
                     middle,
                     screenSize);
         QList<DrawingSubtitleInfo>
                 drawingSubtitleInfos;
-        foreach(DrawingText drawingText,
+        foreach(SubSequenceDrawable drawingText,
                 drawingTexts){
-            DrawingSubtitleInfo info;
-            info.startPosition = begin;
-            info.endPosition = end;
-            info.text = drawingText;
-            drawingSubtitleInfos << info;
+            int nLines = drawingText.nLines();
+            if(nLines > 0){
+                DrawingSubtitleInfo info;
+                info.startPosition = begin;
+                info.endPosition = end;
+                info.text = drawingText;
+                drawingSubtitleInfos << info;
+            }
         }
         if(!drawingSubtitleInfos.isEmpty()){
             drawingSubtitleInfosList
@@ -139,4 +145,5 @@ SubtitlesManager::getTexts(
     return drawingSubtitleInfosList; //TODO shared pointer?
 }
 //====================================
+//*/
 }

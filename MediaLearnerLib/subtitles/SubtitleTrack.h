@@ -8,7 +8,8 @@
 #include <QSharedPointer>
 #include <QTextStream>
 #include <QTime>
-#include "DrawingText.h"
+//#include "DrawingText.h"
+#include "SubSequence.h"
 
 namespace MediaLearner{
 
@@ -18,23 +19,25 @@ struct SubtitleInfo{
     QStringList lines;
 };
 
+/*
 struct DrawingSubtitleInfo{
     qint64 startPosition;
     qint64 endPosition;
-    DrawingText text;
+    QList<DrawingText> text;
 };
+//*/
 
 class SubtitleTrack : public QObject{
     Q_OBJECT
 public:
     explicit SubtitleTrack(QObject *parent = 0);
     void setDrawingSettings(
-            DrawingSettings drawingSettings);
+            DrawingSettings &drawingSettings);
     void parseSubtitleFileName(
             QString subtitleFilePath);
     void parseSubtitleFileNameSrt(
             QString subtitleFilePath);
-    DrawingText getText(
+    SubSequenceDrawable getText(
             qint64 positionInMs);
 
     
@@ -48,7 +51,7 @@ protected:
     QTime _zeroTime;
     SubtitleInfo _getNextSubtitleInfoSrt(
             QTextStream &textStream);
-    DrawingText drawingText;
+    SubSequenceDrawable currentDrawableText;
 };
 
 }

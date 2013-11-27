@@ -30,7 +30,13 @@ void MediaLearnerLib::setMedia(QString mediaPath){
                 mediaPath);
     this->mediaPlayer.setMedia(
                 mediaSource);
+    this->encoder.setInVideoFilePath(
+                mediaPath);
     this->sequenceExtractor.analyseMediaSource();
+}
+//====================================
+EncoderInterface *MediaLearnerLib::getEncoder(){
+    return &this->encoder;
 }
 //====================================
 

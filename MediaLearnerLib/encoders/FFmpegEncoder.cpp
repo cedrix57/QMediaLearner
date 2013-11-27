@@ -113,7 +113,7 @@ QList<EncodingInfo> FFmpegEncoder::getAvailableSubtitlesCodecs(){
     return infos;
 }
 //====================================
-int FFmpegEncoder::getFrameRate(){
+int FFmpegEncoder::getFps(){
     QString ffmpegFilePath
             = this->getFFmpegFilePath();
     QStringList arguments;
@@ -125,7 +125,8 @@ int FFmpegEncoder::getFrameRate(){
                 arguments);
     process.waitForFinished();
     QString bashOutput
-            = process.readAllStandardOutput();
+            = process.readAllStandardOutput()
+            + process.readAllStandardError();
     bashOutput = bashOutput.split(" fps").first();
     bashOutput = bashOutput.split(" ").last();
     int fps = bashOutput.toInt();
@@ -148,88 +149,172 @@ QString FFmpegEncoder::getFormatedTime(qint64 ms){
 //====================================
 void FFmpegEncoder::encode(QString outFilePath){
     QMap<QString, QString> fontFilePaths;
-    int frameRate = this->getFrameRate();
+    this->argumentsList.clear();
+    this->fps = this->getFps();
+    this->_encodeTempVideoCommand();
+    /*
+    foreach(QList<DrawingSubtitleInfo> infos,
+            this->texts){
+        this->_encodeSequenceCommand(
+                    infos);
+    }
+    //*/
+            //add texts
+    /*
+    QString ffmpegFilePath
+            = this->getFFmpegFilePath();
+    QString commandLine
+            = ffmpegFilePath
+            + " " + arguments.join(' ');
+    qDebug() << commandLine;
+    this->encodingProcess.start(
+                ffmpegFilePath,
+                arguments);
+                //*/
+}
+//====================================
+void FFmpegEncoder::_encodeTempVideoCommand(){
+    QDir ffmpegTempDir("ffmpegTemp");
+    if(ffmpegTempDir.exists()){
+        ffmpegTempDir.mkpath(".");
+    }
+    this->tempInVideoFilePath
+             = ffmpegTempDir.filePath(
+                "temp.mpg");
     QStringList arguments;
     arguments << "-i";
     arguments << this->inVideoFilePath;
+    arguments << "-b";
+    arguments << "2250k";
+    arguments << "-minrate";
+    arguments << "2250k";
+    arguments << "-maxrate";
+    arguments << "2250k";
+    arguments << "-bufsize";
+    arguments << "1000k";
+    arguments << this->tempInVideoFilePath;
+    this->argumentsList << arguments;
+}
+//====================================
+void FFmpegEncoder::_encodeSequenceCommand(
+        QList<SequencesWithSubs> &sequencesWithSubs){
+    /*
+    QStringList arguments;
+    arguments << "-i";
+    arguments << this->tempInVideoFilePath;
     QStringList filterParams;
-    foreach(QList<DrawingSubtitleInfo> infos,
-            this->texts){
-        foreach(DrawingSubtitleInfo info,
-                infos){
-            DrawingSettings drawingSettings
-                    = info.text.getDrawingSettings();
-            QString drawTextParam = "drawtext=";
-            drawTextParam += "text=";
-            QString lines = info.text.getLines().join('\n');
-            drawTextParam += "'" + lines + "'";
-            drawTextParam += ":";
-            drawTextParam += "fontfile=";
-            QString fontFamily = drawingSettings.font.family();
-            if(!fontFilePaths.contains(
-                        fontFamily)){
-                fontFilePaths[fontFamily]
-                        = this->getFontPath(
-                            fontFamily);
-            }
-            QString fontPath = fontFilePaths[fontFamily];
-            drawTextParam += fontPath;
-            drawTextParam += ":";
-            drawTextParam += "fontcolor=";
-            drawTextParam += drawingSettings.font.toString();
-            drawTextParam += ":";
-            drawTextParam += "x=";
-            int x = info.text.getRect().x();
-            drawTextParam += QString::number(x);
-            drawTextParam += ":";
-            drawTextParam += "y=";
-            int y = info.text.getRect().y();
-            drawTextParam += QString::number(y);
-            drawTextParam += ":";
-            drawTextParam += "fontsize=";
-            drawTextParam += QString::number(drawingSettings.font.pixelSize());
-            //TODO font size
-            int begin = this->getNFrame(
-                        info.startPosition,
-                        frameRate);
-            int end = this->getNFrame(
-                        info.endPosition,
-                        frameRate);
-            drawTextParam += ":";
-            drawTextParam += "draw=";
-            drawTextParam += "'gt(n,"
-                    + QString::number(begin)
-                    + ")*lt(n,"
-                    + QString::number(end)
-                    + ")'";
-            filterParams << drawTextParam;
-            arguments << "-ss";
-            arguments << this->getFormatedTime(
-                                    info.startPosition);
-            arguments << "-to";
-            arguments << this->getFormatedTime(
-                                    info.endPosition);
+    foreach(DrawingSubtitleInfo info,
+            infos){
+        DrawingSettings drawingSettings
+                = info.text.getDrawingSettings();
+        QString drawTextParam = "drawtext=";
+        drawTextParam += "\"text=";
+        QString lines = info.text.getLines().join('\n');
+        drawTextParam += "'" + lines + "'";
+        drawTextParam += ":";
+        drawTextParam += "fontfile=";
+        QString fontFamily = drawingSettings.font.family();
+        if(!fontFilePaths.contains(
+                    fontFamily)){
+            fontFilePaths[fontFamily]
+                    = this->getFontPath(
+                        fontFamily);
         }
+        //QString fontPath = fontFilePaths[fontFamily];
+        QString fontPath = "/usr/share/fonts/truetype/msttcorefonts/Arial.ttf";
+        drawTextParam += fontPath;
+        drawTextParam += ":";
+        drawTextParam += "fontcolor=";
+        drawTextParam += drawingSettings.fontColor.name();
+        drawTextParam += ":";
+        drawTextParam += "x=";
+        int x = info.text.getRect().x();
+        drawTextParam += QString::number(x);
+        drawTextParam += ":";
+        drawTextParam += "y=";
+        int y = info.text.getRect().y();
+        drawTextParam += QString::number(y);
+        drawTextParam += ":";
+        drawTextParam += "fontsize=";
+        drawTextParam += QString::number(drawingSettings.font.pixelSize());
+        int begin = this->getNFrame(
+                    info.startPosition,
+                    this->frameRate);
+        int end = this->getNFrame(
+                    info.endPosition,
+                    this->frameRate);
+        drawTextParam += ":";
+        drawTextParam += "enable=";
+        drawTextParam += "'between(n,"
+                + QString::number(begin)
+                + ","
+                + QString::number(end)
+                + ")'";
+        drawTextParam += "\"";
+        filterParams << drawTextParam;
+        arguments << "-ss";
+        arguments << this->getFormatedTime(
+                                info.startPosition);
+        arguments << "-to";
+        arguments << this->getFormatedTime(
+                                info.endPosition);
     }
-    //add texts
     arguments << "-vf";
     QString filterParamsConcatened = filterParams.join(",");
     arguments << filterParamsConcatened;
     arguments << outFilePath;
-    QString ffmpegFilePath
-            = this->getFFmpegFilePath();
-    this->encodingProcess.start(
-                ffmpegFilePath,
-                arguments);
+    this->argumentsList << arguments;
+    //*/
 }
 //====================================
 void FFmpegEncoder::_onProcessFinished(
         int exitCode,
         QProcess::ExitStatus exitStatus){
+    QString bashOutput
+            = this->encodingProcess
+            .readAllStandardError()
+            + "\n"
+            + this->encodingProcess
+            .readAllStandardOutput();
+    qDebug() << "encoding finished.";
+    qDebug() << bashOutput;
     if(exitCode == 0){
         this->encodingFinished();
     }else{
         this->encodingFailed();
+    }
+}
+//====================================
+QSize FFmpegEncoder::getSize(){
+    this->_evalSizeEventually();
+    return this->size;
+}
+//====================================
+void FFmpegEncoder::_evalSizeEventually(){
+    if(this->size.isEmpty()){
+        QString ffmpegFilePath
+                = this->getFFmpegFilePath();
+        QStringList arguments;
+        arguments << "-i";
+        arguments << this->inVideoFilePath;
+        QProcess process;
+        process.start(
+                    ffmpegFilePath,
+                    arguments);
+        process.waitForFinished();
+        QString bashOutput
+                = process.readAllStandardOutput()
+                + process.readAllStandardError();
+        QRegExp sizeReg(" \\d+x\\d+ ");
+        sizeReg.indexIn(bashOutput);
+        bashOutput = sizeReg.capturedTexts().first();
+        QStringList sizeStringList
+                = bashOutput.trimmed().split("x");
+        int width = sizeStringList.first().toInt();
+        int height = sizeStringList.last().toInt();
+        this->size = QSize(width, height);
+        //int pos = bashOutput.indexOf(sizeReg);
+        //int bashOutpoutLen = bashOutput.size();
     }
 }
 //====================================

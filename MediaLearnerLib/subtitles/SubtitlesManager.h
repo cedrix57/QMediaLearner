@@ -24,13 +24,15 @@ public:
             DrawingSettings &drawingSettings);
     DrawingSettings getDrawingSettings(
             int position);
-    QList<DrawingText> getTexts(
+    QList<SubSequenceDrawable> getSubsAt(
             qint64 positionInMs,
             QSize screenSize);
-    QList<QList<DrawingSubtitleInfo> > getTexts(
+    /*
+    QList<QList<DrawingSubtitleInfo> > getSubsAt(
             QSharedPointer<QList<Sequence> >
             sequences,
             QSize screenSize);
+            //*/
     //TODO get all draming settings
 
 signals:
@@ -43,7 +45,7 @@ protected slots:
 protected:
     bool enabledTracks[N_MAX_TRACKS];
     SubtitleTrack subtitleTracks[N_MAX_TRACKS];
-    DrawingText getText(
+    SubSequenceDrawable getSubAt(
             qint64 positionInMs,
             int trackPosition);
 };

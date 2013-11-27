@@ -6,6 +6,13 @@
 #include <QMimeData>
 
 //====================================
+SubVideoWidget::~SubVideoWidget(){
+    foreach(QGraphicsTextItem *item,
+            this->textItems){
+        delete item;
+    }
+}
+//====================================
 SubVideoWidget::SubVideoWidget(QWidget *parent) :
     QGraphicsView(parent){
     QGraphicsScene *scene
@@ -16,6 +23,7 @@ SubVideoWidget::SubVideoWidget(QWidget *parent) :
                 &this->videoItem);
     this->setScene(scene);
     this->videoItem.setAcceptDrops(true);
+    /*
     for(
         int i=0;
         i<MediaLearner::SubtitlesManager::N_MAX_TRACKS;
@@ -24,6 +32,7 @@ SubVideoWidget::SubVideoWidget(QWidget *parent) :
                 &this->textItems[i]);
         this->textItems[i].setAcceptDrops(true);
     }
+    //*/
 }
 //====================================
 void SubVideoWidget::init(
@@ -53,29 +62,59 @@ void SubVideoWidget::_onPlayerPositionChanged(
 void SubVideoWidget::_drawSubtitles(
         qint64 position){
     QSize size = this->size();
-    QList<MediaLearner::DrawingText>
+    QList<MediaLearner::SubSequenceDrawable>
             drawingTexts
             = this->subtitlesManager
-            ->getTexts(position,
+            ->getSubsAt(position,
                        size);
     int i=0;
-    foreach(MediaLearner::DrawingText drawingText,
+    this->clearText();
+    foreach(MediaLearner::SubSequenceDrawable drawingText,
             drawingTexts){
-        QString text
-                = drawingText.getLines().join("\n");
-        this->textItems[i].setPlainText(
-                    text);
-        QPoint topLeft = drawingText.getRect().topLeft();
-        this->textItems[i].setPos(
-                    topLeft);
+        QList<MediaLearner::FittedLine> fittedLines
+                = drawingText.getFittedLines();
         MediaLearner::DrawingSettings drawingSettings
                 = drawingText.getDrawingSettings();
-        this->textItems[i].setDefaultTextColor(
-                    drawingSettings.fontColor);
-        this->textItems[i].setFont(
-                    drawingSettings.font);
-        i++;
+        foreach(MediaLearner::FittedLine fittedLine,
+                fittedLines){
+            //TODO je m'arrête la...transformer en liste
+            QGraphicsTextItem *textItem
+                    = this->_getTextItem(i);
+            textItem->setPlainText(
+                        fittedLine.text);
+            textItem->setPos(
+                        fittedLine.position.x(),
+                        fittedLine.position.y());
+            textItem->setDefaultTextColor(
+                        Qt::yellow);
+                        //drawingSettings.colorText);
+            textItem->setFont(
+                        QFont(drawingSettings.fontFamily));
+            i++;
+        }
     }
+}
+//====================================
+void SubVideoWidget::clearText(){
+    foreach(QGraphicsTextItem *item, this->textItems){
+        item->setPlainText("");
+    }
+}
+//====================================
+QGraphicsTextItem *SubVideoWidget::_getTextItem(
+        int index){
+    while(this->textItems.size() <= index){
+        QGraphicsScene *scene = this->scene();
+        QGraphicsTextItem *textItem
+                = new QGraphicsTextItem();
+        scene->addItem(
+                textItem);
+        textItem->setAcceptDrops(true);
+        this->textItems << textItem;
+    }
+    QGraphicsTextItem *textItem
+            = this->textItems[index];
+    return textItem;
 }
 //====================================
 void SubVideoWidget::_onMediaPlayerStateChanged(

@@ -20,8 +20,9 @@ public:
     virtual QList<EncodingInfo> getAvailableAudioCodecs();
     virtual QList<EncodingInfo> getAvailableSubtitlesCodecs();
     virtual void encode(QString outFilePath);
-    int getFrameRate();
+    int getFps();
     int getNFrame(qint64 ms, int frameRate);
+    virtual QSize getSize();
     QString getFormatedTime(qint64 ms);
     //*/
 
@@ -35,7 +36,14 @@ protected:
     QString getFFmpegFilePath();
     QList<EncodingInfo> _getAvailableCodecs(
             QChar type);
+    void _evalSizeEventually();
     QProcess encodingProcess;
+    QList<QStringList> argumentsList;
+    QString tempInVideoFilePath;
+    int fps;
+    void _encodeTempVideoCommand();
+    void _encodeSequenceCommand(
+            QList<SequencesWithSubs> &sequencesWithSubs);
 
 };
 

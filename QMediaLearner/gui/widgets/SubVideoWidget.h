@@ -13,12 +13,14 @@ class SubVideoWidget : public QGraphicsView{
     Q_OBJECT
 public:
     explicit SubVideoWidget(QWidget *parent = 0);
+    ~SubVideoWidget();
     void init(
             MediaLearner::MediaLearnerLib *mediaLearner);
     static void onDragEnterEvent(QDragEnterEvent* event);
 
 public slots:
     void showFullScreenOrNormal();
+    void clearText();
 
 signals:
     void urlsDropped(QList<QUrl> urls);
@@ -35,10 +37,12 @@ protected:
     QGraphicsVideoItem videoItem;
     //QGraphicsProxyWidget *proxyWidget;
     //QVideoWidget videoWidget;
-    QGraphicsTextItem textItems[
-    MediaLearner::SubtitlesManager::N_MAX_TRACKS];
+    //QGraphicsTextItem textItems[
+    //MediaLearner::SubtitlesManager::N_MAX_TRACKS];
     MediaLearner::MediaLearnerLib *mediaLearner;
     MediaLearner::SubtitlesManager *subtitlesManager;
+    QList<QGraphicsTextItem *> textItems;
+    QGraphicsTextItem * _getTextItem(int index);
     virtual void resizeEvent(
             QResizeEvent * event);
     virtual void dragEnterEvent(

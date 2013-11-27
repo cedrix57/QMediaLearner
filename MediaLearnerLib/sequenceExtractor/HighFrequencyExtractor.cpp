@@ -138,9 +138,9 @@ void HighFrequencyExtractor::analyseBuffer(
                         Sequence sequence;
                         int nMax = this->nIteration;
                         int nMin = nMax - this->phraseDuration;
-                        sequence.minInMs =
+                        sequence.beginInMs =
                                 nMin * 1.0 / sampleRate * 1000.0 + 0.5;
-                        sequence.maxInMs =
+                        sequence.endInMs =
                                 nMax * 1.0 / sampleRate * 1000.0 + 0.5;
                         *this->extractedSequences << sequence;
                     }

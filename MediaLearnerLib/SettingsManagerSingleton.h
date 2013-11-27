@@ -7,13 +7,13 @@
 #include <QFont>
 #include <QColor>
 
+#include "subtitles/SubSequence.h"
+
 namespace MediaLearner{
 
 class SettingsManagerSingleton : public QObject{
     Q_OBJECT
 public:
-    enum SubSize{Small, Medium, Big};
-    enum SubPosition{Top, Center, Bottom};
     static SettingsManagerSingleton *getInstance();
     QString getLanguage();
     QString getSubFontFamily(

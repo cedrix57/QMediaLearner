@@ -41,14 +41,8 @@ void EncoderInterface::setInVideoFilePath(
 }
 //====================================
 void EncoderInterface::setSequences(
-        QSharedPointer<QList<Sequence> >
-        sequences){
-    this->sequences = sequences;
-}
-//====================================
-void EncoderInterface::setTexts(
-        QList<QList<DrawingSubtitleInfo> > texts){
-    this->texts = texts;
+        QList<SequenceWithSubs> &sequencesWithSubs){
+    this->sequencesWithSubs = sequencesWithSubs;
 }
 //====================================
 QString EncoderInterface::getFontPath(QString fontName){
@@ -66,6 +60,10 @@ QString EncoderInterface::getFontPath(QString fontName){
         }
     }
     return fontFilePath;
+}
+//====================================
+QSize EncoderInterface::getSize(){
+    return this->size;
 }
 //====================================
 }

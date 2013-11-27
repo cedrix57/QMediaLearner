@@ -9,6 +9,7 @@
 #include <QMutex>
 #include <QAudioDecoder>
 #include <QTime>
+#include "../Utils/Sequence.h"
 
 namespace MediaLearner{
 
@@ -36,6 +37,7 @@ struct AudioBuffer{
     //TODO quantiles et dérivés
     void init(QAudioBuffer &qtbuffer);
 };
+/*
 struct Sequence{
     long minInMs;
     long maxInMs;
@@ -57,6 +59,7 @@ struct Sequence{
         return res;
     }
 };
+//*/
 struct Parameter{
     QString name;
     QVariant defaultValue;

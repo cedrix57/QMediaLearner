@@ -49,31 +49,31 @@ void SettingsDialog::loadSettings(){
             ->setCurrentText(fontFamily2);
     this->ui->fontComboSub3
             ->setCurrentText(fontFamily3);
-    MediaLearner::SettingsManagerSingleton::SubSize
+    MediaLearner::SubSize
             subSize1
             = settingsManager->getSubSize(0);
     this->ui->comboBoxSize1
             ->setCurrentIndex(
                 (int)subSize1);
-    MediaLearner::SettingsManagerSingleton::SubSize
+    MediaLearner::SubSize
             subSize2
             = settingsManager->getSubSize(1);
     this->ui->comboBoxSize2
             ->setCurrentIndex(
                 (int)subSize2);
-    MediaLearner::SettingsManagerSingleton::SubSize
+    MediaLearner::SubSize
             subSize3
             = settingsManager->getSubSize(2);
     this->ui->comboBoxSize3
             ->setCurrentIndex(
                 (int)subSize3);
-    MediaLearner::SettingsManagerSingleton::SubPosition
+    MediaLearner::SubPosition
             subPosition1
             = settingsManager->getSubPosition(0);
-    MediaLearner::SettingsManagerSingleton::SubPosition
+    MediaLearner::SubPosition
             subPosition2
             = settingsManager->getSubPosition(1);
-    MediaLearner::SettingsManagerSingleton::SubPosition
+    MediaLearner::SubPosition
             subPosition3
             = settingsManager->getSubPosition(2);
     this->ui->comboBoxPosition1
@@ -138,44 +138,44 @@ void SettingsDialog::saveSettings(){
             settingsManager->setSubFontFamily(
                         2,
                         fontFamily3);
-    MediaLearner::SettingsManagerSingleton::SubSize
+    MediaLearner::SubSize
             subSize1
-            = (MediaLearner::SettingsManagerSingleton::SubSize)
+            = (MediaLearner::SubSize)
             this->ui->comboBoxSize1->currentIndex();
     settingsManager->setSubSize(
                 0,
                 subSize1);
-    MediaLearner::SettingsManagerSingleton::SubSize
+    MediaLearner::SubSize
             subSize2
-            = (MediaLearner::SettingsManagerSingleton::SubSize)
+            = (MediaLearner::SubSize)
             this->ui->comboBoxSize2->currentIndex();
     settingsManager->setSubSize(
                 1,
                 subSize2);
-    MediaLearner::SettingsManagerSingleton::SubSize
+    MediaLearner::SubSize
             subSize3
-            = (MediaLearner::SettingsManagerSingleton::SubSize)
+            = (MediaLearner::SubSize)
             this->ui->comboBoxSize3->currentIndex();
     settingsManager->setSubSize(
                 2,
                 subSize3);
-    MediaLearner::SettingsManagerSingleton::SubPosition
+    MediaLearner::SubPosition
             subPosition1
-            = (MediaLearner::SettingsManagerSingleton::SubPosition)
+            = (MediaLearner::SubPosition)
             this->ui->comboBoxPosition1->currentIndex();
             settingsManager->setSubPosition(
                         0,
                         subPosition1);
-    MediaLearner::SettingsManagerSingleton::SubPosition
+    MediaLearner::SubPosition
             subPosition2
-            = (MediaLearner::SettingsManagerSingleton::SubPosition)
+            = (MediaLearner::SubPosition)
             this->ui->comboBoxPosition2->currentIndex();
             settingsManager->setSubPosition(
                         1,
                         subPosition2);
-    MediaLearner::SettingsManagerSingleton::SubPosition
+    MediaLearner::SubPosition
             subPosition3
-            = (MediaLearner::SettingsManagerSingleton::SubPosition)
+            = (MediaLearner::SubPosition)
             this->ui->comboBoxPosition3->currentIndex();
             settingsManager->setSubPosition(
                         2,

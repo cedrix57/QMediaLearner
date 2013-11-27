@@ -5,6 +5,7 @@
 #include <QSize>
 #include "../sequenceExtractor/SequenceExtractor.h"
 #include "../subtitles/SubtitleTrack.h"
+#include "SequenceWithSubs.h"
 
 namespace MediaLearner{
 
@@ -24,15 +25,13 @@ public:
     virtual void encode(QString outFilePath) = 0;
     void setInVideoFilePath(QString inVideoFilePath);
     void setSequences(
-            QSharedPointer<QList<Sequence> >
-            sequences);
-    void setTexts(
-            QList<QList<DrawingSubtitleInfo> > texts);
+            QList<SequenceWithSubs> &sequencesWithSubs);
     void setFormat(QString format);
     void setAudioCodec(QString codec);
     void setVideoCodec(QString codec);
     void setSubtitleCodec(QString codec);
-    void setSize(QSize size);
+    virtual void setSize(QSize size);
+    virtual QSize getSize();
     void setPlaybackRate(double rate);
 
 signals:
@@ -49,8 +48,7 @@ protected:
     QString subCodec;
     QSize size;
     double playbackRate;
-    QSharedPointer<QList<Sequence> > sequences;
-    QList<QList<DrawingSubtitleInfo> > texts;
+    QList<SequenceWithSubs> sequencesWithSubs;
     QString getFontPath(QString fontName);
 
     

@@ -5,6 +5,8 @@
 #include <QMediaPlayer>
 #include "sequenceExtractor/SequenceExtractor.h"
 #include "subtitles/SubtitlesManager.h"
+#include "encoders/FFmpegEncoder.h"
+
 
 namespace MediaLearner{
 class MEDIALEARNERLIBSHARED_EXPORT MediaLearnerLib{
@@ -15,12 +17,15 @@ public:
     QMediaPlayer *getMediaPlayer();
     SequenceExtractor *getSequenceExtractor();
     SubtitlesManager *getSubtitlesManager();
+    EncoderInterface *getEncoder();
     void setMedia(QString mediaPath);
 
 protected:
     QMediaPlayer mediaPlayer;
     SequenceExtractor sequenceExtractor;
     SubtitlesManager subtitlesManager;
+    FFmpegEncoder encoder;
+
 };
 
 }

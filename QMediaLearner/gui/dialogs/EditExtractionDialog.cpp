@@ -137,12 +137,12 @@ void EditExtractionDialog::_onSelectionChanged(int index){
         int minSlider
                 = qMax(
                     0l,
-                    sequence.minInMs - 2000);
+                    sequence.beginInMs - 2000);
         long int duration = this->mediaPlayer->duration();
         int maxSlider
                 = qMin(
                     duration,
-                    sequence.maxInMs + 2000);
+                    sequence.endInMs + 2000);
         this->ui->sliderBoundaries
                 ->setMinimum(minSlider);
         //span slider
@@ -152,24 +152,24 @@ void EditExtractionDialog::_onSelectionChanged(int index){
                 ->setMaximum(maxSlider);
         this->ui->sliderBoundaries
                 ->setLowerPosition(
-                    sequence.minInMs);
+                    sequence.beginInMs);
         this->ui->sliderBoundaries
                 ->setUpperPosition(
-                    sequence.maxInMs);
+                    sequence.endInMs);
         this->_adjustLowerBoundary(
-                    sequence.minInMs);
+                    sequence.beginInMs);
         this->_adjustUpperBoundary(
-                    sequence.maxInMs);
+                    sequence.endInMs);
         //Position
         this->ui->sliderPosition
                 ->setMinimum(
-                    sequence.minInMs);
+                    sequence.beginInMs);
         this->ui->sliderPosition
                 ->setMaximum(
-                    sequence.maxInMs);
+                    sequence.endInMs);
         this->ui->sliderPosition
                 ->setValue(
-                    sequence.minInMs);
+                    sequence.beginInMs);
     }
 }
 //====================================
@@ -215,7 +215,9 @@ void EditExtractionDialog::reject(){
 void EditExtractionDialog::exportVideo(){
     delete this->exportVideoDialog;
     this->exportVideoDialog
-            = new ExportVideoDialog(this);
+            = new ExportVideoDialog(
+                this->mediaLearner,
+                this);
     this->exportVideoDialog->show();
 }
 //====================================

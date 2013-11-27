@@ -78,9 +78,9 @@ void SequenceExtractor::setMaxShifts(
 void SequenceExtractor::extractSequence(int position){
     //TODO remeve...we do that the time we get a good extractor
     Sequence sequence;
-    sequence.minInMs = qMax(0, position - 2000);
+    sequence.beginInMs = qMax(0, position - 2000);
     int duration = this->mediaPlayer.duration();
-    sequence.maxInMs = qMin(duration, position + 2000);
+    sequence.endInMs = qMin(duration, position + 2000);
     *this->extractedSequences << sequence;
     this->sequenceExtracted(sequence);
     /*
@@ -93,8 +93,8 @@ void SequenceExtractor::extractSequence(int position){
             || (position + msecAhead
                 < durationProcessedInMs)){
         foreach(Sequence sequence, *this->allSequences){
-            if(sequence.minInMs <= position
-                    && sequence.maxInMs >= position){
+            if(sequence.beginInMs <= position
+                    && sequence.endInMs >= position){
                 //TODO check it is not to big and
                 // do so it is less than 5 secondes
                 // + put the parameter in settings
@@ -210,7 +210,7 @@ void SequenceExtractor::changeMinSequence(
         int newMin){
     (this->extractedSequences
             ->begin() + position)
-            ->minInMs = newMin;
+            ->beginInMs = newMin;
 }
 //====================================
 void SequenceExtractor::changeMaxSequence(
@@ -218,7 +218,7 @@ void SequenceExtractor::changeMaxSequence(
         int newMax){
     (this->extractedSequences
             ->begin() + position)
-            ->maxInMs = newMax;
+            ->endInMs = newMax;
 }
 //====================================
 void SequenceExtractor::selectSequence(
@@ -228,7 +228,7 @@ void SequenceExtractor::selectSequence(
             = this->getSelectedSequence();
     this->mediaPlayer.stop();
     this->mediaPlayer.setPosition(
-                selectedSequence.minInMs);
+                selectedSequence.beginInMs);
 }
 //====================================
 void SequenceExtractor::_onMediaChanged(
@@ -241,13 +241,13 @@ void SequenceExtractor::_onPlayerPositionChanged(
     if(this->selectedSequence >= 0){
         Sequence selectedSequence
                 = this->getSelectedSequence();
-        if(position >= selectedSequence.maxInMs){
+        if(position >= selectedSequence.endInMs){
             if(!this->_pausing){
                 this->_pausing = true;
                 this->mediaPlayer.pause();
-                if(position > selectedSequence.maxInMs){
+                if(position > selectedSequence.endInMs){
                     this->mediaPlayer.setPosition(
-                                selectedSequence.minInMs);
+                                selectedSequence.beginInMs);
                 }
                 this->_pausing = false;
             }

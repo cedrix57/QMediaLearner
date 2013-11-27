@@ -15,8 +15,8 @@ SubtitleTrack::SubtitleTrack(QObject *parent) :
 }
 //====================================
 void SubtitleTrack::setDrawingSettings(
-        DrawingSettings drawingSettings){
-    this->drawingText.setDrawingSettings(
+        DrawingSettings &drawingSettings){
+    this->currentDrawableText.setDrawingSettings(
                 drawingSettings);
 }
 //====================================
@@ -68,22 +68,22 @@ SubtitleInfo SubtitleTrack::_getNextSubtitleInfoSrt(
     return subInfo;
 }
 //====================================
-DrawingText SubtitleTrack::getText(
+SubSequenceDrawable SubtitleTrack::getText(
         qint64 positionInMs){
     int nTexts
             = this->subInfos->size();
-    this->drawingText.clearLines();
+    this->currentDrawableText.clearLines();
     for(int i=0; i<nTexts; i++){
         SubtitleInfo sub
                 = this->subInfos->at(i);
         if((sub.startPosition <= positionInMs)
                 && (sub.endPosition >= positionInMs)){
-            this->drawingText.setLines(
+            this->currentDrawableText.setLines(
                     sub.lines);
             break;
         }
     }
-    return this->drawingText;
+    return this->currentDrawableText;
 }
 //====================================
 
