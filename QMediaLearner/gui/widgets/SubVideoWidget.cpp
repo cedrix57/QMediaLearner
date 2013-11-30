@@ -61,12 +61,13 @@ void SubVideoWidget::_onPlayerPositionChanged(
 //====================================
 void SubVideoWidget::_drawSubtitles(
         qint64 position){
-    QSize size = this->size();
+    QSize screenSize = this->size();
+    int screenHeight = screenSize.height();
     QList<MediaLearner::SubSequenceDrawable>
             drawingTexts
             = this->subtitlesManager
             ->getSubsAt(position,
-                       size);
+                       screenSize);
     int i=0;
     this->clearText();
     foreach(MediaLearner::SubSequenceDrawable drawingText,
@@ -88,8 +89,12 @@ void SubVideoWidget::_drawSubtitles(
             textItem->setDefaultTextColor(
                         Qt::yellow);
                         //drawingSettings.colorText);
+            int fontSize = drawingSettings.getFontSize(screenHeight);
+            QFont font(
+                        drawingSettings.fontFamily,
+                        fontSize);
             textItem->setFont(
-                        QFont(drawingSettings.fontFamily));
+                        font);
             i++;
         }
     }

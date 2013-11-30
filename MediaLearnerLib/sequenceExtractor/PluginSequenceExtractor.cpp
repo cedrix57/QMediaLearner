@@ -204,10 +204,10 @@ void PluginSequenceExtractor::onBufferReady(
             = audioBuffer.duration() / 1000;
     this->_currentTimeStampInMs
             += duration;
-    qint64 totalDuration = audioDecoder->duration();
-    int percentage
-            = (int)this->_currentTimeStampInMs * 1.0
-            / totalDuration * 100;
+    //qint64 totalDuration = audioDecoder->duration();
+    //int percentage
+            //= (int)this->_currentTimeStampInMs * 1.0
+            /// totalDuration * 100;
     //qDebug() << percentage << "%...";
     this->_isAnalysing = false;
     this->_mutexAnalyse.unlock();

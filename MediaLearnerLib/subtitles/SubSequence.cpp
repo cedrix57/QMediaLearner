@@ -9,6 +9,18 @@ namespace MediaLearner{
 SubSequence::SubSequence(){
 }
 //====================================
+int DrawingSettings::getFontSize(int screenHeight){
+    float heightFontFactor = 0.0638;
+    if(this->subSize == Small){
+        heightFontFactor = 0.04;
+    }else if(this->subSize == Big){
+        heightFontFactor = 0.1;
+    }
+    int fontSize
+            = screenHeight * heightFontFactor + 0.5;
+    return fontSize;
+}
+//====================================
 SubSequenceDrawable::SubSequenceDrawable(){
 }
 //====================================
@@ -26,6 +38,7 @@ void SubSequenceDrawable::setDrawingSettings(
 }
 //====================================
 DrawingSettings SubSequenceDrawable::getDrawingSettings(){
+    return this->drawingsSettings;
 }
 //====================================
 void SubSequenceDrawable::upText(int shift){
@@ -66,15 +79,10 @@ void SubSequenceDrawable::setContext(
 //====================================
 void SubSequenceDrawable::_assessFontSize(
         int screenHeight){
-    float heightFontFactor = 0.0638;
-    if(this->drawingsSettings.subSize == Small){
-        heightFontFactor = 0.04;
-    }else if(this->drawingsSettings.subSize == Big){
-        heightFontFactor = 0.1;
-    }
     this->fontSize
-            = screenHeight * heightFontFactor + 0.5;
+            = this->drawingsSettings.getFontSize(screenHeight);
 }
+
 //====================================
 void SubSequenceDrawable::_assessFittedLineText(
         int screenWidth){
@@ -126,19 +134,31 @@ void SubSequenceDrawable::_assessFittedLinePosition(
                 this->drawingsSettings.fontFamily,
                 this->fontSize);
     QFontMetrics fontMetrics(font);
+    //int lineSpacing2 = fontMetrics.lineSpacing();
+    //int leading = fontMetrics.leading();
+    //int height = fontMetrics.height();
+    //int ascent = fontMetrics.ascent();
+    //int descent = fontMetrics.descent();
+    //int lineSpacing = qMin(ascent, descent) * 2 + 1;
     int lineSpacing = fontMetrics.lineSpacing();
+    int y = firstCoord;
+    int heightLines = this->fittedLines.size() * lineSpacing;
+    if(this->drawingsSettings.subPosition == Bottom){
+        y = screenHeight - heightLines - firstCoord - lineSpacing;
+    }else if(this->drawingsSettings.subPosition == Center){
+        y = screenHeight/2 - firstCoord;
+    }
+    int xShift = fontMetrics.width(" ");
+    int xShift2 = xShift - (fontMetrics.width("  ") - xShift);
     for(QList<FittedLine>::iterator it
         = this->fittedLines.begin();
         it != this->fittedLines.end();
         ++it){
+        QString line = it->text;
         int lineWidth
-                = fontMetrics.width(it->text);
-        int x = (screenWidth - lineWidth) / 2;
-        int y = firstCoord;
-        if(this->drawingsSettings.subPosition != Top){
-            y -= lineSpacing;
-        }
-        firstCoord += lineSpacing;
+                = fontMetrics.width(line);
+        int x = (screenWidth - lineWidth - xShift) / 2;
+        y += lineSpacing;
         it->position.setX(x);
         it->position.setY(y);
     }

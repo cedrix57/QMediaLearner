@@ -16,6 +16,7 @@ struct Sequence{
     virtual void project(Sequence &other);
     virtual void substract(int ms);
     QString toString();
+    virtual ~Sequence();
 };
 
 }

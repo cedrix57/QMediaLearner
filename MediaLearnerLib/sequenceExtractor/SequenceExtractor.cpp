@@ -233,6 +233,7 @@ void SequenceExtractor::selectSequence(
 //====================================
 void SequenceExtractor::_onMediaChanged(
         QMediaContent mediaContent){
+    Q_UNUSED(mediaContent);
     this->reset();
 }
 //====================================

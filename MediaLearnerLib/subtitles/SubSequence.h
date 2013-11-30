@@ -32,6 +32,9 @@ struct DrawingSettings{
     QString fontFamily;
     SubSize subSize;
     SubPosition subPosition;
+    int getFontSize(int screenHeight);
+    ~DrawingSettings(){
+    }
 };
 //====================================
 //====================================

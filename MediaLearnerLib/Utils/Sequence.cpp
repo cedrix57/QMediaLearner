@@ -10,6 +10,9 @@ Sequence::Sequence(){
     this->endInMs = -1;
 }
 //====================================
+Sequence::~Sequence(){
+}
+//====================================
 bool Sequence::isNull(){
     bool isNull
             = this->beginInMs == -1

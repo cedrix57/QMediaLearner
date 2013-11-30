@@ -72,21 +72,34 @@ QList<SubSequenceDrawable> SubtitlesManager::getSubsAt(
         QSize screenSize){
     QList<SubSequenceDrawable> drawingTexts;
     int phrasesSpacing = screenSize.height() * 0.04;
-    int firstCoord = phrasesSpacing;
+    int firstCoords[3];
+    firstCoords[0] = phrasesSpacing;
+    firstCoords[1] = 0;
+    firstCoords[2] = phrasesSpacing;
     for(int i=0; i<N_MAX_TRACKS; i++){
         if(this->enabledTracks[i]){
             //TODO better height calculation
             SubSequenceDrawable drawingText
                     = this->subtitleTracks[i]
                     .getText(positionInMs);
+            MediaLearner::DrawingSettings
+                    drawingSettings
+                    = drawingText.getDrawingSettings();
+            MediaLearner::SubPosition position
+                    = drawingSettings.subPosition;
+            int positionIndex = 0;
+            if(position == MediaLearner::Center){
+                positionIndex = 1;
+            }else if(position == MediaLearner::Top){
+                positionIndex = 2;
+            }
+            int firstCoord = firstCoords[positionIndex];
             drawingText.setContext(
                         screenSize,
                         firstCoord);
-            drawingTexts.
-                    append(
-                        drawingText);
+            drawingTexts << drawingText;
             int heightLines = drawingText.getHeightLines();
-            firstCoord
+            firstCoords[positionIndex]
                     += heightLines
                     + phrasesSpacing;
         }

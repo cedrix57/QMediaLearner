@@ -65,7 +65,7 @@ void HighFrequencyExtractor::analyseBuffer(
     float percDiffMeans = 0.10;
     QAudioFormat::SampleType sampleType
             = format.sampleType();
-    int frameCount = audioBuffer.frameCount();
+    //int frameCount = audioBuffer.frameCount();
     int nChannels = format.channelCount();
     int bytesPerFrame = format.bytesPerFrame();
     int bytesPerValue = bytesPerFrame/nChannels;
@@ -105,10 +105,9 @@ void HighFrequencyExtractor::analyseBuffer(
                 if(smallerMean >= mean*percDiffMeans){
                     this->nHighFrequency++;
                 }else{
-                    int duration = this->getCurrentTimeStampInMs();
+                    //int duration = this->getCurrentTimeStampInMs();
                     if(this->nHighFrequency > 10){
                             //&& duration > 10500){
-                        int a = 10;
                     }
                     this->nHighFrequency = 0;
                 }
@@ -123,7 +122,6 @@ void HighFrequencyExtractor::analyseBuffer(
                     this->nLowerFrequency++;
                 }else{
                     if(this->nLowerFrequency > 10){
-                        int a = 10;
                     }
                     this->nLowerFrequency = 0;
                 }
