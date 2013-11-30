@@ -144,12 +144,10 @@ void SubSequenceDrawable::_assessFittedLinePosition(
     int y = firstCoord;
     int heightLines = this->fittedLines.size() * lineSpacing;
     if(this->drawingsSettings.subPosition == Bottom){
-        y = screenHeight - heightLines - firstCoord - lineSpacing;
+        y = screenHeight - heightLines - firstCoord;
     }else if(this->drawingsSettings.subPosition == Center){
         y = screenHeight/2 - firstCoord;
     }
-    int xShift = fontMetrics.width(" ");
-    int xShift2 = xShift - (fontMetrics.width("  ") - xShift);
     for(QList<FittedLine>::iterator it
         = this->fittedLines.begin();
         it != this->fittedLines.end();
@@ -157,10 +155,10 @@ void SubSequenceDrawable::_assessFittedLinePosition(
         QString line = it->text;
         int lineWidth
                 = fontMetrics.width(line);
-        int x = (screenWidth - lineWidth - xShift) / 2;
-        y += lineSpacing;
+        int x = (screenWidth - lineWidth) / 2;
         it->position.setX(x);
         it->position.setY(y);
+        y += lineSpacing;
     }
 }
 //====================================

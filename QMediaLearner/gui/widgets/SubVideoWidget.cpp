@@ -87,7 +87,7 @@ void SubVideoWidget::_drawSubtitles(
                         fittedLine.position.x(),
                         fittedLine.position.y());
             textItem->setDefaultTextColor(
-                        Qt::yellow);
+                        drawingSettings.colorText);
                         //drawingSettings.colorText);
             int fontSize = drawingSettings.getFontSize(screenHeight);
             QFont font(
