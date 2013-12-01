@@ -1,22 +1,16 @@
 - Get rid of the warnings
-- Trouver comment faire plusieurs de -ss
-- Find out why ffmpeg cannot be launch from a QProcess object
-- Créer un répertoire avec des fonts pour les sous titres
+- Change playing position by clicking on the slider
+- Create a font directory for the font selection
+- Finish encoding window
 - Add a log feature
-- Try to cut a video with the subtitles
-- Option pour mettre les séquences dans l'ordre et supprimer les intercections
-- Subtitle: take account of the position + font size
-- export algorithm
-- encoding window
+- Option pour mettre les séquences dans l'ordre et supprimer les intersections
 - Think about a way to reload data when the application crashes
 - Effects settings
 - Update the video widget so it can support video effects
-- Settings in UI
-- Full screen mode for linux/mac
+- Full screen mode for linux/mac. The bottom monu bar should disappear whin the application is maximized
 - Change the background color of the application
 - The application shouldn't crash if using a
   subtitle file with mistake
-- Change playing position by clicking on the slider
 - Save cutted video
 - Revoir les TODO
 - Video extraction

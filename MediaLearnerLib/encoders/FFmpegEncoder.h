@@ -32,6 +32,8 @@ protected slots:
     void _onProcessFinished(
             int exitCode,
             QProcess::ExitStatus exitStatus);
+    void _onProcessError(
+            QProcess::ProcessError error);
 protected:
     QString getFFmpegFilePath();
     QList<EncodingInfo> _getAvailableCodecs(
@@ -40,10 +42,14 @@ protected:
     QProcess encodingProcess;
     QList<QStringList> argumentsList;
     QString tempInVideoFilePath;
+    QStringList tempSequenceFilePaths;
     int fps;
     void _encodeTempVideoCommand();
-    void _encodeSequenceCommand(
-            QList<SequencesWithSubs> &sequencesWithSubs);
+    void _encodeSequenceCommand();
+    void _encodeCuttedSequencesCommand(
+            QString outFilePath);
+    QString _getTempFilePath(QString fileName);
+    void _removeTempFiles();
 
 };
 

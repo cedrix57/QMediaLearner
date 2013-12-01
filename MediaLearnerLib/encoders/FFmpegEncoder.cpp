@@ -13,6 +13,10 @@ FFmpegEncoder::FFmpegEncoder(QObject *parent) :
                 &this->encodingProcess,
                 SIGNAL(finished(int,QProcess::ExitStatus)),
                 SLOT(_onProcessFinished(int,QProcess::ExitStatus)));
+    this->connect(
+                &this->encodingProcess,
+                SIGNAL(error(QProcess::ProcessError)),
+                SLOT(_onProcessError(QProcess::ProcessError)));
 
 }
 //====================================
@@ -150,8 +154,19 @@ QString FFmpegEncoder::getFormatedTime(qint64 ms){
 void FFmpegEncoder::encode(QString outFilePath){
     QMap<QString, QString> fontFilePaths;
     this->argumentsList.clear();
+    this->tempSequenceFilePaths.clear();
     this->fps = this->getFps();
     this->_encodeTempVideoCommand();
+    this->_encodeSequenceCommand();
+    this->_encodeCuttedSequencesCommand(outFilePath);
+    foreach(QStringList l, this->argumentsList){
+        QString command = l.join(" ");
+        qDebug() << command;
+        qDebug() << "---";
+    }
+    this->_onProcessFinished(
+                0,
+                QProcess::NormalExit);
     /*
     foreach(QList<DrawingSubtitleInfo> infos,
             this->texts){
@@ -173,14 +188,19 @@ void FFmpegEncoder::encode(QString outFilePath){
                 //*/
 }
 //====================================
+QString FFmpegEncoder::_getTempFilePath(
+        QString fileName){
+    QString filePath
+            = QDir(QDir::tempPath())
+            .filePath(fileName);
+    return filePath;
+}
+//====================================
 void FFmpegEncoder::_encodeTempVideoCommand(){
-    QDir ffmpegTempDir("ffmpegTemp");
-    if(ffmpegTempDir.exists()){
-        ffmpegTempDir.mkpath(".");
-    }
     this->tempInVideoFilePath
-             = ffmpegTempDir.filePath(
-                "temp.mpg");
+            = this->_getTempFilePath(
+                "tempmedialearner.mpg");
+    QFile(this->tempInVideoFilePath).remove();
     QStringList arguments;
     arguments << "-i";
     arguments << this->inVideoFilePath;
@@ -196,75 +216,119 @@ void FFmpegEncoder::_encodeTempVideoCommand(){
     this->argumentsList << arguments;
 }
 //====================================
-void FFmpegEncoder::_encodeSequenceCommand(
-        QList<SequencesWithSubs> &sequencesWithSubs){
-    /*
-    QStringList arguments;
-    arguments << "-i";
-    arguments << this->tempInVideoFilePath;
+void FFmpegEncoder::_encodeSequenceCommand(){
+    //*
     QStringList filterParams;
-    foreach(DrawingSubtitleInfo info,
-            infos){
-        DrawingSettings drawingSettings
-                = info.text.getDrawingSettings();
-        QString drawTextParam = "drawtext=";
-        drawTextParam += "\"text=";
-        QString lines = info.text.getLines().join('\n');
-        drawTextParam += "'" + lines + "'";
-        drawTextParam += ":";
-        drawTextParam += "fontfile=";
-        QString fontFamily = drawingSettings.font.family();
-        if(!fontFilePaths.contains(
-                    fontFamily)){
-            fontFilePaths[fontFamily]
-                    = this->getFontPath(
-                        fontFamily);
+    int idSeq = 0;
+    for(QList<SequenceWithSubs>::iterator seqIt
+            = this->sequencesWithSubs.begin();
+            seqIt != this->sequencesWithSubs.end();
+            ++seqIt){
+        QStringList arguments;
+        arguments << "-i";
+        arguments << this->tempInVideoFilePath;
+        for(QList<SubSequenceDrawable>::iterator subSeqIt
+            = seqIt->subSequences.begin();
+            subSeqIt != seqIt->subSequences.end();
+            ++subSeqIt){
+            QList<FittedLine> fittedLines
+                    = subSeqIt->getFittedLines();
+            DrawingSettings drawingSettings
+                    = subSeqIt->getDrawingSettings();
+            for(QList<FittedLine>::iterator lineIt
+                = fittedLines.begin();
+                lineIt != fittedLines.end();
+                ++lineIt){
+
+                QString drawTextParam = "drawtext=";
+                drawTextParam += "text=";
+                drawTextParam += "'" + lineIt->text + "'";
+                drawTextParam += ":";
+                drawTextParam += "fontfile=";
+                /*
+                QString fontFamily = drawingSettings.fontFamily;
+                if(!fontFilePaths.contains(
+                            fontFamily)){
+                    fontFilePaths[fontFamily]
+                            = this->getFontPath(
+                                fontFamily);
+                }
+                //QString fontPath = fontFilePaths[fontFamily];
+                //*/
+                QString fontPath = "/usr/share/fonts/truetype/msttcorefonts/Arial.ttf";
+                drawTextParam += fontPath;
+                drawTextParam += ":";
+                drawTextParam += "fontcolor=";
+                drawTextParam += drawingSettings.textColor.name();
+                drawTextParam += ":";
+                drawTextParam += "x=";
+                int x = lineIt->position.x();
+                drawTextParam += QString::number(x);
+                drawTextParam += ":";
+                drawTextParam += "y=";
+                int y = lineIt->position.y();
+                drawTextParam += QString::number(y);
+                drawTextParam += ":";
+                drawTextParam += "fontsize=";
+                int screenHeight = this->size.height();
+                int fontSize = drawingSettings.getFontSize(
+                            screenHeight);
+                drawTextParam += QString::number(fontSize);
+                int begin = this->getNFrame(
+                            subSeqIt->beginInMs,
+                            this->fps);
+                int end = this->getNFrame(
+                            subSeqIt->endInMs,
+                            this->fps);
+                drawTextParam += ":";
+                drawTextParam += "enable=";
+                drawTextParam += "'between(n,"
+                        + QString::number(begin)
+                        + ","
+                        + QString::number(end)
+                        + ")'";
+                //drawTextParam += "\"";
+                filterParams << drawTextParam;
+                QString filterParamsConcatened = filterParams.join(",");
+                arguments << "-vf";
+                arguments << filterParamsConcatened;
+            }
         }
-        //QString fontPath = fontFilePaths[fontFamily];
-        QString fontPath = "/usr/share/fonts/truetype/msttcorefonts/Arial.ttf";
-        drawTextParam += fontPath;
-        drawTextParam += ":";
-        drawTextParam += "fontcolor=";
-        drawTextParam += drawingSettings.fontColor.name();
-        drawTextParam += ":";
-        drawTextParam += "x=";
-        int x = info.text.getRect().x();
-        drawTextParam += QString::number(x);
-        drawTextParam += ":";
-        drawTextParam += "y=";
-        int y = info.text.getRect().y();
-        drawTextParam += QString::number(y);
-        drawTextParam += ":";
-        drawTextParam += "fontsize=";
-        drawTextParam += QString::number(drawingSettings.font.pixelSize());
-        int begin = this->getNFrame(
-                    info.startPosition,
-                    this->frameRate);
-        int end = this->getNFrame(
-                    info.endPosition,
-                    this->frameRate);
-        drawTextParam += ":";
-        drawTextParam += "enable=";
-        drawTextParam += "'between(n,"
-                + QString::number(begin)
-                + ","
-                + QString::number(end)
-                + ")'";
-        drawTextParam += "\"";
-        filterParams << drawTextParam;
         arguments << "-ss";
         arguments << this->getFormatedTime(
-                                info.startPosition);
+                         seqIt->beginInMs);
         arguments << "-to";
         arguments << this->getFormatedTime(
-                                info.endPosition);
+                         seqIt->endInMs);
+        QString tempSequenceFileName
+                = "tempseqmedialearner_"
+                + QString::number(idSeq)
+                + ".mpg";
+        QString tempSequenceFilePath
+            = this->_getTempFilePath(
+                tempSequenceFileName);
+        QFile(tempSequenceFilePath).remove();
+        arguments << tempSequenceFilePath;
+        this->tempSequenceFilePaths
+                << tempSequenceFilePath;
+        this->argumentsList << arguments;
+        idSeq++;
     }
-    arguments << "-vf";
-    QString filterParamsConcatened = filterParams.join(",");
-    arguments << filterParamsConcatened;
+}
+//====================================
+void FFmpegEncoder::_encodeCuttedSequencesCommand(
+        QString outFilePath){
+    QStringList arguments;
+    arguments << "-i";
+    QString concatArg
+            = "concat:"
+            + this->tempSequenceFilePaths
+            .join("|");
+    arguments << concatArg;
+    arguments << "-c";
+    arguments << "copy";
     arguments << outFilePath;
     this->argumentsList << arguments;
-    //*/
 }
 //====================================
 void FFmpegEncoder::_onProcessFinished(
@@ -276,13 +340,30 @@ void FFmpegEncoder::_onProcessFinished(
             + "\n"
             + this->encodingProcess
             .readAllStandardOutput();
-    qDebug() << "encoding finished.";
-    qDebug() << bashOutput;
+    qDebug() << "bash output: " << bashOutput;
     if(exitCode == 0){
-        this->encodingFinished();
+        int nCommands = this->argumentsList.size();
+        if(nCommands > 0){
+            QString ffmpegFilePath
+                    = this->getFFmpegFilePath();
+            QStringList arguments
+                    = this->argumentsList.takeFirst();
+            qDebug() << ffmpegFilePath + " " + arguments.join(" ");
+            this->encodingProcess
+                    .start(ffmpegFilePath,
+                            arguments);
+        }else{
+            this->_removeTempFiles();
+            this->encodingFinished();
+        }
     }else{
         this->encodingFailed();
     }
+}
+//====================================
+void FFmpegEncoder::_onProcessError(
+        QProcess::ProcessError error){
+    this->encodingFailed();
 }
 //====================================
 QSize FFmpegEncoder::getSize(){
@@ -315,6 +396,14 @@ void FFmpegEncoder::_evalSizeEventually(){
         this->size = QSize(width, height);
         //int pos = bashOutput.indexOf(sizeReg);
         //int bashOutpoutLen = bashOutput.size();
+    }
+}
+//====================================
+void FFmpegEncoder::_removeTempFiles(){
+    QFile(this->tempInVideoFilePath).remove();
+    foreach(QString tempSequenceFilePath,
+            this->tempSequenceFilePaths){
+        QFile(tempSequenceFilePath).remove();
     }
 }
 //====================================

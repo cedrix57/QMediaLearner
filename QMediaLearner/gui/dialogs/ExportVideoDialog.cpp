@@ -36,8 +36,7 @@ void ExportVideoDialog::accept(){
             *encoder
             = this->mediaLearner
             ->getEncoder();
-    //TODO setInVideoFilePath
-    /*
+    //*
     MediaLearner::SequenceExtractor
             *sequenceExtractor
             = this->mediaLearner
@@ -52,18 +51,22 @@ void ExportVideoDialog::accept(){
             ->getExtractedSequences();
     QSize videoSize
             = encoder->getSize();
-    QList<QList<MediaLearner::DrawingSubtitleInfo > >
-            texts
+    MediaLearner::SubtitleTrack*
+            subs
             = subtitlesManager
-            ->getSubsAt(
-                sequences,
+            ->getSubtitleTracks();
+    this->sequencesWithSubs.init(
+                *sequences,
+                subs);
+    this->sequencesWithSubs.setScreenSize(
                 videoSize);
-    encoder->setSequences(
-                sequences);
-    encoder->setTexts(
-                texts);
     QString outVideoFilePath
             = this->ui->lineEditFilePath->text();
+    QList<MediaLearner::SequenceWithSubs>
+            sequencesWithSubs
+            = this->sequencesWithSubs.getSequencesWithTexts();
+    encoder->setSequences(
+                sequencesWithSubs);
     encoder->encode(
                 outVideoFilePath);
     this->progressDialog.show();

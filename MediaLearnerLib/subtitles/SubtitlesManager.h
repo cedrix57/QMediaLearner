@@ -27,6 +27,11 @@ public:
     QList<SubSequenceDrawable> getSubsAt(
             qint64 positionInMs,
             QSize screenSize);
+    static void setContext(
+            QList<SubSequenceDrawable>
+            &subSequencesDrawable,
+            QSize screenSize);
+    SubtitleTrack *getSubtitleTracks();
     /*
     QList<QList<DrawingSubtitleInfo> > getSubsAt(
             QSharedPointer<QList<Sequence> >

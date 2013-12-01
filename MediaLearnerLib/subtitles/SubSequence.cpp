@@ -29,7 +29,7 @@ int SubSequenceDrawable::getPixelSize(){
 }
 //====================================
 QColor SubSequenceDrawable::getColor(){
-    return this->drawingsSettings.colorText;
+    return this->drawingsSettings.textColor;
 }
 //====================================
 void SubSequenceDrawable::setDrawingSettings(

@@ -28,7 +28,7 @@ void SubtitlesManager::_initDrawingSettings(){
             = SettingsManagerSingleton::getInstance();
     for(int i=0; i<N_MAX_TRACKS; i++){
         DrawingSettings drawingSettings;
-        drawingSettings.colorText
+        drawingSettings.textColor
                 = settingsManager
                 ->getSubColor(i);
         drawingSettings.fontFamily
@@ -58,6 +58,10 @@ void SubtitlesManager::setTrack(QString subtitleFilePath){
     this->setTrack(subtitleFilePath, 0);
 }
 //====================================
+SubtitleTrack *SubtitlesManager::getSubtitleTracks(){
+    return this->subtitleTracks;
+}
+//====================================
 void SubtitlesManager::setTrack(
         QString subtitleFilePath,
         int position){
@@ -82,29 +86,48 @@ QList<SubSequenceDrawable> SubtitlesManager::getSubsAt(
             SubSequenceDrawable drawingText
                     = this->subtitleTracks[i]
                     .getText(positionInMs);
-            MediaLearner::DrawingSettings
-                    drawingSettings
-                    = drawingText.getDrawingSettings();
-            MediaLearner::SubPosition position
-                    = drawingSettings.subPosition;
-            int positionIndex = 0;
-            if(position == MediaLearner::Center){
-                positionIndex = 1;
-            }else if(position == MediaLearner::Top){
-                positionIndex = 2;
-            }
-            int firstCoord = firstCoords[positionIndex];
-            drawingText.setContext(
-                        screenSize,
-                        firstCoord);
             drawingTexts << drawingText;
-            int heightLines = drawingText.getHeightLines();
-            firstCoords[positionIndex]
-                    += heightLines
-                    + phrasesSpacing;
         }
     }
+    SubtitlesManager::setContext(
+                drawingTexts,
+                screenSize);
     return drawingTexts;
+}
+//====================================
+void SubtitlesManager::setContext(
+        QList<SubSequenceDrawable>
+        &subSequencesDrawable,
+        QSize screenSize){
+    int phrasesSpacing = screenSize.height() * 0.04;
+    int firstCoords[3];
+    firstCoords[0] = phrasesSpacing;
+    firstCoords[1] = 0;
+    firstCoords[2] = phrasesSpacing;
+    for(QList<SubSequenceDrawable>::iterator it
+        = subSequencesDrawable.begin();
+        it != subSequencesDrawable.end();
+        ++it){
+        MediaLearner::DrawingSettings
+                drawingSettings
+                = it->getDrawingSettings();
+        MediaLearner::SubPosition position
+                = drawingSettings.subPosition;
+        int positionIndex = 0;
+        if(position == MediaLearner::Center){
+            positionIndex = 1;
+        }else if(position == MediaLearner::Top){
+            positionIndex = 2;
+        }
+        int firstCoord = firstCoords[positionIndex];
+        it->setContext(
+                    screenSize,
+                    firstCoord);
+        int heightLines = it->getHeightLines();
+        firstCoords[positionIndex]
+                += heightLines
+                + phrasesSpacing;
+    }
 }
 /*
 //====================================

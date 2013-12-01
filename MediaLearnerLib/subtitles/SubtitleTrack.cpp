@@ -86,6 +86,32 @@ SubSequenceDrawable SubtitleTrack::getText(
     return this->currentDrawableText;
 }
 //====================================
+QList<SubSequenceDrawable> SubtitleTrack::getTexts(
+        Sequence intervalInMs){
+    QList<SubSequenceDrawable> drawableTexts;
+    int nTexts
+            = this->subInfos->size();
+    for(QList<SubtitleInfo>::iterator sub
+        = this->subInfos->begin();
+        sub != this->subInfos->end();
+        ++sub){
+        this->currentDrawableText.beginInMs
+                = sub->startPosition;
+        this->currentDrawableText.endInMs
+                = sub->endPosition;
+        bool inIntersection
+                = intervalInMs.intersect(
+                    this->currentDrawableText);
+        if(inIntersection){
+            this->currentDrawableText.clearLines();
+            this->currentDrawableText.setLines(
+                    sub->lines);
+            drawableTexts << this->currentDrawableText;
+        }
+    }
+    return drawableTexts;
+}
+//====================================
 
 }
 

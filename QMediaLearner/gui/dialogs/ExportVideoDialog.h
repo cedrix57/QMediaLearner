@@ -5,6 +5,7 @@
 #include <QProgressDialog>
 #include <MediaLearnerLib.h>
 #include <encoders/FFmpegEncoder.h>
+#include <encoders/SequenceWithSubs.h>
 
 namespace Ui {
 class ExportVideoDialog;
@@ -23,6 +24,7 @@ public:
 protected:
     Ui::ExportVideoDialog *ui;
     MediaLearner::MediaLearnerLib *mediaLearner;
+    MediaLearner::SequencesWithSubs sequencesWithSubs;
     virtual void accept();
     QProgressDialog progressDialog;
 };

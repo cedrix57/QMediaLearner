@@ -39,6 +39,8 @@ public:
             QString subtitleFilePath);
     SubSequenceDrawable getText(
             qint64 positionInMs);
+    QList<SubSequenceDrawable> getTexts(
+            Sequence intervalInMs);
 
     
 signals:

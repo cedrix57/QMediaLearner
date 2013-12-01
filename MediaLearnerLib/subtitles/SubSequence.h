@@ -28,7 +28,7 @@ struct FittedLine{
 //====================================
 //====================================
 struct DrawingSettings{
-    QColor colorText;
+    QColor textColor;
     QString fontFamily;
     SubSize subSize;
     SubPosition subPosition;

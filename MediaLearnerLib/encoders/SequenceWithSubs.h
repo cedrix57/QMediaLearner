@@ -3,6 +3,7 @@
 
 #include "../Utils/Sequence.h"
 #include "../subtitles/SubSequence.h"
+#include "../subtitles/SubtitleTrack.h"
 
 namespace MediaLearner{
 
@@ -20,8 +21,10 @@ public:
     SequencesWithSubs();
     void init(
             QList<Sequence> &sequences,
-            QList<SubSequenceDrawable> &texts);
+            SubtitleTrack *subtitleTracks);
+    void setScreenSize(QSize screenSize);
     QList<SequenceWithSubs> getSequencesWithTexts();
+    //void apply
 
 
 protected:
