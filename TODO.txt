@@ -1,5 +1,4 @@
 - Get rid of the warnings
-- Change playing position by clicking on the slider
 - Create a font directory for the font selection
 - Finish encoding window
 - Add a log feature

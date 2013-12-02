@@ -108,7 +108,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QSlider" name="sliderPosition">
+       <widget class="ClickableSlider" name="sliderPosition">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -507,6 +507,11 @@
    <class>SubVideoWidget</class>
    <extends>QGraphicsView</extends>
    <header>SubVideoWidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ClickableSlider</class>
+   <extends>QSlider</extends>
+   <header>ClickableSlider.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

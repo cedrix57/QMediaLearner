@@ -31,7 +31,8 @@ SOURCES += main.cpp\
     gui/widgets/qxtglobal.cpp \
     gui/widgets/SubVideoWidget.cpp \
     gui/dialogs/SettingsDialog.cpp \
-    gui/dialogs/ExportVideoDialog.cpp
+    gui/dialogs/ExportVideoDialog.cpp \
+    gui/widgets/ClickableSlider.cpp
 
 HEADERS  += gui/MainWindow.h \
     gui/dialogs/EditExtractionDialog.h \
@@ -41,7 +42,8 @@ HEADERS  += gui/MainWindow.h \
     gui/widgets/qxtglobal.h \
     gui/widgets/SubVideoWidget.h \
     gui/dialogs/SettingsDialog.h \
-    gui/dialogs/ExportVideoDialog.h
+    gui/dialogs/ExportVideoDialog.h \
+    gui/widgets/ClickableSlider.h
 
 FORMS    += gui/MainWindow.ui \
     gui/dialogs/EditExtractionDialogs.ui \
