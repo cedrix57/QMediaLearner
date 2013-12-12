@@ -1,5 +1,6 @@
 #include "ExportVideoDialog.h"
 #include "ui_ExportVideoDialog.h"
+#include <QFileDialog>
 
 //====================================
 ExportVideoDialog::ExportVideoDialog(
@@ -13,6 +14,7 @@ ExportVideoDialog::ExportVideoDialog(
             = mediaLearner;
     this->progressDialog.setWindowTitle(
                 tr("Encoding..."));
+    this->loadInfos();
     MediaLearner::EncoderInterface
             *encoder
             = this->mediaLearner
@@ -25,6 +27,40 @@ ExportVideoDialog::ExportVideoDialog(
                 encoder,
                 SIGNAL(encodingFailed()),
                 SLOT(reset()));
+    this->connect(
+                this->ui->buttonBrowseFilePath,
+                SIGNAL(clicked()),
+                SLOT(browseNewVideoFilePath()));
+}
+//====================================
+void ExportVideoDialog::loadInfos(){
+    MediaLearner::EncoderInterface
+            *encoder
+            = this->mediaLearner
+            ->getEncoder();
+    QMap<QString, MediaLearner::EncodingInfo>
+            formatProfiles
+            = encoder->getAvailableFormatProfiles();
+    foreach(QString profile, formatProfiles.keys()){
+        this->ui->comboBoxProfiles->addItem(
+                    profile);
+    }
+    MediaLearner::SubtitlesManager *subManager
+            = this->mediaLearner->getSubtitlesManager();
+    bool sub1 = subManager->isSubTrackEnabled(0);
+    bool sub2 = subManager->isSubTrackEnabled(1);
+    bool sub3 = subManager->isSubTrackEnabled(2);
+    bool saveSubs = sub1 || sub2 || sub3;
+    this->ui->groupBoxSaveSubtitles
+            ->setEnabled(saveSubs);
+    this->ui->groupBoxSaveSubtitles
+            ->setChecked(saveSubs);
+    this->ui->checkBoxTrack1->setChecked(sub1);
+    this->ui->checkBoxTrack2->setChecked(sub2);
+    this->ui->checkBoxTrack3->setChecked(sub3);
+    QSize videoSize = encoder->getOriginalSize();
+    this->ui->spinBoxWidth->setValue(videoSize.width());
+    this->ui->spinBoxHeight->setValue(videoSize.height());
 }
 //====================================
 ExportVideoDialog::~ExportVideoDialog(){
@@ -50,7 +86,7 @@ void ExportVideoDialog::accept(){
             = sequenceExtractor
             ->getExtractedSequences();
     QSize videoSize
-            = encoder->getSize();
+            = encoder->getOriginalSize();
     MediaLearner::SubtitleTrack*
             subs
             = subtitlesManager
@@ -72,5 +108,16 @@ void ExportVideoDialog::accept(){
     this->progressDialog.show();
     //*/
     //TODO progress dialog
+}
+//====================================
+void ExportVideoDialog::browseNewVideoFilePath(){
+    QString filePath
+            = QFileDialog::getSaveFileName(
+                this,
+                tr("Choose a new file"));
+    if(!filePath.isNull()){
+        this->ui->lineEditFilePath
+                ->setText(filePath);
+    }
 }
 //====================================

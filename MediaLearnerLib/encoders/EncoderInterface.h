@@ -2,6 +2,7 @@
 #define ENCODERINTERFACE_H
 
 #include <QObject>
+#include <QMap>
 #include <QSize>
 #include "../sequenceExtractor/SequenceExtractor.h"
 #include "../subtitles/SubtitleTrack.h"
@@ -18,7 +19,8 @@ class EncoderInterface : public QObject{
     Q_OBJECT
 public:
     explicit EncoderInterface(QObject *parent = 0);
-    virtual QList<EncodingInfo> getAvailableFormats() = 0; //description?
+    virtual QMap<QString, EncodingInfo> getAvailableFormatProfiles() = 0;
+    virtual QList<EncodingInfo> getAvailableFormats() = 0;
     virtual QList<EncodingInfo> getAvailableVideoCodecs() = 0;
     virtual QList<EncodingInfo> getAvailableAudioCodecs() = 0;
     virtual QList<EncodingInfo> getAvailableSubtitlesCodecs() = 0;
@@ -29,9 +31,10 @@ public:
     void setFormat(QString format);
     void setAudioCodec(QString codec);
     void setVideoCodec(QString codec);
+    void selectFormatProfile(QString profileName);
     void setSubtitleCodec(QString codec);
-    virtual void setSize(QSize size);
-    virtual QSize getSize();
+    virtual void setNewSize(QSize newSize);
+    virtual QSize getOriginalSize();
     void setPlaybackRate(double rate);
 
 signals:
@@ -46,9 +49,10 @@ protected:
     QString audioCodec;
     QString videoCodec;
     QString subCodec;
-    QSize size;
+    QSize newSize;
     double playbackRate;
     QList<SequenceWithSubs> sequencesWithSubs;
+    QString profileName;
     QString getFontPath(QString fontName);
 
     

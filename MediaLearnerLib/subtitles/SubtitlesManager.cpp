@@ -54,6 +54,10 @@ void SubtitlesManager::disableTrack(int position){
     this->enabledTracks[position] = false;
 }
 //====================================
+bool SubtitlesManager::isSubTrackEnabled(int position){
+    return this->enabledTracks[position];
+}
+//====================================
 void SubtitlesManager::setTrack(QString subtitleFilePath){
     this->setTrack(subtitleFilePath, 0);
 }

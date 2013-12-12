@@ -25,8 +25,12 @@ protected:
     Ui::ExportVideoDialog *ui;
     MediaLearner::MediaLearnerLib *mediaLearner;
     MediaLearner::SequencesWithSubs sequencesWithSubs;
+    void loadInfos();
     virtual void accept();
     QProgressDialog progressDialog;
+
+public slots:
+    void browseNewVideoFilePath();
 };
 
 #endif // EXPORTVIDEODIALOG_H

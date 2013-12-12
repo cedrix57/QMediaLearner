@@ -17,7 +17,33 @@ FFmpegEncoder::FFmpegEncoder(QObject *parent) :
                 &this->encodingProcess,
                 SIGNAL(error(QProcess::ProcessError)),
                 SLOT(_onProcessError(QProcess::ProcessError)));
-
+}
+//====================================
+QMap<QString, EncodingInfo> FFmpegEncoder::getAvailableFormatProfiles(){
+    QMap<QString, EncodingInfo> encodingInfos;
+    EncodingInfo encodingInfo;
+    encodingInfo.name = "Video - H.264 + AAC (MP4)";
+    encodingInfo.description = "";
+    encodingInfos[encodingInfo.name] = encodingInfo;
+    encodingInfo.name = "Video - XVID + MP3 (AVI)";
+    encodingInfo.description = "-c:v mpeg4 -vtag xvid";
+    encodingInfos[encodingInfo.name] = encodingInfo;
+    encodingInfo.name = "Video - MJPEG + MP3 (AVI)";
+    encodingInfo.description = "";
+    encodingInfos[encodingInfo.name] = encodingInfo;
+    encodingInfo.name = "Video - VP80 + vorbis (Webm)";
+    encodingInfo.description = "";
+    encodingInfos[encodingInfo.name] = encodingInfo;
+    encodingInfo.name = "Video - Theora + Vorbis (ogg)";
+    encodingInfo.description = "";
+    encodingInfos[encodingInfo.name] = encodingInfo;
+    encodingInfo.name = "Video - WMV + WMA (ASF)";
+    encodingInfo.description = "";
+    encodingInfos[encodingInfo.name] = encodingInfo;
+    encodingInfo.name = "Video - H.264 + MP3 (MOV)";
+    encodingInfo.description = "";
+    encodingInfos[encodingInfo.name] = encodingInfo;
+    return encodingInfos;
 }
 //====================================
 QList<EncodingInfo> FFmpegEncoder::getAvailableFormats(){
@@ -270,7 +296,7 @@ void FFmpegEncoder::_encodeSequenceCommand(){
                 drawTextParam += QString::number(y);
                 drawTextParam += ":";
                 drawTextParam += "fontsize=";
-                int screenHeight = this->size.height();
+                int screenHeight = this->newSize.height();
                 int fontSize = drawingSettings.getFontSize(
                             screenHeight);
                 drawTextParam += QString::number(fontSize);
@@ -325,6 +351,28 @@ void FFmpegEncoder::_encodeCuttedSequencesCommand(
             + this->tempSequenceFilePaths
             .join("|");
     arguments << concatArg;
+    if(this->playbackRate != -1){
+        arguments << "-filter:v";
+        arguments << "setpts="
+                     + QString::number(this->playbackRate)
+                     + "*PTS";
+    }
+    if(!this->newSize.isNull()){
+        arguments << "-vf";
+        arguments << "scale="
+                     + QString::number(this->newSize.width())
+                     + ":"
+                     + QString::number(this->newSize.height());
+    }
+    if(!this->profileName.isEmpty()){
+        QMap<QString, EncodingInfo> formatProfiles
+                = this->getAvailableFormatProfiles();
+        EncodingInfo encodingInfo
+                = formatProfiles[this->profileName];
+        QStringList encodingArguments
+                = encodingInfo.description.split(" ");
+        arguments << encodingArguments;
+    }
     arguments << "-c";
     arguments << "copy";
     arguments << outFilePath;
@@ -366,36 +414,34 @@ void FFmpegEncoder::_onProcessError(
     this->encodingFailed();
 }
 //====================================
-QSize FFmpegEncoder::getSize(){
-    this->_evalSizeEventually();
-    return this->size;
+QSize FFmpegEncoder::getOriginalSize(){
+    QString ffmpegFilePath
+            = this->getFFmpegFilePath();
+    QStringList arguments;
+    arguments << "-i";
+    arguments << this->inVideoFilePath;
+    QProcess process;
+    process.start(
+                ffmpegFilePath,
+                arguments);
+    process.waitForFinished();
+    QString bashOutput
+            = process.readAllStandardOutput()
+            + process.readAllStandardError();
+    QRegExp sizeReg(" \\d+x\\d+ ");
+    sizeReg.indexIn(bashOutput);
+    bashOutput = sizeReg.capturedTexts().first();
+    QStringList sizeStringList
+            = bashOutput.trimmed().split("x");
+    int width = sizeStringList.first().toInt();
+    int height = sizeStringList.last().toInt();
+    QSize originalSize = QSize(width, height);
+    return originalSize;
 }
 //====================================
 void FFmpegEncoder::_evalSizeEventually(){
-    if(this->size.isEmpty()){
-        QString ffmpegFilePath
-                = this->getFFmpegFilePath();
-        QStringList arguments;
-        arguments << "-i";
-        arguments << this->inVideoFilePath;
-        QProcess process;
-        process.start(
-                    ffmpegFilePath,
-                    arguments);
-        process.waitForFinished();
-        QString bashOutput
-                = process.readAllStandardOutput()
-                + process.readAllStandardError();
-        QRegExp sizeReg(" \\d+x\\d+ ");
-        sizeReg.indexIn(bashOutput);
-        bashOutput = sizeReg.capturedTexts().first();
-        QStringList sizeStringList
-                = bashOutput.trimmed().split("x");
-        int width = sizeStringList.first().toInt();
-        int height = sizeStringList.last().toInt();
-        this->size = QSize(width, height);
-        //int pos = bashOutput.indexOf(sizeReg);
-        //int bashOutpoutLen = bashOutput.size();
+    if(this->newSize.isEmpty()){
+                //int bashOutpoutLen = bashOutput.size();
     }
 }
 //====================================

@@ -19,6 +19,7 @@ public:
     //TODO feature to enable/disable track
     void enableTrack(int position);
     void disableTrack(int position);
+    bool isSubTrackEnabled(int position);
     void setDrawingSettings(
             int position,
             DrawingSettings &drawingSettings);

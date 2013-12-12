@@ -15,6 +15,7 @@ class FFmpegEncoder : public EncoderInterface{ //TODO add abstract EncoderInterf
 public:
     explicit FFmpegEncoder(
             QObject *parent = 0);
+    virtual QMap<QString, EncodingInfo> getAvailableFormatProfiles();
     virtual QList<EncodingInfo> getAvailableFormats(); //description?
     virtual QList<EncodingInfo> getAvailableVideoCodecs();
     virtual QList<EncodingInfo> getAvailableAudioCodecs();
@@ -22,7 +23,7 @@ public:
     virtual void encode(QString outFilePath);
     int getFps();
     int getNFrame(qint64 ms, int frameRate);
-    virtual QSize getSize();
+    virtual QSize getOriginalSize();
     QString getFormatedTime(qint64 ms);
     //*/
 

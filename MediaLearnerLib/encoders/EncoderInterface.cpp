@@ -26,8 +26,8 @@ void EncoderInterface::setSubtitleCodec(QString codec){
     this->subCodec = codec;
 }
 //====================================
-void EncoderInterface::setSize(QSize size){
-    this->size = size;
+void EncoderInterface::setNewSize(QSize size){
+    this->newSize = size;
 }
 //====================================
 void EncoderInterface::setPlaybackRate(double rate){
@@ -62,8 +62,13 @@ QString EncoderInterface::getFontPath(QString fontName){
     return fontFilePath;
 }
 //====================================
-QSize EncoderInterface::getSize(){
-    return this->size;
+QSize EncoderInterface::getOriginalSize(){
+    return this->newSize;
+}
+//====================================
+void EncoderInterface::selectFormatProfile(
+        QString profileName){
+    this->profileName = profileName;
 }
 //====================================
 }
