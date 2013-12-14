@@ -15,7 +15,8 @@ class FFmpegEncoder : public EncoderInterface{ //TODO add abstract EncoderInterf
 public:
     explicit FFmpegEncoder(
             QObject *parent = 0);
-    virtual QMap<QString, EncodingInfo> getAvailableFormatProfiles();
+    virtual QMap<QString, ProfileInfo> getAvailableVideoProfiles();
+    virtual QMap<QString, ProfileInfo> getAvailableAudioProfiles();
     virtual QList<EncodingInfo> getAvailableFormats(); //description?
     virtual QList<EncodingInfo> getAvailableVideoCodecs();
     virtual QList<EncodingInfo> getAvailableAudioCodecs();

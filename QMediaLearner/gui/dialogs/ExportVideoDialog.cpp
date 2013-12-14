@@ -14,7 +14,47 @@ ExportVideoDialog::ExportVideoDialog(
             = mediaLearner;
     this->progressDialog.setWindowTitle(
                 tr("Encoding..."));
-    this->loadInfos();
+    this->ui->buttonEditProfiles->hide();
+    this->_loadInfos();
+    this->_connectSlots();
+    this->ui->radioButtonAudioProfile->setChecked(true);
+    this->ui->radioButtonVideoProfile->toggle();
+}
+//====================================
+void ExportVideoDialog::onAudioProfileToogled(
+        bool val){
+    this->ui->comboBoxProfilesAudio->setEnabled(val);
+    this->ui->comboBoxProfilesVideo->setEnabled(!val);
+    this->ui->checkBoxSaveSubEmbedded->setEnabled(!val);
+    this->ui->checkBoxSaveSubEncoded->setEnabled(!val);
+}
+//====================================
+void ExportVideoDialog::onProfileChanged(
+        QString profileName){
+    QString filePath
+            = this->ui->lineEditFilePath
+            ->text();
+    if(!filePath.isEmpty() && filePath.indexOf(".") != -1){
+        MediaLearner::EncoderInterface
+                *encoder
+                = this->mediaLearner
+                ->getEncoder();
+        QString ext
+                = encoder->getProfileExt(profileName);
+        if(!filePath.endsWith(ext)){
+            QStringList cuttedFilePath
+                    = filePath.split(".");
+            cuttedFilePath.takeLast();
+            cuttedFilePath << ext;
+            QString newFilePath
+                    = cuttedFilePath.join(".");
+            this->ui->lineEditFilePath
+                    ->setText(newFilePath);
+        }
+    }
+}
+//====================================
+void ExportVideoDialog::_connectSlots(){
     MediaLearner::EncoderInterface
             *encoder
             = this->mediaLearner
@@ -31,18 +71,37 @@ ExportVideoDialog::ExportVideoDialog(
                 this->ui->buttonBrowseFilePath,
                 SIGNAL(clicked()),
                 SLOT(browseNewVideoFilePath()));
+    this->connect(
+                this->ui->radioButtonAudioProfile,
+                SIGNAL(toggled(bool)),
+                SLOT(onAudioProfileToogled(bool)));
+    this->connect(
+                this->ui->comboBoxProfilesAudio,
+                SIGNAL(currentIndexChanged(QString)),
+                SLOT(onProfileChanged(QString)));
+    this->connect(
+                this->ui->comboBoxProfilesVideo,
+                SIGNAL(currentIndexChanged(QString)),
+                SLOT(onProfileChanged(QString)));
 }
 //====================================
-void ExportVideoDialog::loadInfos(){
+void ExportVideoDialog::_loadInfos(){
     MediaLearner::EncoderInterface
             *encoder
             = this->mediaLearner
             ->getEncoder();
-    QMap<QString, MediaLearner::EncodingInfo>
-            formatProfiles
-            = encoder->getAvailableFormatProfiles();
-    foreach(QString profile, formatProfiles.keys()){
-        this->ui->comboBoxProfiles->addItem(
+    QMap<QString, MediaLearner::ProfileInfo>
+            videoProfiles
+            = encoder->getAvailableVideoProfiles();
+    foreach(QString profile, videoProfiles.keys()){
+        this->ui->comboBoxProfilesVideo->addItem(
+                    profile);
+    }
+    QMap<QString, MediaLearner::ProfileInfo>
+            audioProfiles
+            = encoder->getAvailableAudioProfiles();
+    foreach(QString profile, audioProfiles.keys()){
+        this->ui->comboBoxProfilesAudio->addItem(
                     profile);
     }
     MediaLearner::SubtitlesManager *subManager
@@ -72,7 +131,6 @@ void ExportVideoDialog::accept(){
             *encoder
             = this->mediaLearner
             ->getEncoder();
-    //*
     MediaLearner::SequenceExtractor
             *sequenceExtractor
             = this->mediaLearner
@@ -85,8 +143,6 @@ void ExportVideoDialog::accept(){
             sequences
             = sequenceExtractor
             ->getExtractedSequences();
-    QSize videoSize
-            = encoder->getOriginalSize();
     MediaLearner::SubtitleTrack*
             subs
             = subtitlesManager
@@ -94,8 +150,24 @@ void ExportVideoDialog::accept(){
     this->sequencesWithSubs.init(
                 *sequences,
                 subs);
+    QSize videoSize
+            = encoder->getOriginalSize();
     this->sequencesWithSubs.setScreenSize(
                 videoSize);
+    this->sequencesWithSubs.init(
+                *sequences,
+                subs);
+    if(this->ui->groupBoxPlaybackRate->isChecked()){
+        double playbackRate = this->ui->spinBoxRate->value();
+        encoder->setPlaybackRate(playbackRate);
+    }
+    if(this->ui->groupBoxResize->isChecked()){
+        int videoWidth = this->ui->spinBoxWidth->value();
+        int videoHeight = this->ui->spinBoxHeight->value();
+        QSize newVideoSize(videoWidth, videoHeight);
+        encoder->setNewSize(
+                    newVideoSize);
+    }
     QString outVideoFilePath
             = this->ui->lineEditFilePath->text();
     QList<MediaLearner::SequenceWithSubs>
@@ -116,6 +188,21 @@ void ExportVideoDialog::browseNewVideoFilePath(){
                 this,
                 tr("Choose a new file"));
     if(!filePath.isNull()){
+        QString profileName;
+        if(this->ui->radioButtonAudioProfile->isChecked()){
+            profileName
+                    = this->ui->comboBoxProfilesAudio->currentText();
+        }else{
+            profileName
+                    = this->ui->comboBoxProfilesVideo->currentText();
+        }
+        MediaLearner::EncoderInterface
+                *encoder
+                = this->mediaLearner
+                ->getEncoder();
+        QString ext
+                = encoder->getProfileExt(profileName);
+        filePath += "." + ext;
         this->ui->lineEditFilePath
                 ->setText(filePath);
     }

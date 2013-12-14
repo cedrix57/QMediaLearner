@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QMap>
 #include <QSize>
+#include <QSet>
 #include "../sequenceExtractor/SequenceExtractor.h"
 #include "../subtitles/SubtitleTrack.h"
 #include "SequenceWithSubs.h"
@@ -14,12 +15,23 @@ struct EncodingInfo{
     QString name;
     QString description;
 };
+struct ProfileInfo{
+    QString name;
+    QString description;
+    QString ext;
+};
 
 class EncoderInterface : public QObject{
     Q_OBJECT
 public:
     explicit EncoderInterface(QObject *parent = 0);
-    virtual QMap<QString, EncodingInfo> getAvailableFormatProfiles() = 0;
+    virtual QMap<QString, ProfileInfo> getAvailableVideoProfiles() = 0;
+    virtual QMap<QString, ProfileInfo> getAvailableAudioProfiles() = 0;
+    QMap<QString, ProfileInfo> getAvailableProfiles();
+    QSet<QString> getAvailableVideoProfileExts();
+    QSet<QString> getAvailableAudioProfileExts();
+    QString getSelectedProfileExt();
+    QString getProfileExt(QString profileName);
     virtual QList<EncodingInfo> getAvailableFormats() = 0;
     virtual QList<EncodingInfo> getAvailableVideoCodecs() = 0;
     virtual QList<EncodingInfo> getAvailableAudioCodecs() = 0;

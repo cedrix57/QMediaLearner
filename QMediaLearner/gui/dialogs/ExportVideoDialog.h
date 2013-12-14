@@ -25,9 +25,14 @@ protected:
     Ui::ExportVideoDialog *ui;
     MediaLearner::MediaLearnerLib *mediaLearner;
     MediaLearner::SequencesWithSubs sequencesWithSubs;
-    void loadInfos();
+    void _connectSlots();
+    void _loadInfos();
     virtual void accept();
     QProgressDialog progressDialog;
+
+protected slots:
+    void onAudioProfileToogled(bool val);
+    void onProfileChanged(QString profileName);
 
 public slots:
     void browseNewVideoFilePath();

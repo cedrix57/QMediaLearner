@@ -19,31 +19,53 @@ FFmpegEncoder::FFmpegEncoder(QObject *parent) :
                 SLOT(_onProcessError(QProcess::ProcessError)));
 }
 //====================================
-QMap<QString, EncodingInfo> FFmpegEncoder::getAvailableFormatProfiles(){
-    QMap<QString, EncodingInfo> encodingInfos;
-    EncodingInfo encodingInfo;
-    encodingInfo.name = "Video - H.264 + AAC (MP4)";
-    encodingInfo.description = "";
-    encodingInfos[encodingInfo.name] = encodingInfo;
-    encodingInfo.name = "Video - XVID + MP3 (AVI)";
-    encodingInfo.description = "-c:v mpeg4 -vtag xvid";
-    encodingInfos[encodingInfo.name] = encodingInfo;
-    encodingInfo.name = "Video - MJPEG + MP3 (AVI)";
-    encodingInfo.description = "";
-    encodingInfos[encodingInfo.name] = encodingInfo;
-    encodingInfo.name = "Video - VP80 + vorbis (Webm)";
-    encodingInfo.description = "";
-    encodingInfos[encodingInfo.name] = encodingInfo;
-    encodingInfo.name = "Video - Theora + Vorbis (ogg)";
-    encodingInfo.description = "";
-    encodingInfos[encodingInfo.name] = encodingInfo;
-    encodingInfo.name = "Video - WMV + WMA (ASF)";
-    encodingInfo.description = "";
-    encodingInfos[encodingInfo.name] = encodingInfo;
-    encodingInfo.name = "Video - H.264 + MP3 (MOV)";
-    encodingInfo.description = "";
-    encodingInfos[encodingInfo.name] = encodingInfo;
-    return encodingInfos;
+QMap<QString, ProfileInfo> FFmpegEncoder::getAvailableAudioProfiles(){
+    QMap<QString, ProfileInfo> profileInfos;
+    ProfileInfo profileInfo;
+    profileInfo.ext = "ogg";
+    profileInfo.name = "Vorbis (OGG)";
+    profileInfo.description = "-vn";
+    profileInfos[profileInfo.name] = profileInfo;
+    profileInfo.ext = "mp3";
+    profileInfo.name = "MP3";
+    profileInfo.description = "-vn";
+    profileInfos[profileInfo.name] = profileInfo;
+    return profileInfos;
+}
+
+//====================================
+QMap<QString, ProfileInfo> FFmpegEncoder::getAvailableVideoProfiles(){
+    QMap<QString, ProfileInfo> profileInfos;
+    ProfileInfo profileInfo;
+    profileInfo.ext = "mp4";
+    profileInfo.name = "H.264 + AAC (MP4)";
+    profileInfo.description = "";
+    profileInfos[profileInfo.name] = profileInfo;
+    profileInfo.ext = "avi";
+    profileInfo.name = "XVID + MP3 (AVI)";
+    profileInfo.description = "-c:v mpeg4 -vtag xvid";
+    profileInfos[profileInfo.name] = profileInfo;
+    profileInfo.ext = "avi";
+    profileInfo.name = "MJPEG + MP3 (AVI)";
+    profileInfo.description = "";
+    profileInfos[profileInfo.name] = profileInfo;
+    profileInfo.ext = "webm";
+    profileInfo.name = "VP80 + vorbis (Webm)";
+    profileInfo.description = "";
+    profileInfos[profileInfo.name] = profileInfo;
+    profileInfo.ext = "ogg";
+    profileInfo.name = "Theora + Vorbis (ogg)";
+    profileInfo.description = "";
+    profileInfos[profileInfo.name] = profileInfo;
+    profileInfo.ext = "asf";
+    profileInfo.name = "WMV + WMA (ASF)";
+    profileInfo.description = "";
+    profileInfos[profileInfo.name] = profileInfo;
+    profileInfo.ext = "mp4";
+    profileInfo.name = "H.264 + MP3 (MOV)";
+    profileInfo.description = "";
+    profileInfos[profileInfo.name] = profileInfo;
+    return profileInfos;
 }
 //====================================
 QList<EncodingInfo> FFmpegEncoder::getAvailableFormats(){
@@ -365,9 +387,9 @@ void FFmpegEncoder::_encodeCuttedSequencesCommand(
                      + QString::number(this->newSize.height());
     }
     if(!this->profileName.isEmpty()){
-        QMap<QString, EncodingInfo> formatProfiles
-                = this->getAvailableFormatProfiles();
-        EncodingInfo encodingInfo
+        QMap<QString, ProfileInfo> formatProfiles
+                = this->getAvailableVideoProfiles();
+        ProfileInfo encodingInfo
                 = formatProfiles[this->profileName];
         QStringList encodingArguments
                 = encodingInfo.description.split(" ");

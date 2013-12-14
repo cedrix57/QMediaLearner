@@ -71,4 +71,58 @@ void EncoderInterface::selectFormatProfile(
     this->profileName = profileName;
 }
 //====================================
+QMap<QString, ProfileInfo>
+EncoderInterface::getAvailableProfiles(){
+    QMap<QString, ProfileInfo>  profiles
+            = getAvailableVideoProfiles();
+    QMap<QString, ProfileInfo>  audioProfiles
+            = getAvailableAudioProfiles();
+    for(QMap<QString, ProfileInfo>::iterator it
+        = audioProfiles.begin();
+        it != audioProfiles.end();
+        ++it){
+        profiles[it->name] = *it;
+    }
+    return profiles;
+}
+//====================================
+QSet<QString> EncoderInterface::getAvailableVideoProfileExts(){
+    QSet<QString> exts;
+    QMap<QString, ProfileInfo>  profiles
+            = getAvailableVideoProfiles();
+    for(QMap<QString, ProfileInfo>::iterator it = profiles.begin();
+        it != profiles.end();
+        ++it){
+        exts << it->ext;
+    }
+    return exts;
+}
+//====================================
+QSet<QString> EncoderInterface::getAvailableAudioProfileExts(){
+    QSet<QString> exts;
+    QMap<QString, ProfileInfo>  profiles
+            = getAvailableAudioProfiles();
+    for(QMap<QString, ProfileInfo>::iterator it = profiles.begin();
+        it != profiles.end();
+        ++it){
+        exts << it->ext;
+    }
+    return exts;
+}
+//====================================
+QString EncoderInterface::getSelectedProfileExt(){
+    QString ext = this->getProfileExt(
+                this->profileName);
+    return ext;
+}
+//====================================
+QString EncoderInterface::getProfileExt(QString profileName){
+    QMap<QString, ProfileInfo>  profiles
+            = getAvailableProfiles();
+    ProfileInfo profileInfo
+            = profiles[profileName];
+    return profileInfo.ext;
+}
+//====================================
+
 }
