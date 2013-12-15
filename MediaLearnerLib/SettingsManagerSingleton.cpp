@@ -22,10 +22,13 @@ SettingsManagerSingleton::SettingsManagerSingleton(QObject *parent) :
 //====================================
 SettingsManagerSingleton *SettingsManagerSingleton::getInstance(){
     if(SettingsManagerSingleton::instance.isNull()){
-        QSharedPointer<SettingsManagerSingleton> localInstance(new SettingsManagerSingleton);
+        QSharedPointer<SettingsManagerSingleton>
+                localInstance(
+                    new SettingsManagerSingleton);
         SettingsManagerSingleton::instance = localInstance;
     }
-    SettingsManagerSingleton *pointer = SettingsManagerSingleton::instance.data();
+    SettingsManagerSingleton *pointer
+            = SettingsManagerSingleton::instance.data();
     return pointer;
 }
 //====================================
