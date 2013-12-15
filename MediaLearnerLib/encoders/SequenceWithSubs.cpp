@@ -2,7 +2,7 @@
 
 #include "../subtitles/SubtitlesManager.h"
 
-namespace MediaLearner{
+namespace ML{
 
 //====================================
 //====================================

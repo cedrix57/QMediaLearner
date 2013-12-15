@@ -1,7 +1,7 @@
 #include "MediaLearnerLib.h"
 
 
-namespace MediaLearner{
+namespace ML{
 
 //====================================
 MediaLearnerLib::MediaLearnerLib(){

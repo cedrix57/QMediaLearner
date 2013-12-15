@@ -27,23 +27,23 @@ MediaLearnerLibTests::MediaLearnerLibTests(){
 }
 //====================================
 void MediaLearnerLibTests::testInitialisation(){
-    MediaLearner::MediaLearnerLib mediaLearner;
+    ML::MediaLearnerLib mediaLearner;
     QVERIFY(true);
 
 }
 //====================================
 void MediaLearnerLibTests::testExtractorExists(){
-    MediaLearner::MediaLearnerLib mediaLearner;
-    MediaLearner::SequenceExtractor *extractor
+    ML::MediaLearnerLib mediaLearner;
+    ML::SequenceExtractor *extractor
             = mediaLearner.getSequenceExtractor();
     QVERIFY(extractor != NULL);
 }
 //====================================
 void MediaLearnerLibTests::testExtractorPluginsExist(){
-    MediaLearner::MediaLearnerLib mediaLearner;
-    QMap<QString, MediaLearner::PluginSequenceExtractor*>
+    ML::MediaLearnerLib mediaLearner;
+    QMap<QString, ML::PluginSequenceExtractor*>
             availableExtractor
-            = MediaLearner
+            = ML
             ::PluginSequenceExtractor
             ::getExtractors();
     int nExtractors = availableExtractor.size();
@@ -51,15 +51,15 @@ void MediaLearnerLibTests::testExtractorPluginsExist(){
 }
 //====================================
 void MediaLearnerLibTests::testSequencesExtractions(){
-    MediaLearner::MediaLearnerLib mediaLearner;
-    MediaLearner::SequenceExtractor *extractor
+    ML::MediaLearnerLib mediaLearner;
+    ML::SequenceExtractor *extractor
             = mediaLearner.getSequenceExtractor();
-    QMap<QString, MediaLearner::PluginSequenceExtractor*>
+    QMap<QString, ML::PluginSequenceExtractor*>
             availableExtractors
-            = MediaLearner
+            = ML
             ::PluginSequenceExtractor
             ::getExtractors();
-    MediaLearner::PluginSequenceExtractor*
+    ML::PluginSequenceExtractor*
             firstExtractor
             = availableExtractors
             .values()
@@ -80,7 +80,7 @@ void MediaLearnerLibTests::testSequencesExtractions(){
     QTRY_COMPARE_WITH_TIMEOUT(spy.count(), 1, 50000);
 
     //extractor->waitForExtractionFinished();
-    QSharedPointer<QList<MediaLearner::Sequence> >
+    QSharedPointer<QList<ML::Sequence> >
             sequences
             = extractor->getAllSequences();
     int nSequences = sequences->size();
@@ -89,9 +89,9 @@ void MediaLearnerLibTests::testSequencesExtractions(){
 }
 //====================================
 void MediaLearnerLibTests::testFFmpegFormats(){
-    MediaLearner::EncoderInterface
-            *encoder = new MediaLearner::FFmpegEncoder();
-    QList<MediaLearner::EncodingInfo> formats
+    ML::EncoderInterface
+            *encoder = new ML::FFmpegEncoder();
+    QList<ML::EncodingInfo> formats
             = encoder->getAvailableFormats();
     int nFormats = formats.size();
     QVERIFY(nFormats > 0);
@@ -99,9 +99,9 @@ void MediaLearnerLibTests::testFFmpegFormats(){
 }
 //====================================
 void MediaLearnerLibTests::testFFmpegSubEncoders(){
-    MediaLearner::EncoderInterface
-            *encoder = new MediaLearner::FFmpegEncoder();
-    QList<MediaLearner::EncodingInfo> subEncoders
+    ML::EncoderInterface
+            *encoder = new ML::FFmpegEncoder();
+    QList<ML::EncodingInfo> subEncoders
             = encoder->getAvailableSubtitlesCodecs();
     int nSubEncoders = subEncoders.size();
     QVERIFY(nSubEncoders > 0);
@@ -109,9 +109,9 @@ void MediaLearnerLibTests::testFFmpegSubEncoders(){
 }
 //====================================
 void MediaLearnerLibTests::testFFmpegAudioEncoders(){
-    MediaLearner::EncoderInterface
-            *encoder = new MediaLearner::FFmpegEncoder();
-    QList<MediaLearner::EncodingInfo> audioCodecs
+    ML::EncoderInterface
+            *encoder = new ML::FFmpegEncoder();
+    QList<ML::EncodingInfo> audioCodecs
             = encoder->getAvailableAudioCodecs();
     int nAudioCodecs = audioCodecs.size();
     QVERIFY(nAudioCodecs > 0);
@@ -119,9 +119,9 @@ void MediaLearnerLibTests::testFFmpegAudioEncoders(){
 }
 //====================================
 void MediaLearnerLibTests::testFFmpegVideoEncoders(){
-    MediaLearner::EncoderInterface
-            *encoder = new MediaLearner::FFmpegEncoder();
-    QList<MediaLearner::EncodingInfo> videoCodecs
+    ML::EncoderInterface
+            *encoder = new ML::FFmpegEncoder();
+    QList<ML::EncodingInfo> videoCodecs
             = encoder->getAvailableVideoCodecs();
     int nVideoCodecs = videoCodecs.size();
     QVERIFY(nVideoCodecs > 0);

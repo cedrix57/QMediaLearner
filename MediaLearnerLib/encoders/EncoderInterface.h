@@ -9,7 +9,7 @@
 #include "../subtitles/SubtitleTrack.h"
 #include "SequenceWithSubs.h"
 
-namespace MediaLearner{
+namespace ML{
 
 struct EncodingInfo{
     QString name;

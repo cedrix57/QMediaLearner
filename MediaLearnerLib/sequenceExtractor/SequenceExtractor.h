@@ -15,7 +15,7 @@
 //#include <QFutureWatcher>
 #include "PluginSequenceExtractor.h"
 
-namespace MediaLearner{
+namespace ML{
 
 class SequenceExtractor : public QObject{
     Q_OBJECT
@@ -59,7 +59,7 @@ public:
 
 signals:
     void sequenceExtracted(
-            MediaLearner::Sequence sequence);
+            ML::Sequence sequence);
     void sequencesExtracted();
     void sequencesExtractionFailed();
 

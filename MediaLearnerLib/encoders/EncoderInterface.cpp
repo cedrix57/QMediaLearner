@@ -3,7 +3,7 @@
 #include <QFile>
 #include <QDir>
 
-namespace MediaLearner{
+namespace ML{
 //====================================
 EncoderInterface::EncoderInterface(
         QObject *parent) :

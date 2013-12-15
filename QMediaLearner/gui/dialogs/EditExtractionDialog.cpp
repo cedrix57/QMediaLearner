@@ -5,7 +5,7 @@
 
 //====================================
 EditExtractionDialog::EditExtractionDialog(
-            MediaLearner::MediaLearnerLib
+            ML::MediaLearnerLib
             *mediaLearner,
             QWidget *parent)
     : QDialog(parent),
@@ -32,7 +32,7 @@ EditExtractionDialog::~EditExtractionDialog(){
 }
 //====================================
 void EditExtractionDialog::_initVideoPlayer(){
-    MediaLearner::SequenceExtractor *extractor
+    ML::SequenceExtractor *extractor
             = this->mediaLearner
             ->getSequenceExtractor();
     this->mediaPlayer
@@ -82,25 +82,25 @@ void EditExtractionDialog::_connectSlots(){
 }
 //====================================
 void EditExtractionDialog::_loadExtractions(){
-    MediaLearner::SequenceExtractor *extractor
+    ML::SequenceExtractor *extractor
             = this->mediaLearner
             ->getSequenceExtractor();
     this->connect(
                 extractor,
-                SIGNAL(sequenceExtracted(MediaLearner::Sequence)),
-                SLOT(addSequence(MediaLearner::Sequence)));
-    QSharedPointer<QList<MediaLearner::Sequence> >
+                SIGNAL(sequenceExtracted(ML::Sequence)),
+                SLOT(addSequence(ML::Sequence)));
+    QSharedPointer<QList<ML::Sequence> >
             sequences
             = extractor->getExtractedSequences();
     this->backupSequences
             = QSharedPointer<
             QList<
-            MediaLearner::Sequence> >(
+            ML::Sequence> >(
                 new QList<
-                MediaLearner::Sequence>);
+                ML::Sequence>);
     *this->backupSequences
             = *sequences;
-    foreach(MediaLearner::Sequence sequence,
+    foreach(ML::Sequence sequence,
             *sequences){
         this->addSequence(sequence);
     }
@@ -116,7 +116,7 @@ void EditExtractionDialog::_hideExportButtonEventually(){
 }
 //====================================
 void EditExtractionDialog::addSequence(
-        MediaLearner::Sequence sequence){
+        ML::Sequence sequence){
     QString sequenceString
             = sequence.toString();
     this->ui->listSequences->addItem(
@@ -125,11 +125,11 @@ void EditExtractionDialog::addSequence(
 //====================================
 void EditExtractionDialog::_onSelectionChanged(int index){
     if(index >= 0){
-        MediaLearner::SequenceExtractor *extractor
+        ML::SequenceExtractor *extractor
                 = this->mediaLearner
                 ->getSequenceExtractor();
         extractor->selectSequence(index);
-        MediaLearner::Sequence
+        ML::Sequence
                 sequence
                 = extractor
                 ->getSelectedSequence();
@@ -185,7 +185,7 @@ void EditExtractionDialog::playOrPause(){
 }
 //====================================
 void EditExtractionDialog::removeSelectedSequence(){
-    MediaLearner::SequenceExtractor *extractor
+    ML::SequenceExtractor *extractor
             = this->mediaLearner
             ->getSequenceExtractor();
     int currentPosition
@@ -204,7 +204,7 @@ void EditExtractionDialog::accept(){
 //====================================
 void EditExtractionDialog::reject(){
     this->mediaPlayer->stop();
-    MediaLearner::SequenceExtractor *extractor
+    ML::SequenceExtractor *extractor
             = this->mediaLearner
             ->getSequenceExtractor();
     extractor->setSequences(
@@ -285,7 +285,7 @@ void EditExtractionDialog::_adjustLowerBoundary(
                 position);
     this->mediaPlayer->setPosition(
                 position);
-    MediaLearner::SequenceExtractor *extractor
+    ML::SequenceExtractor *extractor
             = this->mediaLearner
             ->getSequenceExtractor();
     int currentRow
@@ -299,7 +299,7 @@ void EditExtractionDialog::_adjustLowerBoundary(
 void EditExtractionDialog::_onUpperBoundarySliderChanged(
         int position){
     this->_adjustUpperBoundary(position);
-    MediaLearner::SequenceExtractor *extractor
+    ML::SequenceExtractor *extractor
             = this->mediaLearner
             ->getSequenceExtractor();
     int currentRow
@@ -311,7 +311,7 @@ void EditExtractionDialog::_onUpperBoundarySliderChanged(
     QListWidgetItem *item
             = this->ui->listSequences
             ->item(currentRow);
-    MediaLearner::Sequence
+    ML::Sequence
             selectedSequence
             = extractor
             ->getSelectedSequence();

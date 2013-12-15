@@ -3,7 +3,7 @@
 
 #include <QString>
 
-namespace MediaLearner{
+namespace ML{
 
 struct Sequence{
     Sequence();

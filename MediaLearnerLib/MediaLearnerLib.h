@@ -8,7 +8,7 @@
 #include "encoders/FFmpegEncoder.h"
 
 
-namespace MediaLearner{
+namespace ML{
 class MEDIALEARNERLIBSHARED_EXPORT MediaLearnerLib{
 
 public:

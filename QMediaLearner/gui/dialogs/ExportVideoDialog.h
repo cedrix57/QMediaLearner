@@ -16,15 +16,15 @@ class ExportVideoDialog : public QDialog{
     
 public:
     explicit ExportVideoDialog(
-            MediaLearner::MediaLearnerLib
+            ML::MediaLearnerLib
             *mediaLearner,
             QWidget *parent = 0);
     ~ExportVideoDialog();
     
 protected:
     Ui::ExportVideoDialog *ui;
-    MediaLearner::MediaLearnerLib *mediaLearner;
-    MediaLearner::SequencesWithSubs sequencesWithSubs;
+    ML::MediaLearnerLib *mediaLearner;
+    ML::SequencesWithSubs sequencesWithSubs;
     void _connectSlots();
     void _loadInfos();
     virtual void accept();

@@ -9,7 +9,7 @@
 
 #include "subtitles/SubSequence.h"
 
-namespace MediaLearner{
+namespace ML{
 
 class SettingsManagerSingleton : public QObject{
     Q_OBJECT
@@ -24,6 +24,7 @@ public:
             int subPosition);
     SubPosition getSubPosition(
             int subPosition);
+    QString getExtractedVideoPath();
 
 signals:
     void languageChanged(QString language);
@@ -44,6 +45,7 @@ public slots:
     void setSubPosition(
             int subPosition,
             SubPosition position);
+    void setExtractedVideoPath(QString path);
 
 protected:
     explicit SettingsManagerSingleton(

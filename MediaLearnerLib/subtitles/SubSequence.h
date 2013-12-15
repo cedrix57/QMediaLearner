@@ -8,7 +8,7 @@
 #include <QSize>
 #include <QList>
 
-namespace MediaLearner{
+namespace ML{
 
 enum SubSize{Small, Medium, Big};
 enum SubPosition{Top, Center, Bottom};

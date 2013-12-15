@@ -6,7 +6,7 @@
 #include "../sequenceExtractor/SequenceExtractor.h"
 
 
-namespace MediaLearner{
+namespace ML{
 
 class SubtitlesManager : public QObject{
     Q_OBJECT

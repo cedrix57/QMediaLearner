@@ -1,7 +1,7 @@
 #include "PluginSequenceExtractor.h"
 #include <qmath.h>
 
-namespace MediaLearner{
+namespace ML{
 
 //====================================
 //====================================

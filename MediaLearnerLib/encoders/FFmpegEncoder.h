@@ -7,7 +7,7 @@
 
 #include "EncoderInterface.h"
 
-namespace MediaLearner{
+namespace ML{
 
 
 class FFmpegEncoder : public EncoderInterface{ //TODO add abstract EncoderInterface

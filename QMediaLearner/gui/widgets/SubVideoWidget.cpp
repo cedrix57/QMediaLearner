@@ -36,7 +36,7 @@ SubVideoWidget::SubVideoWidget(QWidget *parent) :
 }
 //====================================
 void SubVideoWidget::init(
-        MediaLearner::MediaLearnerLib *mediaLearner){
+        ML::MediaLearnerLib *mediaLearner){
     this->mediaLearner = mediaLearner;
     this->subtitlesManager
     = this->mediaLearner->getSubtitlesManager();
@@ -63,20 +63,20 @@ void SubVideoWidget::_drawSubtitles(
         qint64 position){
     QSize screenSize = this->size();
     int screenHeight = screenSize.height();
-    QList<MediaLearner::SubSequenceDrawable>
+    QList<ML::SubSequenceDrawable>
             drawingTexts
             = this->subtitlesManager
             ->getSubsAt(position,
                        screenSize);
     int i=0;
     this->clearText();
-    foreach(MediaLearner::SubSequenceDrawable drawingText,
+    foreach(ML::SubSequenceDrawable drawingText,
             drawingTexts){
-        QList<MediaLearner::FittedLine> fittedLines
+        QList<ML::FittedLine> fittedLines
                 = drawingText.getFittedLines();
-        MediaLearner::DrawingSettings drawingSettings
+        ML::DrawingSettings drawingSettings
                 = drawingText.getDrawingSettings();
-        foreach(MediaLearner::FittedLine fittedLine,
+        foreach(ML::FittedLine fittedLine,
                 fittedLines){
             //TODO je m'arrête la...transformer en liste
             QGraphicsTextItem *textItem

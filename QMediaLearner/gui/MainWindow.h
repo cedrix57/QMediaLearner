@@ -61,7 +61,7 @@ public slots:
 
 protected:
     Ui::MainWindow *ui;
-    MediaLearner::MediaLearnerLib mediaLearner;
+    ML::MediaLearnerLib mediaLearner;
     QMediaPlayer *mediaPlayer;
     EditExtractionDialog *editExtractionDialog;
     SettingsDialog *settingsDialog;

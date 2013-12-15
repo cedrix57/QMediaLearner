@@ -3,7 +3,7 @@
 #include <QFont>
 #include <QFontMetrics>
 
-namespace MediaLearner{
+namespace ML{
 
 //====================================
 SubSequence::SubSequence(){

@@ -3,7 +3,7 @@
 #include <QDebug>
 //#include <QVideoWidget>
 
-namespace MediaLearner{
+namespace ML{
 
 //====================================
 SequenceExtractor::SequenceExtractor(

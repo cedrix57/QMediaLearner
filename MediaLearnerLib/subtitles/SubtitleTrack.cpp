@@ -2,7 +2,7 @@
 
 #include <QFile>
 
-namespace MediaLearner{
+namespace ML{
 
 //====================================
 SubtitleTrack::SubtitleTrack(QObject *parent) :

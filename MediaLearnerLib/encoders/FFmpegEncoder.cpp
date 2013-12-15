@@ -4,7 +4,7 @@
 #include <QString>
 #include <QMap>
 
-namespace MediaLearner{
+namespace ML{
 
 //====================================
 FFmpegEncoder::FFmpegEncoder(QObject *parent) :

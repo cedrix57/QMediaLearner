@@ -4,7 +4,7 @@
 #include "PluginSequenceExtractor.h"
 #include <QQueue>
 
-namespace MediaLearner{
+namespace ML{
 
 class HighFrequencyExtractor
         : public PluginSequenceExtractor{

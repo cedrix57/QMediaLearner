@@ -15,7 +15,7 @@ public:
     explicit SubVideoWidget(QWidget *parent = 0);
     ~SubVideoWidget();
     void init(
-            MediaLearner::MediaLearnerLib *mediaLearner);
+            ML::MediaLearnerLib *mediaLearner);
     static void onDragEnterEvent(QDragEnterEvent* event);
 
 public slots:
@@ -39,8 +39,8 @@ protected:
     //QVideoWidget videoWidget;
     //QGraphicsTextItem textItems[
     //MediaLearner::SubtitlesManager::N_MAX_TRACKS];
-    MediaLearner::MediaLearnerLib *mediaLearner;
-    MediaLearner::SubtitlesManager *subtitlesManager;
+    ML::MediaLearnerLib *mediaLearner;
+    ML::SubtitlesManager *subtitlesManager;
     QList<QGraphicsTextItem *> textItems;
     QGraphicsTextItem * _getTextItem(int index);
     virtual void resizeEvent(

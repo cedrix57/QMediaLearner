@@ -11,7 +11,7 @@
 //#include "DrawingText.h"
 #include "SubSequence.h"
 
-namespace MediaLearner{
+namespace ML{
 
 struct SubtitleInfo{
     qint64 startPosition;

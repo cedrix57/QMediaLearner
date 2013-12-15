@@ -4,7 +4,7 @@
 #include <QFontMetrics>
 #include <QDebug>
 #include <QSet>
-namespace MediaLearner{
+namespace ML{
 
 //====================================
 SubtitlesManager::SubtitlesManager(QObject *parent) :
@@ -112,15 +112,15 @@ void SubtitlesManager::setContext(
         = subSequencesDrawable.begin();
         it != subSequencesDrawable.end();
         ++it){
-        MediaLearner::DrawingSettings
+        ML::DrawingSettings
                 drawingSettings
                 = it->getDrawingSettings();
-        MediaLearner::SubPosition position
+        ML::SubPosition position
                 = drawingSettings.subPosition;
         int positionIndex = 0;
-        if(position == MediaLearner::Center){
+        if(position == ML::Center){
             positionIndex = 1;
-        }else if(position == MediaLearner::Top){
+        }else if(position == ML::Top){
             positionIndex = 2;
         }
         int firstCoord = firstCoords[positionIndex];

@@ -11,7 +11,7 @@
 #include <QTime>
 #include "../Utils/Sequence.h"
 
-namespace MediaLearner{
+namespace ML{
 
 struct SharedBuffer{
     int *buffer;

@@ -1,10 +1,11 @@
 #include "ExportVideoDialog.h"
 #include "ui_ExportVideoDialog.h"
 #include <QFileDialog>
+#include <SettingsManagerSingleton.h>
 
 //====================================
 ExportVideoDialog::ExportVideoDialog(
-        MediaLearner::MediaLearnerLib
+        ML::MediaLearnerLib
         *mediaLearner,
         QWidget *parent) :
     QDialog(parent),
@@ -35,7 +36,7 @@ void ExportVideoDialog::onProfileChanged(
             = this->ui->lineEditFilePath
             ->text();
     if(!filePath.isEmpty() && filePath.indexOf(".") != -1){
-        MediaLearner::EncoderInterface
+        ML::EncoderInterface
                 *encoder
                 = this->mediaLearner
                 ->getEncoder();
@@ -55,7 +56,7 @@ void ExportVideoDialog::onProfileChanged(
 }
 //====================================
 void ExportVideoDialog::_connectSlots(){
-    MediaLearner::EncoderInterface
+    ML::EncoderInterface
             *encoder
             = this->mediaLearner
             ->getEncoder();
@@ -86,25 +87,25 @@ void ExportVideoDialog::_connectSlots(){
 }
 //====================================
 void ExportVideoDialog::_loadInfos(){
-    MediaLearner::EncoderInterface
+    ML::EncoderInterface
             *encoder
             = this->mediaLearner
             ->getEncoder();
-    QMap<QString, MediaLearner::ProfileInfo>
+    QMap<QString, ML::ProfileInfo>
             videoProfiles
             = encoder->getAvailableVideoProfiles();
     foreach(QString profile, videoProfiles.keys()){
         this->ui->comboBoxProfilesVideo->addItem(
                     profile);
     }
-    QMap<QString, MediaLearner::ProfileInfo>
+    QMap<QString, ML::ProfileInfo>
             audioProfiles
             = encoder->getAvailableAudioProfiles();
     foreach(QString profile, audioProfiles.keys()){
         this->ui->comboBoxProfilesAudio->addItem(
                     profile);
     }
-    MediaLearner::SubtitlesManager *subManager
+    ML::SubtitlesManager *subManager
             = this->mediaLearner->getSubtitlesManager();
     bool sub1 = subManager->isSubTrackEnabled(0);
     bool sub2 = subManager->isSubTrackEnabled(1);
@@ -127,23 +128,23 @@ ExportVideoDialog::~ExportVideoDialog(){
 }
 //====================================
 void ExportVideoDialog::accept(){
-    MediaLearner::EncoderInterface
+    ML::EncoderInterface
             *encoder
             = this->mediaLearner
             ->getEncoder();
-    MediaLearner::SequenceExtractor
+    ML::SequenceExtractor
             *sequenceExtractor
             = this->mediaLearner
             ->getSequenceExtractor();
-    MediaLearner::SubtitlesManager
+    ML::SubtitlesManager
             *subtitlesManager
             = this->mediaLearner
             ->getSubtitlesManager();
-    QSharedPointer<QList<MediaLearner::Sequence> >
+    QSharedPointer<QList<ML::Sequence> >
             sequences
             = sequenceExtractor
             ->getExtractedSequences();
-    MediaLearner::SubtitleTrack*
+    ML::SubtitleTrack*
             subs
             = subtitlesManager
             ->getSubtitleTracks();
@@ -170,7 +171,7 @@ void ExportVideoDialog::accept(){
     }
     QString outVideoFilePath
             = this->ui->lineEditFilePath->text();
-    QList<MediaLearner::SequenceWithSubs>
+    QList<ML::SequenceWithSubs>
             sequencesWithSubs
             = this->sequencesWithSubs.getSequencesWithTexts();
     encoder->setSequences(
@@ -183,10 +184,14 @@ void ExportVideoDialog::accept(){
 }
 //====================================
 void ExportVideoDialog::browseNewVideoFilePath(){
+    QString lastDirPath
+            = ML::SettingsManagerSingleton::getInstance()
+            ->getExtractedVideoPath();
     QString filePath
             = QFileDialog::getSaveFileName(
                 this,
-                tr("Choose a new file"));
+                tr("Choose a new file"),
+                lastDirPath);
     if(!filePath.isNull()){
         QString profileName;
         if(this->ui->radioButtonAudioProfile->isChecked()){
@@ -196,7 +201,7 @@ void ExportVideoDialog::browseNewVideoFilePath(){
             profileName
                     = this->ui->comboBoxProfilesVideo->currentText();
         }
-        MediaLearner::EncoderInterface
+        ML::EncoderInterface
                 *encoder
                 = this->mediaLearner
                 ->getEncoder();
@@ -205,6 +210,12 @@ void ExportVideoDialog::browseNewVideoFilePath(){
         filePath += "." + ext;
         this->ui->lineEditFilePath
                 ->setText(filePath);
+        QDir dirPath(filePath);
+        dirPath.cd("..");
+        QString currentPath = dirPath.path();
+        ML::SettingsManagerSingleton::getInstance()
+                ->setExtractedVideoPath(
+                    currentPath);
     }
 }
 //====================================

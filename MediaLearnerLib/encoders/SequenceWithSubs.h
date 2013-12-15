@@ -5,7 +5,7 @@
 #include "../subtitles/SubSequence.h"
 #include "../subtitles/SubtitleTrack.h"
 
-namespace MediaLearner{
+namespace ML{
 
 //====================================
 struct SequenceWithSubs : Sequence{

@@ -41,17 +41,17 @@ void MainWindow::_initMediaPlayer(){
 }
 //====================================
 void MainWindow::_initExtractor(){
-    QMap<QString, MediaLearner::PluginSequenceExtractor*>
+    QMap<QString, ML::PluginSequenceExtractor*>
             availableExtractors
-            = MediaLearner
+            = ML
             ::PluginSequenceExtractor
             ::getExtractors();
-    MediaLearner::PluginSequenceExtractor*
+    ML::PluginSequenceExtractor*
             firstExtractor
             = availableExtractors
             .values()
             .first();
-    MediaLearner::SequenceExtractor *extractor
+    ML::SequenceExtractor *extractor
             = this->mediaLearner
             .getSequenceExtractor();
     extractor->setExtractor(firstExtractor);
@@ -289,7 +289,7 @@ void MainWindow::openSubtrack(int position){
 void MainWindow::openSubtrack(
         int position,
         QString filePath){
-    MediaLearner::SubtitlesManager
+    ML::SubtitlesManager
             *subtitlesManager
             = this->mediaLearner
             .getSubtitlesManager();
@@ -323,7 +323,7 @@ void MainWindow::setEnabledSubtrack1(bool enable){
 void MainWindow::setEnabledSubtrack(
         int position,
         bool enabled){
-    MediaLearner::SubtitlesManager
+    ML::SubtitlesManager
             *subtitlesManager
             = this->mediaLearner
             .getSubtitlesManager();
@@ -409,7 +409,7 @@ void MainWindow::editExtractions(){
 }
 //====================================
 void MainWindow::extract(){
-        MediaLearner::SequenceExtractor *extractor
+        ML::SequenceExtractor *extractor
                 = this->mediaLearner
                 .getSequenceExtractor();
         qint64 currentPosition

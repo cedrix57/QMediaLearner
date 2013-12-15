@@ -33,9 +33,9 @@ void SettingsDialog::_connectSlots(){
 }
 //====================================
 void SettingsDialog::loadSettings(){
-    MediaLearner::SettingsManagerSingleton
+    ML::SettingsManagerSingleton
             *settingsManager
-            = MediaLearner::SettingsManagerSingleton
+            = ML::SettingsManagerSingleton
             ::getInstance();
     QString fontFamily1
             = settingsManager->getSubFontFamily(0);
@@ -49,31 +49,31 @@ void SettingsDialog::loadSettings(){
             ->setCurrentText(fontFamily2);
     this->ui->fontComboSub3
             ->setCurrentText(fontFamily3);
-    MediaLearner::SubSize
+    ML::SubSize
             subSize1
             = settingsManager->getSubSize(0);
     this->ui->comboBoxSize1
             ->setCurrentIndex(
                 (int)subSize1);
-    MediaLearner::SubSize
+    ML::SubSize
             subSize2
             = settingsManager->getSubSize(1);
     this->ui->comboBoxSize2
             ->setCurrentIndex(
                 (int)subSize2);
-    MediaLearner::SubSize
+    ML::SubSize
             subSize3
             = settingsManager->getSubSize(2);
     this->ui->comboBoxSize3
             ->setCurrentIndex(
                 (int)subSize3);
-    MediaLearner::SubPosition
+    ML::SubPosition
             subPosition1
             = settingsManager->getSubPosition(0);
-    MediaLearner::SubPosition
+    ML::SubPosition
             subPosition2
             = settingsManager->getSubPosition(1);
-    MediaLearner::SubPosition
+    ML::SubPosition
             subPosition3
             = settingsManager->getSubPosition(2);
     this->ui->comboBoxPosition1
@@ -116,9 +116,9 @@ void SettingsDialog::accept(){
 }
 //====================================
 void SettingsDialog::saveSettings(){
-    MediaLearner::SettingsManagerSingleton
+    ML::SettingsManagerSingleton
             *settingsManager
-            = MediaLearner::SettingsManagerSingleton
+            = ML::SettingsManagerSingleton
             ::getInstance();
     QString fontFamily1
             = this->ui->fontComboSub1
@@ -138,44 +138,44 @@ void SettingsDialog::saveSettings(){
             settingsManager->setSubFontFamily(
                         2,
                         fontFamily3);
-    MediaLearner::SubSize
+    ML::SubSize
             subSize1
-            = (MediaLearner::SubSize)
+            = (ML::SubSize)
             this->ui->comboBoxSize1->currentIndex();
     settingsManager->setSubSize(
                 0,
                 subSize1);
-    MediaLearner::SubSize
+    ML::SubSize
             subSize2
-            = (MediaLearner::SubSize)
+            = (ML::SubSize)
             this->ui->comboBoxSize2->currentIndex();
     settingsManager->setSubSize(
                 1,
                 subSize2);
-    MediaLearner::SubSize
+    ML::SubSize
             subSize3
-            = (MediaLearner::SubSize)
+            = (ML::SubSize)
             this->ui->comboBoxSize3->currentIndex();
     settingsManager->setSubSize(
                 2,
                 subSize3);
-    MediaLearner::SubPosition
+    ML::SubPosition
             subPosition1
-            = (MediaLearner::SubPosition)
+            = (ML::SubPosition)
             this->ui->comboBoxPosition1->currentIndex();
             settingsManager->setSubPosition(
                         0,
                         subPosition1);
-    MediaLearner::SubPosition
+    ML::SubPosition
             subPosition2
-            = (MediaLearner::SubPosition)
+            = (ML::SubPosition)
             this->ui->comboBoxPosition2->currentIndex();
             settingsManager->setSubPosition(
                         1,
                         subPosition2);
-    MediaLearner::SubPosition
+    ML::SubPosition
             subPosition3
-            = (MediaLearner::SubPosition)
+            = (ML::SubPosition)
             this->ui->comboBoxPosition3->currentIndex();
             settingsManager->setSubPosition(
                         2,
@@ -197,9 +197,9 @@ void SettingsDialog::pickSubColor1(){
 void SettingsDialog::_pickSubColor(
         int idSub,
         QPushButton *button){
-    MediaLearner::SettingsManagerSingleton
+    ML::SettingsManagerSingleton
             *settingsManager
-            = MediaLearner::SettingsManagerSingleton
+            = ML::SettingsManagerSingleton
             ::getInstance();
     QColor subColor
             = settingsManager->getSubColor(idSub);

@@ -2,7 +2,7 @@
 
 #include <QTime>
 
-namespace MediaLearner{
+namespace ML{
 
 //====================================
 Sequence::Sequence(){

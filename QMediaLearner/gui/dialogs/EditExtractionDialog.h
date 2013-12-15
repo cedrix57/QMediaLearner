@@ -16,14 +16,14 @@ class EditExtractionDialog : public QDialog
     
 public:
     explicit EditExtractionDialog(
-            MediaLearner::MediaLearnerLib
+            ML::MediaLearnerLib
             *mediaLearner,
             QWidget *parent = 0);
     ~EditExtractionDialog();
 
 public slots:
     void addSequence(
-            MediaLearner::Sequence sequence);
+            ML::Sequence sequence);
     void playOrPause();
     void removeSelectedSequence();
     void exportVideo();
@@ -45,9 +45,9 @@ protected slots:
 
 protected:
     Ui::EditExtractionDialog *ui;
-    MediaLearner::MediaLearnerLib *mediaLearner;
+    ML::MediaLearnerLib *mediaLearner;
     QMediaPlayer *mediaPlayer;
-    QSharedPointer<QList<MediaLearner::Sequence> >
+    QSharedPointer<QList<ML::Sequence> >
             backupSequences;
     ExportVideoDialog *exportVideoDialog;
     void _connectSlots();
