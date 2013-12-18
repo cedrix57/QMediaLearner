@@ -2,13 +2,14 @@
 #define SEQUENCE_H
 
 #include <QString>
+#include <QMetaType>
 
 namespace ML{
 
 struct Sequence{
     Sequence();
-    long beginInMs;
-    long endInMs;
+    qint64 beginInMs;
+    qint64 endInMs;
     bool isNull();
     bool contains(long value);
     bool intersect(Sequence &other);
@@ -19,6 +20,9 @@ struct Sequence{
     virtual ~Sequence();
 };
 
+
 }
+
+//Q_DECLARE_METATYPE(ML::Sequence)
 
 #endif // SEQUENCE_H

@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QSharedPointer>
+#include <QList>
 #include <QSettings>
 #include <sequenceExtractor/PluginSequenceExtractor.h>
 
