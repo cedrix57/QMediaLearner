@@ -1,6 +1,6 @@
-- Test encoding window
-- Think about a way to reload data when the application crashes. Singleton with information
+- Test data reloading when the application crashes.
 - Add a feature to synchronize subtitle
+- Test encoding window
 - Effects settings
 - EncodingInterface: one method for audio profile and an other one for video-
 - Find out some convenient format profile

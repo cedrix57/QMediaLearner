@@ -10,6 +10,7 @@
 #include <sequenceExtractor/PluginSequenceExtractor.h>
 #include "dialogs/SettingsDialog.h"
 #include "dialogs/EditExtractionDialog.h"
+#include <CrashManagerSingleton.h>
 
 //====================================
 MainWindow::MainWindow(QWidget *parent) :
@@ -27,6 +28,10 @@ MainWindow::MainWindow(QWidget *parent) :
 //====================================
 MainWindow::~MainWindow(){
     delete ui;
+    ML::CrashManagerSingleton *crashManager
+            = ML::CrashManagerSingleton
+            ::getInstance();
+    crashManager->setHasCrashed(false);
 }
 //====================================
 void MainWindow::_initMediaPlayer(){
@@ -204,6 +209,65 @@ void MainWindow::_connectMenaBarSlots(){
                 this->ui->actionAbout,
                 SIGNAL(triggered()),
                 SLOT(about()));
+}
+//====================================
+void MainWindow::reloadAfterCrashEventually(){
+    ML::CrashManagerSingleton *crashManager
+            = ML::CrashManagerSingleton
+            ::getInstance();
+    bool hasCrashed =
+            crashManager->getHasCrashed();
+    if(hasCrashed){
+        QString mediaFilePath
+                = crashManager
+                ->getMediaFilePath();
+        if(!mediaFilePath.isEmpty()){
+            this->playVideo(mediaFilePath);
+            this->mediaPlayer->pause();
+            int position
+                = crashManager->getMediaPosition();
+            this->mediaPlayer->setPosition(
+                        position);
+            int volume
+                = crashManager->getVolume();
+            this->mediaPlayer->setVolume(
+                        volume);
+            double playbackRate
+                = crashManager->getPlaybackRate();
+            this->mediaPlayer->setPlaybackRate(
+                        playbackRate);
+            ML::SubtitlesManager
+                    *subtitlesManager
+                    = this->mediaLearner
+                    .getSubtitlesManager();
+            for(int i=0;
+                i<ML::SubtitlesManager::N_MAX_TRACKS;
+                i++){
+                QString subtitleFilePath
+                        = crashManager
+                        ->getSubtitle(i);
+                if(!subtitleFilePath.isEmpty()){
+                    this->openSubtrack(
+                                i,
+                                subtitleFilePath);
+                    bool subEnabled
+                            = crashManager
+                            ->getSubtitleEnabled(i);
+                    this->setEnabledSubtrack(
+                                i,
+                                subEnabled);
+                    int subShift
+                            = crashManager
+                            ->getSubtitleShift(i);
+                    subtitlesManager->setSubtitleShift(
+                                i,
+                                subShift);
+
+                }
+            }
+        }
+    }
+    crashManager->setHasCrashed(true);
 }
 //====================================
 // Media
