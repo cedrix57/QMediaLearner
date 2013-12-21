@@ -1,5 +1,4 @@
 - Test encoding window
-- The edit button shall be enabled only when a sequence is available
 - Think about a way to reload data when the application crashes. Singleton with information
 - Add a feature to synchronize subtitle
 - Effects settings

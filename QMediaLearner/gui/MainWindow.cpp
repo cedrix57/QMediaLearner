@@ -89,6 +89,13 @@ void MainWindow::_connectMediaPlayerSlots(){
                 this->ui->sliderPosition,
                 SIGNAL(sliderMoved(int)),
                 SLOT(_onPositionSliderMoved(int)));
+    ML::SequenceExtractor *extractor
+            = this->mediaLearner
+            .getSequenceExtractor();
+    this->connect(
+                extractor,
+                SIGNAL(numberOfSequencesChanged(int)),
+                SLOT(_onNumberOfSequencesChanged(int)));
     //TODO on playback rate changed
 }
 //====================================
@@ -511,6 +518,17 @@ void MainWindow::_setVolume(
     this->ui->labelVolume
             ->setText(
                 percentageString);
+}
+//====================================
+void MainWindow::_onNumberOfSequencesChanged(
+        int nSequences){
+    if(nSequences > 0){
+        this->ui->buttonEdit
+                ->setEnabled(true);
+    }else{
+        this->ui->buttonEdit
+                ->setEnabled(false);
+    }
 }
 //====================================
 //Tools

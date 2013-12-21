@@ -88,6 +88,8 @@ protected slots:
             int position);
     void _setVolume(
             int percentage);
+    void _onNumberOfSequencesChanged(
+            int nSequences);
 };
 
 #endif // MAINWINDOW_H

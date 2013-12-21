@@ -83,10 +83,12 @@ void SequenceExtractor::extractSequence(int position){
     int duration = this->mediaPlayer.duration();
     sequence.endInMs = qMin(duration, position + 2000);
     *this->extractedSequences << sequence;
-    this->sequenceExtracted(sequence);
     CrashManagerSingleton::getInstance()
             ->setSequences(
                 this->extractedSequences);
+    this->sequenceExtracted(sequence);
+    int nSequences = this->extractedSequences->size();
+    this->numberOfSequencesChanged(nSequences);
     /*
     int msecAhead = 5000;
     qint64 durationProcessedInMs
@@ -190,7 +192,7 @@ QList<Sequence>
     return this->allSequences;
 }
 //====================================
-void SequenceExtractor::deleteSequence(
+void SequenceExtractor::removeSequence(
         int position){
     this->extractedSequences
             ->removeAt(
@@ -202,6 +204,8 @@ void SequenceExtractor::deleteSequence(
     CrashManagerSingleton::getInstance()
             ->setSequences(
                 this->extractedSequences);
+    int nSequences = this->extractedSequences->size();
+    this->numberOfSequencesChanged(nSequences);
 }
 //====================================
 void SequenceExtractor::changeSequence(
@@ -283,10 +287,15 @@ void SequenceExtractor::setSequences(
         QSharedPointer<
         QList<Sequence> >
         sequences){
+    int nOldSequences = this->extractedSequences->size();
     this->extractedSequences
             = sequences;
     CrashManagerSingleton::getInstance()
             ->setSequences(sequences);
+    int nSequences = this->extractedSequences->size();
+    if(nSequences != nOldSequences){
+         this->numberOfSequencesChanged(nSequences);
+    }
 }
 //====================================
 QMediaPlayer *SequenceExtractor::getMediaPlayer(){

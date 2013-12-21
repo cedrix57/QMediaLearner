@@ -197,7 +197,7 @@ void EditExtractionDialog::removeSelectedSequence(){
             ->currentRow();
     this->ui->listSequences->takeItem(
                 currentPosition);
-    extractor->deleteSequence(currentPosition);
+    extractor->removeSequence(currentPosition);
     this->_hideExportButtonEventually();
 }
 //====================================

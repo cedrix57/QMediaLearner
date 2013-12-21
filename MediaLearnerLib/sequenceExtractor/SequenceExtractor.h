@@ -37,7 +37,7 @@ public:
     QList<Sequence> > getAllSequences();
     bool isExtractionFinished();
     void waitForExtractionFinished();
-    void deleteSequence(
+    void removeSequence(
             int position);
     void changeSequence(
             int position,
@@ -62,6 +62,7 @@ signals:
             ML::Sequence sequence);
     void sequencesExtracted();
     void sequencesExtractionFailed();
+    void numberOfSequencesChanged(int n);
 
 public slots:
 
