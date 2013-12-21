@@ -49,3 +49,6 @@ FORMS    += gui/MainWindow.ui \
     gui/dialogs/EditExtractionDialogs.ui \
     gui/dialogs/SettingsDialog.ui \
     gui/dialogs/ExportVideoDialog.ui
+
+RESOURCES += \
+    QMediaLearner.qrc

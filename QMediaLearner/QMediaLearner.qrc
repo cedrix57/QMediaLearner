@@ -1,0 +1,14 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>gui/icons/add-list-24.ico</file>
+    <file>gui/icons/arrow-32-24.ico</file>
+    <file>gui/icons/arrow-97-24.ico</file>
+    <file>gui/icons/pause-24.ico</file>
+    <file>gui/icons/play-24.ico</file>
+    <file>gui/icons/plus-24.ico</file>
+    <file>gui/icons/repeat-24.ico</file>
+    <file>gui/icons/save-24.ico</file>
+    <file>gui/icons/stop-24.ico</file>
+    <file>gui/icons/x-mark-24.ico</file>
+  </qresource>
+</RCC>

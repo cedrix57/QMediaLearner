@@ -94,7 +94,11 @@ void MainWindow::_connectMediaPlayerSlots(){
 //====================================
 void MainWindow::_connectToolBarSlots(){
     this->connect(
-                this->ui->buttonPlayPause,
+                this->ui->buttonPlay,
+                SIGNAL(clicked()),
+                SLOT(playOrPause()));
+    this->connect(
+                this->ui->buttonPause,
                 SIGNAL(clicked()),
                 SLOT(playOrPause()));
     this->connect(
@@ -358,14 +362,20 @@ void MainWindow::playOrPause(){
 void MainWindow::_onMediaPlayerStateChanged(
         QMediaPlayer::State state){
     if(state == QMediaPlayer::PlayingState){
-        this->ui->buttonPlayPause
-                ->setText(tr("Pause"));
+        this->ui->buttonPlay->hide();
+        this->ui->buttonPause->show();
+        //this->ui->buttonPlayPause
+                //->setIcon(QIcon(":/icons/pause-24.ico"));
+                //->setText(tr("Pause"));
         this->ui->sliderPosition->setEnabled(true);
         this->ui->buttonExtract->setEnabled(true);
     }else if(state == QMediaPlayer::PausedState
              || state == QMediaPlayer::StoppedState){
-        this->ui->buttonPlayPause
-                ->setText(tr("Play"));
+        this->ui->buttonPlay->show();
+        this->ui->buttonPause->hide();
+        //this->ui->buttonPlayPause
+                //->setIcon(QIcon(":/icons/play-24.ico"));
+                //->setText(tr("Play"));
         if(state == QMediaPlayer::StoppedState){
             this->ui->sliderPosition->setValue(0);
             this->ui->sliderPosition->setEnabled(false);
@@ -377,8 +387,8 @@ void MainWindow::_onMediaPlayerStateChanged(
 //====================================
 void MainWindow::stop(){
     this->mediaPlayer->stop();
-    this->ui->buttonPlayPause
-            ->setText(tr("Play"));
+    this->ui->buttonPlay->show();
+    this->ui->buttonPause->hide();
 }
 //====================================
 void MainWindow::repeatMode(bool enabled){

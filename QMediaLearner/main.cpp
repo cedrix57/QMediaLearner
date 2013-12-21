@@ -5,10 +5,13 @@
 #include <QGraphicsProxyWidget>
 #include <QVideoWidget>
 #include <QMediaPlayer>
+#include <QStyleFactory>
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
+    //QStringList styles = QStyleFactory::keys();
+    //app.setStyle("Windows");
     /*
     QMediaPlayer *player = new QMediaPlayer();
     QVideoWidget videoWidget;

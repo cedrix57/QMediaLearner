@@ -47,7 +47,11 @@ void EditExtractionDialog::_connectSlots(){
                 SIGNAL(currentRowChanged(int)),
                 SLOT(_onSelectionChanged(int)));
     this->connect(
-                this->ui->buttonPlayPause,
+                this->ui->buttonPlay,
+                SIGNAL(clicked()),
+                SLOT(playOrPause()));
+    this->connect(
+                this->ui->buttonPause,
                 SIGNAL(clicked()),
                 SLOT(playOrPause()));
     this->connect(
@@ -136,9 +140,9 @@ void EditExtractionDialog::_onSelectionChanged(int index){
         int sequenceShift = 2000;
         int minSlider
                 = qMax(
-                    0l,
+                    0ll,
                     sequence.beginInMs - 2000);
-        long int duration = this->mediaPlayer->duration();
+        qint64 duration = this->mediaPlayer->duration();
         int maxSlider
                 = qMin(
                     duration,
@@ -224,12 +228,12 @@ void EditExtractionDialog::exportVideo(){
 void EditExtractionDialog::_onMediaPlayerStateChanged(
         QMediaPlayer::State state){
     if(state == QMediaPlayer::PlayingState){
-        this->ui->buttonPlayPause
-                ->setText(tr("Pause"));
+        this->ui->buttonPlay->hide();
+        this->ui->buttonPause->show();
     }else if(state == QMediaPlayer::PausedState
              || state == QMediaPlayer::StoppedState){
-        this->ui->buttonPlayPause
-                ->setText(tr("Play"));
+        this->ui->buttonPlay->show();
+        this->ui->buttonPause->hide();
     }
 }
 //====================================

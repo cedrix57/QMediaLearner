@@ -126,12 +126,27 @@
     <item row="2" column="0">
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <widget class="QPushButton" name="buttonPlayPause">
+       <widget class="QPushButton" name="buttonPlay">
         <property name="toolTip">
          <string>Play or pause the current media</string>
         </property>
         <property name="text">
-         <string>Play</string>
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../QMediaLearner.qrc">
+          <normaloff>:/icons/gui/icons/play-24.ico</normaloff>:/icons/gui/icons/play-24.ico</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="buttonPause">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../QMediaLearner.qrc">
+          <normaloff>:/icons/gui/icons/pause-24.ico</normaloff>:/icons/gui/icons/pause-24.ico</iconset>
         </property>
        </widget>
       </item>
@@ -141,7 +156,11 @@
          <string>Stop</string>
         </property>
         <property name="text">
-         <string>Stop</string>
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../QMediaLearner.qrc">
+          <normaloff>:/icons/gui/icons/stop-24.ico</normaloff>:/icons/gui/icons/stop-24.ico</iconset>
         </property>
        </widget>
       </item>
@@ -151,20 +170,14 @@
          <string>Repeat mode</string>
         </property>
         <property name="text">
-         <string>Repeat</string>
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../QMediaLearner.qrc">
+          <normaloff>:/icons/gui/icons/repeat-24.ico</normaloff>:/icons/gui/icons/repeat-24.ico</iconset>
         </property>
         <property name="checkable">
          <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="buttonEdit">
-        <property name="toolTip">
-         <string>Edit extractions</string>
-        </property>
-        <property name="text">
-         <string>Edit</string>
         </property>
        </widget>
       </item>
@@ -182,12 +195,30 @@
        </spacer>
       </item>
       <item>
+       <widget class="QPushButton" name="buttonEdit">
+        <property name="toolTip">
+         <string>Edit extractions</string>
+        </property>
+        <property name="text">
+         <string>Edit</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../QMediaLearner.qrc">
+          <normaloff>:/icons/gui/icons/add-list-24.ico</normaloff>:/icons/gui/icons/add-list-24.ico</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="buttonExtract">
         <property name="toolTip">
          <string>Extract</string>
         </property>
         <property name="text">
          <string>Extract</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../QMediaLearner.qrc">
+          <normaloff>:/icons/gui/icons/plus-24.ico</normaloff>:/icons/gui/icons/plus-24.ico</iconset>
         </property>
         <property name="autoDefault">
          <bool>false</bool>
@@ -216,7 +247,11 @@
          <string>Slower</string>
         </property>
         <property name="text">
-         <string>Slower</string>
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../QMediaLearner.qrc">
+          <normaloff>:/icons/gui/icons/arrow-97-24.ico</normaloff>:/icons/gui/icons/arrow-97-24.ico</iconset>
         </property>
        </widget>
       </item>
@@ -233,7 +268,11 @@
          <string>Faster</string>
         </property>
         <property name="text">
-         <string>Faster</string>
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../QMediaLearner.qrc">
+          <normaloff>:/icons/gui/icons/arrow-32-24.ico</normaloff>:/icons/gui/icons/arrow-32-24.ico</iconset>
         </property>
        </widget>
       </item>
@@ -514,7 +553,9 @@
    <header>ClickableSlider.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../QMediaLearner.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>actionClose</sender>

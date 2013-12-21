@@ -3,6 +3,9 @@
 namespace ML{
 
 //====================================
+QSharedPointer<CrashManagerSingleton>
+CrashManagerSingleton::instance;
+//====================================
 CrashManagerSingleton::CrashManagerSingleton(
         QObject *parent) :
     QObject(parent){
