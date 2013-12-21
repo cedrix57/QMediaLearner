@@ -1,10 +1,26 @@
 #include "MediaLearnerLib.h"
+#include "CrashManagerSingleton.h"
 
 
 namespace ML{
 
 //====================================
 MediaLearnerLib::MediaLearnerLib(){
+    CrashManagerSingleton *
+            crashManager
+            = CrashManagerSingleton::getInstance();
+    crashManager->connect(
+                &this->mediaPlayer,
+                SIGNAL(positionChanged(qint64)),
+                SLOT(setMediaPosition(qint64)));
+    crashManager->connect(
+                &this->mediaPlayer,
+                SIGNAL(playbackRateChanged(qreal)),
+                SLOT(setPlaybackRate(double)));
+    crashManager->connect(
+                &this->mediaPlayer,
+                SIGNAL(volumeChanged(int)),
+                SLOT(setVolume(int)));
 }
 //====================================
 MediaLearnerLib::~MediaLearnerLib(){
@@ -33,6 +49,9 @@ void MediaLearnerLib::setMedia(QString mediaPath){
     this->encoder.setInVideoFilePath(
                 mediaPath);
     this->sequenceExtractor.analyseMediaSource();
+    CrashManagerSingleton::getInstance()
+            ->setMediaFilePath(
+                mediaPath);
 }
 //====================================
 EncoderInterface *MediaLearnerLib::getEncoder(){

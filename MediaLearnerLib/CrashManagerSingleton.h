@@ -20,7 +20,7 @@ public:
     QString getSubtitle(int position);
     bool getSubtitleEnabled(int position);
     int getSubtitleShift(int position);
-    float getPlaybackRate();
+    double getPlaybackRate();
     int getVolume();
     QSharedPointer<QList<Sequence> > getSequences();
 
@@ -33,7 +33,7 @@ public slots:
     void setSubtitle(int position, QString filePath);
     void setSubtitleEnabled(int position, bool enabled);
     void setSubtitleShift(int position, int shiftInMs);
-    void setPlaybackRate(float playbackRate);
+    void setPlaybackRate(double playbackRate);
     void setVolume(int volume);
     void setSequences(
             QSharedPointer<

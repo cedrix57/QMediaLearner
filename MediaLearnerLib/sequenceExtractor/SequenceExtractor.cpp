@@ -1,6 +1,7 @@
 #include "SequenceExtractor.h"
 #include <QtConcurrentRun>
 #include <QDebug>
+#include "../CrashManagerSingleton.h"
 //#include <QVideoWidget>
 
 namespace ML{
@@ -83,6 +84,9 @@ void SequenceExtractor::extractSequence(int position){
     sequence.endInMs = qMin(duration, position + 2000);
     *this->extractedSequences << sequence;
     this->sequenceExtracted(sequence);
+    CrashManagerSingleton::getInstance()
+            ->setSequences(
+                this->extractedSequences);
     /*
     int msecAhead = 5000;
     qint64 durationProcessedInMs
@@ -195,6 +199,9 @@ void SequenceExtractor::deleteSequence(
             >= position){
         this->selectedSequence--;
     }
+    CrashManagerSingleton::getInstance()
+            ->setSequences(
+                this->extractedSequences);
 }
 //====================================
 void SequenceExtractor::changeSequence(
@@ -203,6 +210,9 @@ void SequenceExtractor::changeSequence(
     (*this->extractedSequences)
             [position]
             = newSequence;
+    CrashManagerSingleton::getInstance()
+            ->setSequences(
+                this->extractedSequences);
 }
 //====================================
 void SequenceExtractor::changeMinSequence(
@@ -211,6 +221,9 @@ void SequenceExtractor::changeMinSequence(
     (this->extractedSequences
             ->begin() + position)
             ->beginInMs = newMin;
+    CrashManagerSingleton::getInstance()
+            ->setSequences(
+                this->extractedSequences);
 }
 //====================================
 void SequenceExtractor::changeMaxSequence(
@@ -219,6 +232,9 @@ void SequenceExtractor::changeMaxSequence(
     (this->extractedSequences
             ->begin() + position)
             ->endInMs = newMax;
+    CrashManagerSingleton::getInstance()
+            ->setSequences(
+                this->extractedSequences);
 }
 //====================================
 void SequenceExtractor::selectSequence(
@@ -269,6 +285,8 @@ void SequenceExtractor::setSequences(
         sequences){
     this->extractedSequences
             = sequences;
+    CrashManagerSingleton::getInstance()
+            ->setSequences(sequences);
 }
 //====================================
 QMediaPlayer *SequenceExtractor::getMediaPlayer(){

@@ -34,7 +34,7 @@ CrashManagerSingleton::~CrashManagerSingleton(){
 QString keyHasCrashed = "hasCrashed";
 //====================================
 bool CrashManagerSingleton::getHasCrashed(){
-    bool defaultHasCrashed = 0;
+    bool defaultHasCrashed = false;
     bool hasCrashed
         = this->settings->value(
         keyHasCrashed,
@@ -142,9 +142,9 @@ void CrashManagerSingleton::setSubtitleShift(
 //===================================================
 QString keyPlaybackRate = "playbackRate";
 //===================================================
-float CrashManagerSingleton::getPlaybackRate(){
-    float defaultPlaybackRate = 0;
-    float playbackRate
+double CrashManagerSingleton::getPlaybackRate(){
+    double defaultPlaybackRate = 0;
+    double playbackRate
         = this->settings->value(
         keyPlaybackRate,
         defaultPlaybackRate).toFloat();
@@ -152,7 +152,7 @@ float CrashManagerSingleton::getPlaybackRate(){
 }
 //===================================================
 void CrashManagerSingleton::setPlaybackRate(
-        float playbackRate){
+        double playbackRate){
     this->settings->setValue(
                 keyPlaybackRate,
                 playbackRate);

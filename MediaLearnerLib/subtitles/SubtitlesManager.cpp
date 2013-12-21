@@ -1,9 +1,11 @@
 #include "SubtitlesManager.h"
-#include "../SettingsManagerSingleton.h"
 
 #include <QFontMetrics>
 #include <QDebug>
 #include <QSet>
+
+#include "../SettingsManagerSingleton.h"
+#include "CrashManagerSingleton.h"
 namespace ML{
 
 //====================================
@@ -48,10 +50,24 @@ void SubtitlesManager::_initDrawingSettings(){
 //====================================
 void SubtitlesManager::enableTrack(int position){
     this->enabledTracks[position] = true;
+    CrashManagerSingleton::getInstance()
+            ->setSubtitleEnabled(position, true);
+}
+//====================================
+void SubtitlesManager::setSubtitleShift(
+        int position,
+        int shiftInMs){
+    this->trackShifts[position] = shiftInMs;
+    CrashManagerSingleton::getInstance()
+            ->setSubtitleShift(
+                position,
+                shiftInMs);
 }
 //====================================
 void SubtitlesManager::disableTrack(int position){
     this->enabledTracks[position] = false;
+    CrashManagerSingleton::getInstance()
+            ->setSubtitleEnabled(position, false);
 }
 //====================================
 bool SubtitlesManager::isSubTrackEnabled(int position){
@@ -73,6 +89,11 @@ void SubtitlesManager::setTrack(
             .parseSubtitleFileName(
                 subtitleFilePath);
     this->enabledTracks[position] = true;
+    this->setSubtitleShift(
+                position,
+                0);
+    CrashManagerSingleton::getInstance()
+            ->setSubtitle(position, subtitleFilePath);
 }
 //====================================
 QList<SubSequenceDrawable> SubtitlesManager::getSubsAt(

@@ -20,6 +20,7 @@ public:
     void enableTrack(int position);
     void disableTrack(int position);
     bool isSubTrackEnabled(int position);
+    void setSubtitleShift(int position, int shiftInMs);
     void setDrawingSettings(
             int position,
             DrawingSettings &drawingSettings);
@@ -50,6 +51,7 @@ protected slots:
 
 protected:
     bool enabledTracks[N_MAX_TRACKS];
+    int trackShifts[N_MAX_TRACKS];
     SubtitleTrack subtitleTracks[N_MAX_TRACKS];
     SubSequenceDrawable getSubAt(
             qint64 positionInMs,
