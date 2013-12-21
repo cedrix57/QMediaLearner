@@ -32,7 +32,8 @@ SOURCES += main.cpp\
     gui/widgets/SubVideoWidget.cpp \
     gui/dialogs/SettingsDialog.cpp \
     gui/dialogs/ExportVideoDialog.cpp \
-    gui/widgets/ClickableSlider.cpp
+    gui/widgets/ClickableSlider.cpp \
+    gui/dialogs/CurrentSessionSettingsDialog.cpp
 
 HEADERS  += gui/MainWindow.h \
     gui/dialogs/EditExtractionDialog.h \
@@ -43,12 +44,14 @@ HEADERS  += gui/MainWindow.h \
     gui/widgets/SubVideoWidget.h \
     gui/dialogs/SettingsDialog.h \
     gui/dialogs/ExportVideoDialog.h \
-    gui/widgets/ClickableSlider.h
+    gui/widgets/ClickableSlider.h \
+    gui/dialogs/CurrentSessionSettingsDialog.h
 
 FORMS    += gui/MainWindow.ui \
     gui/dialogs/EditExtractionDialogs.ui \
     gui/dialogs/SettingsDialog.ui \
-    gui/dialogs/ExportVideoDialog.ui
+    gui/dialogs/ExportVideoDialog.ui \
+    gui/dialogs/CurrentSessionSettingsDialog.ui
 
 RESOURCES += \
     QMediaLearner.qrc

@@ -10,6 +10,7 @@
 #include <sequenceExtractor/PluginSequenceExtractor.h>
 #include "dialogs/SettingsDialog.h"
 #include "dialogs/EditExtractionDialog.h"
+#include "dialogs/CurrentSessionSettingsDialog.h"
 #include <CrashManagerSingleton.h>
 
 //====================================
@@ -21,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent) :
             ->installEventFilter(this);
     this->editExtractionDialog = NULL;
     this->settingsDialog = NULL;
+    this->currentSettingsDialog = NULL;
     this->_initMediaPlayer();
     this->_initExtractor();
     this->_connectSlots();
@@ -193,9 +195,9 @@ void MainWindow::_connectMenaBarSlots(){
                 SIGNAL(triggered()),
                 SLOT(showPlayingList()));
     this->connect(
-                this->ui->actionEffects,
+                this->ui->actionCurrentSessionSettings,
                 SIGNAL(triggered()),
-                SLOT(showEffects()));
+                SLOT(showCurrentSessionSettings()));
     this->connect(
                 this->ui->actionSettings,
                 SIGNAL(triggered()),
@@ -600,7 +602,12 @@ void MainWindow::_onNumberOfSequencesChanged(
 void MainWindow::showPlayingList(){
 }
 //====================================
-void MainWindow::showEffects(){
+void MainWindow::showCurrentSessionSettings(){
+    delete this->currentSettingsDialog;
+    this->currentSettingsDialog
+            = new CurrentSessionSettingsDialog(
+                this);
+    this->currentSettingsDialog->show();
 }
 //====================================
 void MainWindow::showSettings(){

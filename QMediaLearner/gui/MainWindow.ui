@@ -398,7 +398,7 @@
      <string>&amp;Tools</string>
     </property>
     <addaction name="actionPlayingList"/>
-    <addaction name="actionEffects"/>
+    <addaction name="actionCurrentSessionSettings"/>
     <addaction name="actionSettings"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
@@ -449,9 +449,9 @@
     <string>E&amp;dit extraction</string>
    </property>
   </action>
-  <action name="actionEffects">
+  <action name="actionCurrentSessionSettings">
    <property name="text">
-    <string>&amp;Video &amp;&amp; Audio effects</string>
+    <string>&amp;Current session settings</string>
    </property>
   </action>
   <action name="actionAudioEffects">

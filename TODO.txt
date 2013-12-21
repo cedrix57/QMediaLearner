@@ -2,24 +2,28 @@
 - Add a feature to synchronize subtitle
 - Test encoding window
 - Effects settings
-- EncodingInterface: one method for audio profile and an other one for video-
 - Find out some convenient format profile
 - Get rid of the warnings
 - Create a font directory for the font selection
-- Add a log feature
+- Add a log feature with log sending feature
 - Handle when subtitle are put first or with a video
 - Option to put the sequences in order and remove intersections
-- Update the video widget so it can support video effects
 - Full screen mode for linux/mac. The bottom monu bar should disappear whin the application is maximized
-- The application shouldn't crash if using a
-  subtitle file with mistake
-- Save cutted video
-- Revoir les TODO
+- The application shouldn't crash if using a subtitle file with mistake
+- Check TODO
 - Video extraction
-- When sequences are being extracted a progress dialog shall appear
-  but not when phrase detection is running
+- When sequences are being extracted a progress dialog shall appear but not when phrase detection is running
 - Unit tests on the subtitles features
 - Unit test on media learner lib
+- Traduction
+
+- Website
+- Marketing
+- Mobile application
+
+LATER:
+- Add voice detection activity algorithm
+- Update the video widget so it can support video effects
 - Voice activity detection algorithm test application
 - In the drag an drop of a subtitle track,
   new transparent area should appear and
@@ -29,7 +33,3 @@
   The replacement would be automatic if
   openin a subtitle for the second place
   on a different place
-- Website
-- Marketing
-- Mobile application
-

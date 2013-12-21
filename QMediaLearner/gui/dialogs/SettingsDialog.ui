@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>788</width>
-    <height>385</height>
+    <height>416</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,14 +19,14 @@
      <item>
       <widget class="QListWidget" name="listSettings">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
        <property name="maximumSize">
         <size>
-         <width>16777215</width>
+         <width>180</width>
          <height>16777215</height>
         </size>
        </property>
@@ -170,7 +170,7 @@
            <property name="currentIndex">
             <number>0</number>
            </property>
-           <widget class="QWidget" name="stackedWidgetPage1" native="true">
+           <widget class="QWidget" name="stackedWidgetPage1">
             <layout class="QGridLayout" name="gridLayout_2">
              <item row="0" column="0">
               <widget class="QLabel" name="label_3">
@@ -606,11 +606,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>777</x>
-     <y>374</y>
+     <y>405</y>
     </hint>
     <hint type="destinationlabel">
      <x>658</x>
-     <y>545</y>
+     <y>415</y>
     </hint>
    </hints>
   </connection>
@@ -622,11 +622,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>686</x>
-     <y>374</y>
+     <y>405</y>
     </hint>
     <hint type="destinationlabel">
      <x>538</x>
-     <y>545</y>
+     <y>415</y>
     </hint>
    </hints>
   </connection>

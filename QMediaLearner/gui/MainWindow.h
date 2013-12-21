@@ -6,6 +6,7 @@
 
 class SettingsDialog;
 class EditExtractionDialog;
+class CurrentSessionSettingsDialog;
 
 namespace Ui {
 class MainWindow;
@@ -53,7 +54,7 @@ public slots:
 
     //Tools
     void showPlayingList();
-    void showEffects();
+    void showCurrentSessionSettings();
     void showSettings();
 
     //Help
@@ -66,6 +67,8 @@ protected:
     QMediaPlayer *mediaPlayer;
     EditExtractionDialog *editExtractionDialog;
     SettingsDialog *settingsDialog;
+    CurrentSessionSettingsDialog
+    *currentSettingsDialog;
     void _initMediaPlayer();
     void _initExtractor();
     void _connectSlots();
