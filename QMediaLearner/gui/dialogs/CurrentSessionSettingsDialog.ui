@@ -164,12 +164,21 @@
                <item row="0" column="1">
                 <layout class="QHBoxLayout" name="horizontalLayout_5">
                  <item>
-                  <widget class="QSpinBox" name="spinBoxSubShift1">
+                  <widget class="QDoubleSpinBox" name="spinBoxSubShift1">
                    <property name="minimumSize">
                     <size>
                      <width>80</width>
                      <height>0</height>
                     </size>
+                   </property>
+                   <property name="minimum">
+                    <double>-2000.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>2000.000000000000000</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.100000000000000</double>
                    </property>
                   </widget>
                  </item>
@@ -264,12 +273,21 @@
                <item row="0" column="1">
                 <layout class="QHBoxLayout" name="horizontalLayout_7">
                  <item>
-                  <widget class="QSpinBox" name="spinBoxSubShift2">
+                  <widget class="QDoubleSpinBox" name="spinBoxSubShift2">
                    <property name="minimumSize">
                     <size>
                      <width>80</width>
                      <height>0</height>
                     </size>
+                   </property>
+                   <property name="minimum">
+                    <double>-2000.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>2000.000000000000000</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.100000000000000</double>
                    </property>
                   </widget>
                  </item>
@@ -364,12 +382,21 @@
                <item row="0" column="1">
                 <layout class="QHBoxLayout" name="horizontalLayout_9">
                  <item>
-                  <widget class="QSpinBox" name="spinBoxSubShift3">
+                  <widget class="QDoubleSpinBox" name="spinBoxSubShift3">
                    <property name="minimumSize">
                     <size>
                      <width>80</width>
                      <height>0</height>
                     </size>
+                   </property>
+                   <property name="minimum">
+                    <double>-2000.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>2000.000000000000000</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.100000000000000</double>
                    </property>
                   </widget>
                  </item>
@@ -413,10 +440,13 @@
         <layout class="QHBoxLayout" name="horizontalLayout_10">
          <item>
           <layout class="QFormLayout" name="formLayout_7">
+           <property name="fieldGrowthPolicy">
+            <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+           </property>
            <item row="0" column="0">
             <widget class="QLabel" name="label_10">
              <property name="text">
-              <string>Volume</string>
+              <string>Volume (%)</string>
              </property>
             </widget>
            </item>
@@ -427,6 +457,12 @@
                <width>80</width>
                <height>0</height>
               </size>
+             </property>
+             <property name="maximum">
+              <number>200</number>
+             </property>
+             <property name="singleStep">
+              <number>10</number>
              </property>
             </widget>
            </item>
@@ -513,12 +549,44 @@
    <slot>setCurrentIndex(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>373</x>
-     <y>114</y>
+     <x>325</x>
+     <y>125</y>
     </hint>
     <hint type="destinationlabel">
      <x>436</x>
      <y>147</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonSave</sender>
+   <signal>clicked()</signal>
+   <receiver>CurrentSessionSettingsDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>729</x>
+     <y>447</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>799</x>
+     <y>445</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonCancel</sender>
+   <signal>clicked()</signal>
+   <receiver>CurrentSessionSettingsDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>643</x>
+     <y>441</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>655</x>
+     <y>483</y>
     </hint>
    </hints>
   </connection>

@@ -370,9 +370,9 @@ void MainWindow::openSubtrack(
             *subtitlesManager
             = this->mediaLearner
             .getSubtitlesManager();
-    subtitlesManager->setTrack(
-                filePath,
-                position);
+    subtitlesManager->setSubTrack(
+                position,
+                filePath);
     if(position == 0){
         this->ui->actionEnabled1->setChecked(
                     true);
@@ -405,9 +405,9 @@ void MainWindow::setEnabledSubtrack(
             = this->mediaLearner
             .getSubtitlesManager();
     if(enabled){
-        subtitlesManager->enableTrack(position);
+        subtitlesManager->enableSubTrack(position);
     }else{
-        subtitlesManager->disableTrack(position);
+        subtitlesManager->disableSubTrack(position);
     }
 }
 //====================================
@@ -606,6 +606,7 @@ void MainWindow::showCurrentSessionSettings(){
     delete this->currentSettingsDialog;
     this->currentSettingsDialog
             = new CurrentSessionSettingsDialog(
+                &this->mediaLearner,
                 this);
     this->currentSettingsDialog->show();
 }

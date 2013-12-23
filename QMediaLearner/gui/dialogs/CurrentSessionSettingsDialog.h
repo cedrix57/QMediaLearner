@@ -6,17 +6,24 @@
 namespace Ui {
 class CurrentSessionSettingsDialog;
 }
+namespace ML {
+class MediaLearnerLib;
+}
 
-class CurrentSessionSettingsDialog : public QDialog
-{
+class CurrentSessionSettingsDialog : public QDialog{
     Q_OBJECT
     
 public:
-    explicit CurrentSessionSettingsDialog(QWidget *parent = 0);
+    explicit CurrentSessionSettingsDialog(
+            ML::MediaLearnerLib
+            *mediaLearner,
+            QWidget *parent = NULL);
     ~CurrentSessionSettingsDialog();
     
-private:
+protected:
     Ui::CurrentSessionSettingsDialog *ui;
+    virtual void accept();
+    ML::MediaLearnerLib *mediaLearner;
 };
 
 #endif // CURRENTSESSIONSETTINGSDIALOG_H

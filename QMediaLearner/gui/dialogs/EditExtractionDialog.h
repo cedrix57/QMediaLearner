@@ -18,7 +18,7 @@ public:
     explicit EditExtractionDialog(
             ML::MediaLearnerLib
             *mediaLearner,
-            QWidget *parent = 0);
+            QWidget *parent = NULL);
     ~EditExtractionDialog();
 
 public slots:

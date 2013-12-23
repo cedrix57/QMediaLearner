@@ -13,12 +13,13 @@ class SubtitlesManager : public QObject{
 public:
     static const int N_MAX_TRACKS = 3;
     explicit SubtitlesManager(QObject *parent = 0);
-    int getNTracks();
-    void setTrack(QString subtitleFilePath);
-    void setTrack(QString subtitleFilePath, int position);
+    int getNSubTracks();
+    void setSubTrack(QString subtitleFilePath);
+    void setSubTrack(int position, QString subtitleFilePath);
     //TODO feature to enable/disable track
-    void enableTrack(int position);
-    void disableTrack(int position);
+    void enableSubTrack(int position);
+    void disableSubTrack(int position);
+    void setSubTrackEnabled(int position, bool enabled);
     bool isSubTrackEnabled(int position);
     void setSubtitleShift(int position, int shiftInMs);
     void setDrawingSettings(

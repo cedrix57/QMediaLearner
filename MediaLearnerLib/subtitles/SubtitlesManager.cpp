@@ -48,10 +48,24 @@ void SubtitlesManager::_initDrawingSettings(){
     }
 }
 //====================================
-void SubtitlesManager::enableTrack(int position){
-    this->enabledTracks[position] = true;
+void SubtitlesManager::enableSubTrack(int position){
+    this->setSubTrackEnabled(
+                position,
+                true);
+}
+//====================================
+void SubtitlesManager::setSubTrackEnabled(
+        int position,
+        bool enabled){
+    this->enabledTracks[position] = enabled;
     CrashManagerSingleton::getInstance()
-            ->setSubtitleEnabled(position, true);
+            ->setSubtitleEnabled(position, enabled);
+}
+//====================================
+void SubtitlesManager::disableSubTrack(int position){
+    this->setSubTrackEnabled(
+                position,
+                false);
 }
 //====================================
 void SubtitlesManager::setSubtitleShift(
@@ -64,27 +78,21 @@ void SubtitlesManager::setSubtitleShift(
                 shiftInMs);
 }
 //====================================
-void SubtitlesManager::disableTrack(int position){
-    this->enabledTracks[position] = false;
-    CrashManagerSingleton::getInstance()
-            ->setSubtitleEnabled(position, false);
-}
-//====================================
 bool SubtitlesManager::isSubTrackEnabled(int position){
     return this->enabledTracks[position];
 }
 //====================================
-void SubtitlesManager::setTrack(QString subtitleFilePath){
-    this->setTrack(subtitleFilePath, 0);
+void SubtitlesManager::setSubTrack(QString subtitleFilePath){
+    this->setSubTrack(0, subtitleFilePath);
 }
 //====================================
 SubtitleTrack *SubtitlesManager::getSubtitleTracks(){
     return this->subtitleTracks;
 }
 //====================================
-void SubtitlesManager::setTrack(
-        QString subtitleFilePath,
-        int position){
+void SubtitlesManager::setSubTrack(
+        int position,
+        QString subtitleFilePath){
     this->subtitleTracks[position]
             .parseSubtitleFileName(
                 subtitleFilePath);

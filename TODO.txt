@@ -1,7 +1,5 @@
 - Test data reloading when the application crashes.
-- Add a feature to synchronize subtitle
 - Test encoding window
-- Effects settings
 - Find out some convenient format profile
 - Get rid of the warnings
 - Create a font directory for the font selection
