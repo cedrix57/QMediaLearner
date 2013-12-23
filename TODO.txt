@@ -1,8 +1,6 @@
 - Edit Extraction: sequence name is not updated
 - Test encoding window
-- Closing the edit window shouldn't mess up what was playing
 - Find out some convenient format profile
-- Option to put the sequences in order and remove intersections
 - Get rid of the warnings
 - Create a font directory for the font selection
 - Shortuct for play/pause + sequence extraction
@@ -19,6 +17,8 @@
 - Unit test on media learner lib
 - Traduction
 - Check kill close the application properly
+- Find a way to handle crash management when multiple
+  instance are launched (Define and application id?)
 
 - Website
 - Marketing
@@ -36,3 +36,4 @@ LATER:
   The replacement would be automatic if
   openin a subtitle for the second place
   on a different place
+

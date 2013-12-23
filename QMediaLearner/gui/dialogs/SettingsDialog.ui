@@ -556,6 +556,12 @@
          </item>
          <item row="2" column="0" colspan="3">
           <widget class="QCheckBox" name="checkBox">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Ignored">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="text">
             <string>Sort sequences and remove intersections</string>
            </property>

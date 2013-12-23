@@ -302,5 +302,45 @@ QMediaPlayer *SequenceExtractor::getMediaPlayer(){
     return &this->mediaPlayer;
 }
 //====================================
+void SequenceExtractor::sortAndMergeSequences(){
+    //Sorting
+    int nSequences = this->extractedSequences->size();
+    for(int i=0; i<nSequences; i++){
+        int idMinSequence = i;
+        for(int j=i+1; j<nSequences; j++){
+            if(this->extractedSequences->at(j).beginInMs
+                    < this->extractedSequences->at(idMinSequence)
+                    .beginInMs){
+                idMinSequence = j;
+            }
+        }
+        if(i != idMinSequence){
+            Sequence temp
+                    = this->extractedSequences
+                    ->at(idMinSequence);
+            (*this->extractedSequences)[idMinSequence]
+                    = (*this->extractedSequences)[i];
+            (*this->extractedSequences)[i]
+                    = temp;
+        }
+    }
+    //Merging
+    for(int i=0; i<this->extractedSequences->size()-1; i++){
+        Sequence sequence
+                = (*this->extractedSequences)[i];
+        Sequence nextSequence
+                = (*this->extractedSequences)[i+1];
+        if(sequence.endInMs >= nextSequence.beginInMs){
+            sequence.endInMs
+                    = qMax(
+                        sequence.endInMs,
+                        nextSequence.endInMs);
+            (*this->extractedSequences)[i] = sequence;
+            this->extractedSequences->removeAt(i+1);
+            i--;
+        }
+    }
+}
+//====================================
 }
 

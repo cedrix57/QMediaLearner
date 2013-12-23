@@ -65,6 +65,7 @@ signals:
     void numberOfSequencesChanged(int n);
 
 public slots:
+    void sortAndMergeSequences();
 
 protected slots:
     void extractQueuedSequences();

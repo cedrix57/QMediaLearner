@@ -10,8 +10,7 @@ namespace Ui {
 class EditExtractionDialog;
 }
 
-class EditExtractionDialog : public QDialog
-{
+class EditExtractionDialog : public QDialog{
     Q_OBJECT
     
 public:
@@ -25,6 +24,7 @@ public slots:
     void addSequence(
             ML::Sequence sequence);
     void playOrPause();
+    void sortAndMergeSequences();
     void removeSelectedSequence();
     void exportVideo();
     void accept();
