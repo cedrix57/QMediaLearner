@@ -26,7 +26,7 @@ public:
 
     
 public slots:
-    //void resetInfos();
+    void resetInfos();
     void setHasCrashed(bool crashed);
     void setMediaPosition(qint64 position);
     void setMediaFilePath(QString filePath);

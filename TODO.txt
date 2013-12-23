@@ -1,11 +1,15 @@
-- Test data reloading when the application crashes.
+- Edit Extraction: sequence name is not updated
 - Test encoding window
+- Closing the edit window shouldn't mess up what was playing
 - Find out some convenient format profile
+- Option to put the sequences in order and remove intersections
 - Get rid of the warnings
 - Create a font directory for the font selection
+- Shortuct for play/pause + sequence extraction
+- Ask confirmation before closing the application without saving the sequences
+- Item effect when extracting sequence
 - Add a log feature with log sending feature
 - Handle when subtitle are put first or with a video
-- Option to put the sequences in order and remove intersections
 - Full screen mode for linux/mac. The bottom monu bar should disappear whin the application is maximized
 - The application shouldn't crash if using a subtitle file with mistake
 - Check TODO
@@ -14,6 +18,7 @@
 - Unit tests on the subtitles features
 - Unit test on media learner lib
 - Traduction
+- Check kill close the application properly
 
 - Website
 - Marketing

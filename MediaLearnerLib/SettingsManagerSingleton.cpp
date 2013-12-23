@@ -178,6 +178,29 @@ void SettingsManagerSingleton::setSubPosition(
     this->subSettingsChanged(subPosition);
 }
 //====================================
+const QString KEY_SORTSEQUENCESANDREMOVEINTERSECT = "lang";
+//====================================
+bool SettingsManagerSingleton::getSortSequencesAndRemoveIntersect(){
+    bool enabled
+            = this->settings->value(
+                KEY_SORTSEQUENCESANDREMOVEINTERSECT,
+                true)
+            .toBool();
+    return enabled;
+}
+//====================================
+void SettingsManagerSingleton::setSortSequencesAndRemoveIntersect(
+        bool enabled){
+    bool oldEnabled
+            = this->getSortSequencesAndRemoveIntersect();
+    this->settings->setValue(
+                KEY_SORTSEQUENCESANDREMOVEINTERSECT,
+                enabled);
+    if(oldEnabled != enabled){
+        this->sortSequencesAndRemoveIntersect(enabled);
+    }
+}
+//====================================
 
 }
 

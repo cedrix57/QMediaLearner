@@ -1,6 +1,7 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 #include <QFileDialog>
+#include <QMessageBox>
 #include <QMediaPlaylist>
 #include <QTime>
 #include <QDragEnterEvent>
@@ -12,6 +13,7 @@
 #include "dialogs/EditExtractionDialog.h"
 #include "dialogs/CurrentSessionSettingsDialog.h"
 #include <CrashManagerSingleton.h>
+#include <QTimer>
 
 //====================================
 MainWindow::MainWindow(QWidget *parent) :
@@ -26,6 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
     this->_initMediaPlayer();
     this->_initExtractor();
     this->_connectSlots();
+    this->reloadAfterCrashEventually();
 }
 //====================================
 MainWindow::~MainWindow(){
@@ -219,57 +222,132 @@ void MainWindow::reloadAfterCrashEventually(){
             ::getInstance();
     bool hasCrashed =
             crashManager->getHasCrashed();
+    bool toReset = true;
     if(hasCrashed){
         QString mediaFilePath
                 = crashManager
                 ->getMediaFilePath();
         if(!mediaFilePath.isEmpty()){
-            this->playVideo(mediaFilePath);
-            this->mediaPlayer->pause();
-            int position
-                = crashManager->getMediaPosition();
-            this->mediaPlayer->setPosition(
-                        position);
-            int volume
-                = crashManager->getVolume();
-            this->mediaPlayer->setVolume(
-                        volume);
-            double playbackRate
-                = crashManager->getPlaybackRate();
-            this->mediaPlayer->setPlaybackRate(
-                        playbackRate);
-            ML::SubtitlesManager
-                    *subtitlesManager
-                    = this->mediaLearner
-                    .getSubtitlesManager();
-            for(int i=0;
-                i<ML::SubtitlesManager::N_MAX_TRACKS;
-                i++){
-                QString subtitleFilePath
-                        = crashManager
-                        ->getSubtitle(i);
-                if(!subtitleFilePath.isEmpty()){
-                    this->openSubtrack(
-                                i,
-                                subtitleFilePath);
-                    bool subEnabled
-                            = crashManager
-                            ->getSubtitleEnabled(i);
-                    this->setEnabledSubtrack(
-                                i,
-                                subEnabled);
-                    int subShift
-                            = crashManager
-                            ->getSubtitleShift(i);
-                    subtitlesManager->setSubtitleShift(
-                                i,
-                                subShift);
-
-                }
+            QMessageBox::StandardButton reply
+                    = QMessageBox::question(
+                        this,
+                        tr("The application crashed"),
+                        tr("Do you want to reload previous session with the extracted sequences?"),
+                        QMessageBox::No | QMessageBox::Yes);
+            if(reply == QMessageBox::Yes){
+                this->reloadAfterCrash();
+                toReset = false;
             }
+
         }
     }
+    if(toReset){
+        crashManager->resetInfos();
+    }
     crashManager->setHasCrashed(true);
+}
+//====================================
+void MainWindow::reloadAfterCrash(){
+    ML::CrashManagerSingleton *crashManager
+            = ML::CrashManagerSingleton
+            ::getInstance();
+    QString mediaFilePath
+            = crashManager
+            ->getMediaFilePath();
+    int position
+        = crashManager->getMediaPosition();
+    this->playVideo(mediaFilePath);
+    this->mediaPlayer->pause();
+    qDebug() << "Crash position: " << position;
+    bool seekable
+            = this->mediaPlayer->isSeekable();
+    qDebug() << "Seekable: " << seekable;
+    if(seekable){
+        this->mediaPlayer->setPosition(
+                    position);
+    }else{
+        this->seekLater(position);
+    }
+    //qDebug() << "aa1";
+    int volume
+        = crashManager->getVolume();
+    //qDebug() << "aa2";
+    //this->mediaPlayer->setVolume(
+                //volume);
+    this->ui->sliderVolume->setValue(
+                volume);
+    this->_setVolume(volume);
+    double playbackRate
+        = crashManager->getPlaybackRate();
+    this->mediaPlayer->setPlaybackRate(
+                playbackRate);
+    //qDebug() << "aa3";
+    ML::SubtitlesManager
+            *subtitlesManager
+            = this->mediaLearner
+            .getSubtitlesManager();
+    //qDebug() << "aa4";
+    for(int i=0;
+        i<ML::SubtitlesManager::N_MAX_TRACKS;
+        i++){
+        QString subtitleFilePath
+                = crashManager
+                ->getSubtitle(i);
+        if(!subtitleFilePath.isEmpty()){
+            this->openSubtrack(
+                        i,
+                        subtitleFilePath);
+            bool subEnabled
+                    = crashManager
+                    ->getSubtitleEnabled(i);
+            this->setEnabledSubtrack(
+                        i,
+                        subEnabled);
+            int subShift
+                    = crashManager
+                    ->getSubtitleShift(i);
+            subtitlesManager->setSubtitleShift(
+                        i,
+                        subShift);
+
+        }
+    }
+    //qDebug() << "a5";
+    QSharedPointer<QList<ML::Sequence> > sequences
+    = crashManager->getSequences();
+    ML::SequenceExtractor *
+            sequenceExtractor
+            = this->mediaLearner
+            .getSequenceExtractor();
+    //qDebug() << "a6";
+    sequenceExtractor->setSequences(
+                sequences);
+    //qDebug() << "a7";
+}
+//====================================
+void MainWindow::seekLater(
+        int position,
+        int ms){
+    this->_toSeek = position;
+    QTimer::singleShot(
+                ms,
+                this,
+                SLOT(_seekLater()));
+    //qDebug() << "ok1";
+}
+//====================================
+void MainWindow::_seekLater(){
+    //qDebug() << "ok2";
+    bool seekable
+            = this->mediaPlayer->isSeekable();
+    qDebug() << "Seekable: " << seekable;
+    if(seekable){
+        qDebug() << "this->_toSeek: " << this->_toSeek;
+        this->mediaPlayer->setPosition(
+                    this->_toSeek);
+    }else{
+        this->seekLater(this->_toSeek);
+    }
 }
 //====================================
 // Media
@@ -481,7 +559,7 @@ void MainWindow::repeatMode(bool enabled){
 }
 //====================================
 void MainWindow::editExtractions(){
-    this->stop();
+    this->mediaPlayer->pause();
     //TODO launch a progress dialog if extractions not finished yet
     delete this->editExtractionDialog;
     this->editExtractionDialog

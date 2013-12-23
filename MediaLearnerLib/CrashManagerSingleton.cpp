@@ -31,6 +31,21 @@ CrashManagerSingleton *CrashManagerSingleton::getInstance(){
 CrashManagerSingleton::~CrashManagerSingleton(){
 }
 //====================================
+void CrashManagerSingleton::resetInfos(){
+    this->setMediaPosition(0);
+    this->setMediaFilePath("");
+    this->setPlaybackRate(1);
+    this->setVolume(100);
+    for(int i=0; i<3; i++){
+        this->setSubtitle(i, "");
+        this->setSubtitleEnabled(i, false);
+        this->setSubtitleShift(i, 0);
+    }
+    QSharedPointer<QList<Sequence> >
+            sequences(new QList<Sequence>);
+    this->setSequences(sequences);
+}
+//====================================
 QString keyHasCrashed = "hasCrashed";
 //====================================
 bool CrashManagerSingleton::getHasCrashed(){
@@ -49,18 +64,20 @@ void CrashManagerSingleton::setHasCrashed(bool hasCrashed){
 QString keyMediaPosition = "mediaPosition";
 //===================================================
 qint64 CrashManagerSingleton::getMediaPosition(){
-    qint64 defaultMediaPosition = 0;
-    qint64 mediaPosition
+    double defaultMediaPosition = 0;
+    double mediaPositionDouble
         = this->settings->value(
         keyMediaPosition,
-        defaultMediaPosition).toLongLong();
+        defaultMediaPosition).toDouble();
+    qint64 mediaPosition = mediaPositionDouble * 1000 + 0.5;
     return mediaPosition;
 }
 //===================================================
 void CrashManagerSingleton::setMediaPosition(qint64 mediaPosition){
+    double mediaPositionDouble = mediaPosition / 1000.0;
     this->settings->setValue(
                 keyMediaPosition,
-                mediaPosition);
+                mediaPositionDouble);
 }
 //===================================================
 QString keyMediaFilePath = "mediaFilePath";

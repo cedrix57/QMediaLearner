@@ -19,6 +19,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     void reloadAfterCrashEventually();
+    void reloadAfterCrash();
 
 public slots:
     //Media
@@ -61,6 +62,9 @@ public slots:
     void help();
     void about();
 
+    //Other
+    void seekLater(int position, int ms = 100);
+
 protected:
     Ui::MainWindow *ui;
     ML::MediaLearnerLib mediaLearner;
@@ -78,6 +82,7 @@ protected:
     //virtual void dragEnterEvent(QDragEnterEvent *event);
     //virtual void dropEvent(QDropEvent *event);
     virtual bool eventFilter(QObject *object, QEvent *event);
+    int _toSeek;
 
 protected slots:
     void _onMediaPlayerStateChanged(
@@ -94,6 +99,7 @@ protected slots:
             int percentage);
     void _onNumberOfSequencesChanged(
             int nSequences);
+    void _seekLater();
 };
 
 #endif // MAINWINDOW_H
