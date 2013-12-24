@@ -1,16 +1,10 @@
-- Ask confirmation before closing the application without saving the sequences
-- When sequences are being extracted a progress dialog shall appear but not when phrase detection is running
-- Shortuct for play/pause + sequence extraction
-- Item effect when extracting sequence
 - Create a font directory for the font selection
 - Find out some convenient format profile
 - Test encoding window
+- Handle multi-draging
 - French translation
 - Get rid of the warnings + TODO
 - Add a log feature with log sending feature
-- Handle multi-draging
-- The application shouldn't crash if using a subtitle file with mistake
-- Check kill close the application properly
 - Find a way to handle crash management when multiple
   instance are launched (Define and application id?)
 - Close all of the thread before closing the application
@@ -35,4 +29,5 @@ LATER:
   The replacement would be automatic if
   openin a subtitle for the second place
   on a different place
+- The application shouldn't crash if using a subtitle file with mistake
 

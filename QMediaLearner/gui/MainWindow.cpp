@@ -63,6 +63,14 @@ void MainWindow::closeEvent(QCloseEvent * event){
     }
 }
 //====================================
+void MainWindow::keyPressEvent(
+        QKeyEvent *event){
+    if(event->key() == Qt::Key_Escape){
+        event->accept();
+        this->playOrPause();
+    }
+}
+//====================================
 void MainWindow::_initMediaPlayer(){
     this->mediaPlayer
             = this->mediaLearner.getMediaPlayer();

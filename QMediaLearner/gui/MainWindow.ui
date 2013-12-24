@@ -214,7 +214,7 @@
       <item>
        <widget class="QPushButton" name="buttonExtract">
         <property name="toolTip">
-         <string>Extract</string>
+         <string>Extract a sequence that can be later saved into a new video file (E)</string>
         </property>
         <property name="text">
          <string>Extract</string>
@@ -222,6 +222,9 @@
         <property name="icon">
          <iconset resource="../QMediaLearner.qrc">
           <normaloff>:/icons/gui/icons/plus-24.ico</normaloff>:/icons/gui/icons/plus-24.ico</iconset>
+        </property>
+        <property name="shortcut">
+         <string>E</string>
         </property>
         <property name="autoDefault">
          <bool>false</bool>
@@ -442,6 +445,9 @@
   <action name="actionExtract">
    <property name="text">
     <string>&amp;Extract</string>
+   </property>
+   <property name="shortcut">
+    <string>E</string>
    </property>
   </action>
   <action name="actionEditExtraction">
