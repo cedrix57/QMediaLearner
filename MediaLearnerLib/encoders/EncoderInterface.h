@@ -36,7 +36,7 @@ public:
     virtual QList<EncodingInfo> getAvailableVideoCodecs() = 0;
     virtual QList<EncodingInfo> getAvailableAudioCodecs() = 0;
     virtual QList<EncodingInfo> getAvailableSubtitlesCodecs() = 0;
-    virtual void encode(QString outFilePath) = 0;
+    void encode(QString outFilePath);
     void setInVideoFilePath(QString inVideoFilePath);
     void setSequences(
             QList<SequenceWithSubs> &sequencesWithSubs);
@@ -50,12 +50,17 @@ public:
     void setPlaybackRate(double rate);
 
 signals:
+    void encodingStarted();
     void encodingFinished();
     void encodingFailed();
     void encodingFailed(
             QString errorMessage);
 
+protected slots:
+    void _onEncodingSuccessful();
+
 protected:
+    virtual void startEncoding(QString outFilePath) = 0;
     QString inVideoFilePath;
     QString format;
     QString audioCodec;
@@ -64,6 +69,7 @@ protected:
     QSize newSize;
     double playbackRate;
     QList<SequenceWithSubs> sequencesWithSubs;
+    QList<SequenceWithSubs> lastSavedSequences;
     QString profileName;
     QString getFontPath(QString fontName);
 

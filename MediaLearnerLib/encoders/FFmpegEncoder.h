@@ -21,7 +21,6 @@ public:
     virtual QList<EncodingInfo> getAvailableVideoCodecs();
     virtual QList<EncodingInfo> getAvailableAudioCodecs();
     virtual QList<EncodingInfo> getAvailableSubtitlesCodecs();
-    virtual void encode(QString outFilePath);
     int getFps();
     int getNFrame(qint64 ms, int frameRate);
     virtual QSize getOriginalSize();
@@ -37,6 +36,7 @@ protected slots:
     void _onProcessError(
             QProcess::ProcessError error);
 protected:
+    virtual void startEncoding(QString outFilePath);
     QString getFFmpegFilePath();
     QList<EncodingInfo> _getAvailableCodecs(
             QChar type);

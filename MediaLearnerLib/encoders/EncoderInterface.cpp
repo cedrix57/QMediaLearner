@@ -124,5 +124,15 @@ QString EncoderInterface::getProfileExt(QString profileName){
     return profileInfo.ext;
 }
 //====================================
+void EncoderInterface::encode(QString outFilePath){
+    this->encodingStarted();
+    this->startEncoding(outFilePath);
+}
+//====================================
+void EncoderInterface::_onEncodingSuccessful(){
+    this->lastSavedSequences
+            = sequencesWithSubs;
+}
+//====================================
 
 }

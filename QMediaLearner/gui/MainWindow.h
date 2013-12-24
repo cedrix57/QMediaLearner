@@ -71,6 +71,7 @@ protected:
     QMediaPlayer *mediaPlayer;
     EditExtractionDialog *editExtractionDialog;
     SettingsDialog *settingsDialog;
+    int _toSeek;
     CurrentSessionSettingsDialog
     *currentSettingsDialog;
     void _initMediaPlayer();
@@ -82,7 +83,7 @@ protected:
     //virtual void dragEnterEvent(QDragEnterEvent *event);
     //virtual void dropEvent(QDropEvent *event);
     virtual bool eventFilter(QObject *object, QEvent *event);
-    int _toSeek;
+    virtual void closeEvent(QCloseEvent * event);
 
 protected slots:
     void _onMediaPlayerStateChanged(

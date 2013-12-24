@@ -199,7 +199,7 @@ QString FFmpegEncoder::getFormatedTime(qint64 ms){
     return formatedTime;
 }
 //====================================
-void FFmpegEncoder::encode(QString outFilePath){
+void FFmpegEncoder::startEncoding(QString outFilePath){
     QMap<QString, QString> fontFilePaths;
     this->argumentsList.clear();
     this->tempSequenceFilePaths.clear();

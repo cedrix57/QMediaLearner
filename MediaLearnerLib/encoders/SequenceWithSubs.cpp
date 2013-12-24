@@ -5,6 +5,9 @@
 namespace ML{
 
 //====================================
+QList<Sequence> SequencesWithSubs::lastEncodedSequences;
+bool SequencesWithSubs::encodingFinished = true;
+//====================================
 //====================================
 void SequenceWithSubs::substract(int ms){
     Sequence::substract(ms);
@@ -23,6 +26,9 @@ SequencesWithSubs::SequencesWithSubs(){
 void SequencesWithSubs::init(
         QList<Sequence> &sequences,
         SubtitleTrack *subtitleTracks){
+    SequencesWithSubs::encodingFinished = false;
+    SequencesWithSubs::lastEncodedSequences
+            = sequences;
     this->sequencesWithTexts.clear();
     for(QList<Sequence>::iterator seq
         = sequences.begin();
@@ -63,6 +69,34 @@ void SequencesWithSubs::setScreenSize(
 QList<SequenceWithSubs>
 SequencesWithSubs::getSequencesWithTexts(){
     return this->sequencesWithTexts;
+}
+//====================================
+void SequencesWithSubs::setEnodingFinished(){
+    SequencesWithSubs::encodingFinished = true;
+}
+//====================================
+bool SequencesWithSubs::isSequencesEncoded(
+        QList<Sequence> &sequences){
+    bool encoded
+            = SequencesWithSubs::encodingFinished;
+    if(encoded){
+        int nSequences = sequences.size();
+        int nLastSequences
+                = SequencesWithSubs
+                ::lastEncodedSequences.size();
+        encoded = nSequences == nLastSequences;
+        if(encoded){
+            for(int i=0; i<nSequences; i++){
+                if(sequences[i]
+                        != SequencesWithSubs
+                        ::lastEncodedSequences[i]){
+                    encoded = false;
+                    break;
+                }
+            }
+        }
+    }
+    return encoded;
 }
 //====================================
 

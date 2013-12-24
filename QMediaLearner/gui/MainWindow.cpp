@@ -39,6 +39,30 @@ MainWindow::~MainWindow(){
     crashManager->setHasCrashed(false);
 }
 //====================================
+void MainWindow::closeEvent(QCloseEvent * event){
+    ML::SequenceExtractor *extractor
+            = this->mediaLearner
+            .getSequenceExtractor();
+    QSharedPointer<QList<ML::Sequence> >
+            sequences
+            = extractor->getExtractedSequences();
+    bool extractedSequencesSaved
+            = ML::SequencesWithSubs::isSequencesEncoded(
+                *sequences);
+    if(!extractedSequencesSaved){
+        QMessageBox::StandardButton reply
+                = QMessageBox::question(
+                    this,
+                    tr("Extracted sequences are not saved"),
+                    tr("Do you really want to close the application?"),
+                    QMessageBox::Yes | QMessageBox::No);
+        if(reply == QMessageBox::Yes){
+            this->stop();
+            QMainWindow::closeEvent(event);
+        }
+    }
+}
+//====================================
 void MainWindow::_initMediaPlayer(){
     this->mediaPlayer
             = this->mediaLearner.getMediaPlayer();

@@ -24,11 +24,16 @@ public:
             SubtitleTrack *subtitleTracks);
     void setScreenSize(QSize screenSize);
     QList<SequenceWithSubs> getSequencesWithTexts();
+    static void setEnodingFinished();
+    static bool isSequencesEncoded(
+            QList<Sequence> &sequences);
     //void apply
 
 
 protected:
     QList<SequenceWithSubs> sequencesWithTexts;
+    static QList<Sequence> lastEncodedSequences;
+    static bool encodingFinished;
 };
 //====================================
 

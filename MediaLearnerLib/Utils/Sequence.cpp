@@ -73,4 +73,19 @@ QString Sequence::toString(){
     return res;
 }
 //====================================
+bool Sequence::operator==(
+        const Sequence &other){
+    bool equals
+            = this->beginInMs == other.beginInMs
+            && this->endInMs == other.endInMs;
+    return equals;
+}
+//====================================
+bool Sequence::operator!=(
+        const Sequence &other){
+    bool different
+            = !(*this == other);
+    return different;
+}
+//====================================
 }

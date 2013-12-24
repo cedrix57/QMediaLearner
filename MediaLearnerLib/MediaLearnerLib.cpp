@@ -21,6 +21,10 @@ MediaLearnerLib::MediaLearnerLib(){
                 &this->mediaPlayer,
                 SIGNAL(volumeChanged(int)),
                 SLOT(setVolume(int)));
+    QObject::connect(
+                &this->encoder,
+                &EncoderInterface::encodingFinished,
+                &SequencesWithSubs::setEnodingFinished);
 }
 //====================================
 MediaLearnerLib::~MediaLearnerLib(){

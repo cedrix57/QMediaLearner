@@ -1,30 +1,29 @@
-- Edit Extraction: sequence name is not updated
-- Test encoding window
-- Find out some convenient format profile
-- Get rid of the warnings
-- Create a font directory for the font selection
-- Shortuct for play/pause + sequence extraction
 - Ask confirmation before closing the application without saving the sequences
-- Item effect when extracting sequence
-- Add a log feature with log sending feature
-- Handle when subtitle are put first or with a video
-- Full screen mode for linux/mac. The bottom monu bar should disappear whin the application is maximized
-- The application shouldn't crash if using a subtitle file with mistake
-- Check TODO
-- Video extraction
 - When sequences are being extracted a progress dialog shall appear but not when phrase detection is running
-- Unit tests on the subtitles features
-- Unit test on media learner lib
-- Traduction
+- Shortuct for play/pause + sequence extraction
+- Item effect when extracting sequence
+- Create a font directory for the font selection
+- Find out some convenient format profile
+- Test encoding window
+- French translation
+- Get rid of the warnings + TODO
+- Add a log feature with log sending feature
+- Handle multi-draging
+- The application shouldn't crash if using a subtitle file with mistake
 - Check kill close the application properly
 - Find a way to handle crash management when multiple
   instance are launched (Define and application id?)
+- Close all of the thread before closing the application
+- Ask confirmation to close the application while encoding a video
 
 - Website
 - Marketing
 - Mobile application
+- Unit tests on the subtitles features
+- Unit test on media learner lib
 
 LATER:
+- Full screen mode for linux/mac. The bottom menu bar should disappear whin the application is maximized
 - Add voice detection activity algorithm
 - Update the video widget so it can support video effects
 - Voice activity detection algorithm test application

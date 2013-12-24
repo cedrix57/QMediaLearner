@@ -18,6 +18,8 @@ struct Sequence{
     virtual void substract(int ms);
     QString toString();
     virtual ~Sequence();
+    bool operator==(const Sequence &other);
+    bool operator!=(const Sequence &other);
 };
 
 
