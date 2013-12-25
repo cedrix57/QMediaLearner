@@ -386,13 +386,7 @@ void FFmpegEncoder::_encodeCuttedSequencesCommand(
                      + QString::number(this->playbackRate)
                      + "*PTS";
     }
-    if(!this->newSize.isNull()){
-        arguments << "-vf";
-        arguments << "scale="
-                     + QString::number(this->newSize.width())
-                     + ":"
-                     + QString::number(this->newSize.height());
-    }
+    bool audioOnly = false;
     if(!this->profileName.isEmpty()){
         QMap<QString, ProfileInfo> formatProfiles
                 = this->getAvailableVideoProfiles();
@@ -401,6 +395,16 @@ void FFmpegEncoder::_encodeCuttedSequencesCommand(
         QStringList encodingArguments
                 = encodingInfo.description.split(" ");
         arguments << encodingArguments;
+        if(encodingInfo.description.contains("-vn")){
+            audioOnly = true;
+        }
+    }
+    if(!this->newSize.isNull() && !audioOnly){
+        arguments << "-vf";
+        arguments << "scale="
+                     + QString::number(this->newSize.width())
+                     + ":"
+                     + QString::number(this->newSize.height());
     }
     arguments << "-c";
     arguments << "copy";
