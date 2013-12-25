@@ -15,6 +15,10 @@ ExportVideoDialog::ExportVideoDialog(
             = mediaLearner;
     this->progressDialog.setWindowTitle(
                 tr("Encoding..."));
+    this->progressDialog.setMinimum(
+                0);
+    this->progressDialog.setMaximum(
+                0);
     this->ui->buttonEditProfiles->hide();
     this->_loadInfos();
     this->_connectSlots();

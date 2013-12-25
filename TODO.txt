@@ -1,11 +1,10 @@
 - Create a font directory for the font selection
-- Find out some convenient format profile
 - Test encoding window
 - Get rid of the warnings + TODO
 - Add a log feature with log sending feature (settings included)
 - French translation
 - Windows compilation
-- Check it still works with audio only media content
+- Saving only audio doesn't work
 
 
 OTHER:
@@ -33,4 +32,5 @@ LATER:
   openin a subtitle for the second place
   on a different place
 - The application shouldn't crash if using a subtitle file with mistake
+- Add "Always show this dialog" option on yes no dialog
 

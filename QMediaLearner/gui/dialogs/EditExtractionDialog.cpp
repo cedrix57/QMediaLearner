@@ -273,7 +273,6 @@ void EditExtractionDialog::_onPositionSliderMoved(
         int position){
     this->mediaPlayer->setPosition(position);
 }
-
 //====================================
 void EditExtractionDialog::_onLowerBoundarySliderChanged(
         int position){
