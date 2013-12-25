@@ -20,6 +20,7 @@ ExportVideoDialog::ExportVideoDialog(
     this->_connectSlots();
     this->ui->radioButtonAudioProfile->setChecked(true);
     this->ui->radioButtonVideoProfile->toggle();
+    this->changingSize = false;
 }
 //====================================
 void ExportVideoDialog::onAudioProfileToogled(
@@ -84,6 +85,14 @@ void ExportVideoDialog::_connectSlots(){
                 this->ui->comboBoxProfilesVideo,
                 SIGNAL(currentIndexChanged(QString)),
                 SLOT(onProfileChanged(QString)));
+    this->connect(
+                this->ui->spinBoxHeight,
+                SIGNAL(valueChanged(int)),
+                SLOT(onHeightChanged(int)));
+    this->connect(
+                this->ui->spinBoxWidth,
+                SIGNAL(valueChanged(int)),
+                SLOT(onWidthChanged(int)));
 }
 //====================================
 void ExportVideoDialog::_loadInfos(){
@@ -121,6 +130,7 @@ void ExportVideoDialog::_loadInfos(){
     QSize videoSize = encoder->getOriginalSize();
     this->ui->spinBoxWidth->setValue(videoSize.width());
     this->ui->spinBoxHeight->setValue(videoSize.height());
+    this->originalVideoSize = videoSize;
 }
 //====================================
 ExportVideoDialog::~ExportVideoDialog(){
@@ -216,6 +226,38 @@ void ExportVideoDialog::browseNewVideoFilePath(){
         ML::SettingsManagerSingleton::getInstance()
                 ->setExtractedVideoPath(
                     currentPath);
+    }
+}
+//====================================
+void ExportVideoDialog::onWidthChanged(int width){
+    if(!this->changingSize){
+        this->changingSize = true;
+        int keepRatio
+                = this->ui->checkBoxKeepRatio->isChecked();
+        if(keepRatio){
+            int newHeight
+                    = width
+                    * this->originalVideoSize.height()
+                    / this->originalVideoSize.width();
+            this->ui->spinBoxHeight->setValue(newHeight);
+        }
+        this->changingSize = false;
+    }
+}
+//====================================
+void ExportVideoDialog::onHeightChanged(int height){
+    if(!this->changingSize){
+        this->changingSize = true;
+        int keepRatio
+                = this->ui->checkBoxKeepRatio->isChecked();
+        if(keepRatio){
+            int newWidth
+                    = height
+                    * this->originalVideoSize.width()
+                    / this->originalVideoSize.height();
+            this->ui->spinBoxWidth->setValue(newWidth);
+        }
+        this->changingSize = false;
     }
 }
 //====================================

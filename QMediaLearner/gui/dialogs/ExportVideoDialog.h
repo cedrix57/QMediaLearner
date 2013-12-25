@@ -29,10 +29,14 @@ protected:
     void _loadInfos();
     virtual void accept();
     QProgressDialog progressDialog;
+    QSize originalVideoSize;
+    bool changingSize;
 
 protected slots:
     void onAudioProfileToogled(bool val);
     void onProfileChanged(QString profileName);
+    void onWidthChanged(int width);
+    void onHeightChanged(int height);
 
 public slots:
     void browseNewVideoFilePath();
