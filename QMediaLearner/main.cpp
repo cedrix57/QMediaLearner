@@ -7,6 +7,8 @@
 #include <QMediaPlayer>
 #include <QStyleFactory>
 
+#include <Utils/log.h>
+
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
@@ -25,6 +27,11 @@ int main(int argc, char *argv[])
     player->play();
     view.show();
     //*/
+    #ifndef QT_DEBUG
+        ML::resetLogFile();
+        qInstallMessageHandler(
+                    ML::fileMessageHandler);
+    #endif
 
     MainWindow mainWindow;
     mainWindow.show();

@@ -1,6 +1,7 @@
 #include "SubSequence.h"
 
 #include <QFont>
+#include <QDebug>
 #include <QFontMetrics>
 
 namespace ML{
@@ -10,6 +11,7 @@ SubSequence::SubSequence(){
 }
 //====================================
 int DrawingSettings::getFontSize(int screenHeight){
+    qDebug() << "int DrawingSettings::getFontSize(...) called";
     float heightFontFactor = 0.0638;
     if(this->subSize == Small){
         heightFontFactor = 0.04;
@@ -18,6 +20,7 @@ int DrawingSettings::getFontSize(int screenHeight){
     }
     int fontSize
             = screenHeight * heightFontFactor + 0.5;
+    qDebug() << "int DrawingSettings::getFontSize(...) end";
     return fontSize;
 }
 //====================================
@@ -42,6 +45,7 @@ DrawingSettings SubSequenceDrawable::getDrawingSettings(){
 }
 //====================================
 void SubSequenceDrawable::upText(int shift){
+    qDebug() << "void SubSequenceDrawable::upText(...) called";
     for(QList<FittedLine>::iterator it
         = this->fittedLines.begin();
         it != this->fittedLines.end();
@@ -49,9 +53,11 @@ void SubSequenceDrawable::upText(int shift){
         int newY = it->position.y() - shift;
         it->position.setY(newY);
     }
+    qDebug() << "void SubSequenceDrawable::upText(...) end";
 }
 //====================================
 void SubSequenceDrawable::downText(int shift){
+    qDebug() << "void SubSequenceDrawable::downText(...) called";
     for(QList<FittedLine>::iterator it
         = this->fittedLines.begin();
         it != this->fittedLines.end();
@@ -59,11 +65,13 @@ void SubSequenceDrawable::downText(int shift){
         int newY = it->position.y() + shift;
         it->position.setY(newY);
     }
+    qDebug() << "void SubSequenceDrawable::downText(...) end";
 }
 //====================================
 void SubSequenceDrawable::setContext(
         QSize screenSize,
         int firstCoord){
+    qDebug() << "void SubSequenceDrawable::setContext(...) called";
     this->fittedLines.clear();
     int screenHeight = screenSize.height();
     this->_assessFontSize(
@@ -75,6 +83,7 @@ void SubSequenceDrawable::setContext(
     this->_assessFittedLinePosition(
                 screenSize,
                 firstCoord);
+    qDebug() << "void SubSequenceDrawable::setContext(...) end";
 }
 //====================================
 void SubSequenceDrawable::_assessFontSize(
@@ -86,6 +95,7 @@ void SubSequenceDrawable::_assessFontSize(
 //====================================
 void SubSequenceDrawable::_assessFittedLineText(
         int screenWidth){
+    qDebug() << "void SubSequenceDrawable::_assessFittedLineText(...) called";
     int maxPhraseLength = 0.9*screenWidth + 0.5;
     QFont font(
                 this->drawingsSettings.fontFamily,
@@ -114,18 +124,22 @@ void SubSequenceDrawable::_assessFittedLineText(
             this->_addFittedLine(line);
         }
     }
+    qDebug() << "void SubSequenceDrawable::_assessFittedLineText(...) end";
 }
 //====================================
 void SubSequenceDrawable::_addFittedLine(
         QString &line){
+    qDebug() << "void SubSequenceDrawable::_addFittedLine(...) called";
     FittedLine fittedLine;
     fittedLine.text = line;
     this->fittedLines << fittedLine;
+    qDebug() << "void SubSequenceDrawable::_addFittedLine(...) end";
 }
 //====================================
 void SubSequenceDrawable::_assessFittedLinePosition(
         QSize screenSize,
         int firstCoord){
+    qDebug() << "void SubSequenceDrawable::_assessFittedLinePosition(...) called";
     int screenWidth = screenSize.width();
     int screenHeight = screenSize.height();
     //int bottomShift = screenHeight * 0.02 + 0.5;
@@ -160,6 +174,7 @@ void SubSequenceDrawable::_assessFittedLinePosition(
         it->position.setY(y);
         y += lineSpacing;
     }
+    qDebug() << "void SubSequenceDrawable::_assessFittedLinePosition(...) end";
 }
 //====================================
 QList<FittedLine> SubSequenceDrawable::getFittedLines(){
@@ -167,6 +182,7 @@ QList<FittedLine> SubSequenceDrawable::getFittedLines(){
 }
 //====================================
 int SubSequenceDrawable::getHeightLines(){
+    qDebug() << "int SubSequenceDrawable::getHeightLines() called";
     QFont font(
                 this->drawingsSettings.fontFamily,
                 this->fontSize);
@@ -174,6 +190,7 @@ int SubSequenceDrawable::getHeightLines(){
     int lineSpacing = fontMetrics.lineSpacing();
     int nLines = this->getNLines();
     int heightLines = nLines * lineSpacing;
+    qDebug() << "int SubSequenceDrawable::getHeightLines() end";
     return heightLines;
 }
 //====================================

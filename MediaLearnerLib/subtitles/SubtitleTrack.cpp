@@ -1,17 +1,20 @@
 #include "SubtitleTrack.h"
 
 #include <QFile>
+#include <QDebug>
 
 namespace ML{
 
 //====================================
 SubtitleTrack::SubtitleTrack(QObject *parent) :
     QObject(parent){
+    qDebug() << "SubtitleTrack::SubtitleTrack(...) called";
     this->_zeroTime
             = QTime(0, 0, 0, 0);
     this->subInfos
             = QSharedPointer<QList<SubtitleInfo> >(
                 new QList<SubtitleInfo>);
+    qDebug() << "SubtitleTrack::SubtitleTrack(...) end";
 }
 //====================================
 void SubtitleTrack::setDrawingSettings(
@@ -22,15 +25,18 @@ void SubtitleTrack::setDrawingSettings(
 //====================================
 void SubtitleTrack::parseSubtitleFileName(
         QString subtitleFilePath){
+    qDebug() << "void SubtitleTrack::parseSubtitleFileName(...) called";
     this->subInfos->clear();
     if(subtitleFilePath.endsWith("srt")){
         this->parseSubtitleFileNameSrt(
                     subtitleFilePath);
     }
+    qDebug() << "void SubtitleTrack::parseSubtitleFileName(...) end";
 }
 //====================================
 void SubtitleTrack::parseSubtitleFileNameSrt(
         QString subtitleFilePath){
+    qDebug() << "void SubtitleTrack::parseSubtitleFileNameSrt(...) called";
     QFile file(subtitleFilePath);
     if(file.open(QIODevice::ReadOnly)){
         QTextStream textStream(&file);
@@ -41,10 +47,12 @@ void SubtitleTrack::parseSubtitleFileNameSrt(
             *this->subInfos << sub;
         }
     }
+    qDebug() << "void SubtitleTrack::parseSubtitleFileNameSrt(...) end";
 }
 //====================================
 SubtitleInfo SubtitleTrack::_getNextSubtitleInfoSrt(
         QTextStream &textStream){
+    qDebug() << "SubtitleInfo SubtitleTrack::_getNextSubtitleInfoSrt(...) called";
     QString line = textStream.readLine();
     while(line == "\n"){
         line = textStream.readLine();
@@ -65,11 +73,13 @@ SubtitleInfo SubtitleTrack::_getNextSubtitleInfoSrt(
         subInfo.lines.append(line);
         line = textStream.readLine();
     }
+    qDebug() << "SubtitleInfo SubtitleTrack::_getNextSubtitleInfoSrt(...) end";
     return subInfo;
 }
 //====================================
 SubSequenceDrawable SubtitleTrack::getText(
         qint64 positionInMs){
+    qDebug() << "SubSequenceDrawable SubtitleTrack::getText(...) called";
     int nTexts
             = this->subInfos->size();
     this->currentDrawableText.clearLines();
@@ -83,11 +93,13 @@ SubSequenceDrawable SubtitleTrack::getText(
             break;
         }
     }
+    qDebug() << "SubSequenceDrawable SubtitleTrack::getText(...) end";
     return this->currentDrawableText;
 }
 //====================================
 QList<SubSequenceDrawable> SubtitleTrack::getTexts(
         Sequence intervalInMs){
+    qDebug() << "QList<SubSequenceDrawable> SubtitleTrack::getTexts(...) called";
     QList<SubSequenceDrawable> drawableTexts;
     int nTexts
             = this->subInfos->size();
@@ -109,6 +121,7 @@ QList<SubSequenceDrawable> SubtitleTrack::getTexts(
             drawableTexts << this->currentDrawableText;
         }
     }
+    qDebug() << "QList<SubSequenceDrawable> SubtitleTrack::getTexts(...) end";
     return drawableTexts;
 }
 //====================================

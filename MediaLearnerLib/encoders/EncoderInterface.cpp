@@ -46,6 +46,7 @@ void EncoderInterface::setSequences(
 }
 //====================================
 QString EncoderInterface::getFontPath(QString fontName){
+    qDebug() << "QString EncoderInterface::getFontPath(QString fontName) called";
     QStringList fontDirPaths
             = QStandardPaths::standardLocations(
                 QStandardPaths::FontsLocation);
@@ -59,6 +60,8 @@ QString EncoderInterface::getFontPath(QString fontName){
             break;
         }
     }
+    qDebug() << "fontFilePath: " << fontFilePath;
+    qDebug() << "QString EncoderInterface::getFontPath(QString fontName) end";
     return fontFilePath;
 }
 //====================================
@@ -125,13 +128,17 @@ QString EncoderInterface::getProfileExt(QString profileName){
 }
 //====================================
 void EncoderInterface::encode(QString outFilePath){
+    qDebug() << "void EncoderInterface::encode(QString outFilePath) called";
     this->encodingStarted();
     this->startEncoding(outFilePath);
+    qDebug() << "void EncoderInterface::encode(QString outFilePath) end";
 }
 //====================================
 void EncoderInterface::_onEncodingSuccessful(){
+    qDebug() << "void EncoderInterface::_onEncodingSuccessful() called";
     this->lastSavedSequences
             = sequencesWithSubs;
+    qDebug() << "void EncoderInterface::_onEncodingSuccessful() end";
 }
 //====================================
 

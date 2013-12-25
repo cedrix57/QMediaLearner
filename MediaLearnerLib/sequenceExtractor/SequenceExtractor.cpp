@@ -10,6 +10,7 @@ namespace ML{
 SequenceExtractor::SequenceExtractor(
         QObject *parent) :
     QObject(parent){
+    qDebug() << "SequenceExtractor::SequenceExtractor(...) called";
     this->extractedSequences
             = QSharedPointer<
             QList<Sequence> >(
@@ -24,14 +25,17 @@ SequenceExtractor::SequenceExtractor(
     this->selectedSequence = -1;
     this->_pausing = false;
     this->reset();
+    qDebug() << "SequenceExtractor::SequenceExtractor(...) end";
 }
 //====================================
 void SequenceExtractor::reset(){
+    qDebug() << "void SequenceExtractor::reset() called";
     this->durationInMs = 0;
     this->durationProcessedInMs = 0;
     this->sequencesToExtract.clear();
     this->_isExtractionFinished = true;
     this->selectedSequence = -1;
+    qDebug() << "void SequenceExtractor::reset() end";
 }
 //====================================
 void SequenceExtractor::_connectSlots(){
@@ -55,29 +59,36 @@ void SequenceExtractor::_connectSlots(){
 //====================================
 void SequenceExtractor::setExtractor(
         QString name){
+    qDebug() << "void SequenceExtractor::setExtractorQString) called";
     QMap<QString, PluginSequenceExtractor*>
             extractors
             = PluginSequenceExtractor::getExtractors();
     PluginSequenceExtractor* extractor
             = extractors[name];
     this->setExtractor(extractor);
+    qDebug() << "void SequenceExtractor::setExtractor(QString) end";
 }
 //====================================
 void SequenceExtractor::setExtractor(
         PluginSequenceExtractor *extractor){
+    qDebug() << "void SequenceExtractor::setExtractor(PluginSequenceExtractor) called";
     this->selectedExtractor = extractor;
+    qDebug() << "void SequenceExtractor::setExtractor(PluginSequenceExtractor) end";
 }
 //====================================
 void SequenceExtractor::setMaxShifts(
         int lowerMaxInMs,
         int upperMaxInMs){
+    qDebug() << "void SequenceExtractor::setMaxShifts(...) called";
     this->lowerMaxShiftMs = lowerMaxInMs;
     this->upperNaxShiftMs = upperMaxInMs;
+    qDebug() << "void SequenceExtractor::setMaxShifts(...) end";
 }
 //====================================
 //====================================
 void SequenceExtractor::extractSequence(int position){
     //TODO remeve...we do that the time we get a good extractor
+    qDebug() << "void SequenceExtractor::extractSequence(int position) called";
     Sequence sequence;
     sequence.beginInMs = qMax(0, position - 2000);
     int duration = this->mediaPlayer.duration();
@@ -113,20 +124,24 @@ void SequenceExtractor::extractSequence(int position){
         this->sequencesToExtract.enqueue(position);
     }
     //*/
+    qDebug() << "void SequenceExtractor::extractSequence(int position) end";
 }
 //====================================
 void SequenceExtractor::extractQueuedSequences(){
+    qDebug() << "void SequenceExtractor::extractQueuedSequences() called";
     int n = this->sequencesToExtract.size();
     for(int i=0; i<n; i++){
         int currentPos
                 = this->sequencesToExtract.dequeue();
         this->extractSequence(currentPos);
     }
+    qDebug() << "void SequenceExtractor::extractQueuedSequences() end";
 }
 //====================================
 //====================================
 void SequenceExtractor::setMediaSource(
         QString filePath){
+    qDebug() << "void SequenceExtractor::setMediaSource(...) called";
     this->decoder.stop();
     this->allSequences->clear();
     this->extractedSequences->clear();
@@ -142,12 +157,15 @@ void SequenceExtractor::setMediaSource(
         this->decoder.setSourceFilename(
                     filePath);
     }
+    qDebug() << "void SequenceExtractor::setMediaSource(...) end";
 }
 //====================================
 void SequenceExtractor::analyseMediaSource(){
+    qDebug() << "void SequenceExtractor::analyseMediaSource() called";
     this->reset();
     this->_isExtractionFinished = false;
     this->decoder.start();
+    qDebug() << "void SequenceExtractor::analyseMediaSource() end";
 }
 //====================================
 bool SequenceExtractor::isExtractionFinished(){
@@ -156,12 +174,15 @@ bool SequenceExtractor::isExtractionFinished(){
 #include <unistd.h>//TODO
 //====================================
 void SequenceExtractor::waitForExtractionFinished(){
+    qDebug() << "void SequenceExtractor::waitForExtractionFinished() called";
     while(!this->_isExtractionFinished){
         sleep(100);
     }
+    qDebug() << "void SequenceExtractor::waitForExtractionFinished() end";
 }
 //====================================
 void SequenceExtractor::onDecodingFinished(){
+    qDebug() << "void SequenceExtractor::onDecodingFinished() called";
     this->extractQueuedSequences();
     this->futurBuffer.waitForFinished();
     this->allSequences
@@ -169,6 +190,7 @@ void SequenceExtractor::onDecodingFinished(){
             ->getExtractedSequences();
     this->_isExtractionFinished = true;
     this->sequencesExtracted();
+    qDebug() << "void SequenceExtractor::onDecodingFinished() end";
 }
 //====================================
 void SequenceExtractor::onBufferReadyThread(){
@@ -194,6 +216,7 @@ QList<Sequence>
 //====================================
 void SequenceExtractor::removeSequence(
         int position){
+    qDebug() << "void SequenceExtractor::removeSequence() called";
     this->extractedSequences
             ->removeAt(
                 position);
@@ -206,59 +229,71 @@ void SequenceExtractor::removeSequence(
                 this->extractedSequences);
     int nSequences = this->extractedSequences->size();
     this->numberOfSequencesChanged(nSequences);
+    qDebug() << "void SequenceExtractor::removeSequence() end";
 }
 //====================================
 void SequenceExtractor::changeSequence(
         int position,
         Sequence newSequence){
+    qDebug() << "void SequenceExtractor::changeSequence(...) called";
     (*this->extractedSequences)
             [position]
             = newSequence;
     CrashManagerSingleton::getInstance()
             ->setSequences(
                 this->extractedSequences);
+    qDebug() << "void SequenceExtractor::changeSequence(...) end";
 }
 //====================================
 void SequenceExtractor::changeMinSequence(
         int position,
         int newMin){
+    qDebug() << "void SequenceExtractor::changeMinSequence((...) called";
     (this->extractedSequences
             ->begin() + position)
             ->beginInMs = newMin;
     CrashManagerSingleton::getInstance()
             ->setSequences(
                 this->extractedSequences);
+    qDebug() << "void SequenceExtractor::changeMinSequence((...) end";
 }
 //====================================
 void SequenceExtractor::changeMaxSequence(
         int position,
         int newMax){
+    qDebug() << "void SequenceExtractor::changeMaxSequence(...) called";
     (this->extractedSequences
             ->begin() + position)
             ->endInMs = newMax;
     CrashManagerSingleton::getInstance()
             ->setSequences(
                 this->extractedSequences);
+    qDebug() << "void SequenceExtractor::changeMaxSequence(...) end";
 }
 //====================================
 void SequenceExtractor::selectSequence(
         int position){
+    qDebug() << "void SequenceExtractor::selectSequence(...) called";
     this->selectedSequence = position;
     Sequence selectedSequence
             = this->getSelectedSequence();
     this->mediaPlayer.stop();
     this->mediaPlayer.setPosition(
                 selectedSequence.beginInMs);
+    qDebug() << "void SequenceExtractor::selectSequence(...) end";
 }
 //====================================
 void SequenceExtractor::_onMediaChanged(
         QMediaContent mediaContent){
+    qDebug() << "void SequenceExtractor::_onMediaChanged(...) called";
     Q_UNUSED(mediaContent);
     this->reset();
+    qDebug() << "void SequenceExtractor::_onMediaChanged(...) end";
 }
 //====================================
 void SequenceExtractor::_onPlayerPositionChanged(
         qint64 position){
+    qDebug() << "void SequenceExtractor::_onPlayerPositionChanged(...) called";
     if(this->selectedSequence >= 0){
         Sequence selectedSequence
                 = this->getSelectedSequence();
@@ -274,6 +309,7 @@ void SequenceExtractor::_onPlayerPositionChanged(
             }
         }
     }
+    qDebug() << "void SequenceExtractor::_onPlayerPositionChanged(...) end";
 }
 //====================================
 Sequence SequenceExtractor::getSelectedSequence(){
@@ -287,6 +323,7 @@ void SequenceExtractor::setSequences(
         QSharedPointer<
         QList<Sequence> >
         sequences){
+    qDebug() << "void SequenceExtractor::setSequences(...) called";
     int nOldSequences = this->extractedSequences->size();
     this->extractedSequences
             = sequences;
@@ -296,6 +333,7 @@ void SequenceExtractor::setSequences(
     if(nSequences != nOldSequences){
          this->numberOfSequencesChanged(nSequences);
     }
+    qDebug() << "void SequenceExtractor::setSequences(...) end";
 }
 //====================================
 QMediaPlayer *SequenceExtractor::getMediaPlayer(){
@@ -304,6 +342,7 @@ QMediaPlayer *SequenceExtractor::getMediaPlayer(){
 //====================================
 void SequenceExtractor::sortAndMergeSequences(){
     //Sorting
+    qDebug() << "void SequenceExtractor::sortAndMergeSequences() called";
     int nSequences = this->extractedSequences->size();
     for(int i=0; i<nSequences; i++){
         int idMinSequence = i;
@@ -340,6 +379,7 @@ void SequenceExtractor::sortAndMergeSequences(){
             i--;
         }
     }
+    qDebug() << "void SequenceExtractor::sortAndMergeSequences() end";
 }
 //====================================
 }

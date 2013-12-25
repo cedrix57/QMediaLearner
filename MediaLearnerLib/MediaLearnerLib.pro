@@ -33,7 +33,8 @@ SOURCES += MediaLearnerLib.cpp \
     Utils/Sequence.cpp \
     subtitles/SubSequence.cpp \
     encoders/SequenceWithSubs.cpp \
-    CrashManagerSingleton.cpp
+    CrashManagerSingleton.cpp \
+    Utils/log.cpp
 
 HEADERS += MediaLearnerLib.h\
         medialearnerlib_global.h \
@@ -48,7 +49,8 @@ HEADERS += MediaLearnerLib.h\
     Utils/Sequence.h \
     subtitles/SubSequence.h \
     encoders/SequenceWithSubs.h \
-    CrashManagerSingleton.h
+    CrashManagerSingleton.h \
+    Utils/log.h
 
 unix:!symbian {
     maemo5 {

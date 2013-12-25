@@ -26,6 +26,7 @@ SequencesWithSubs::SequencesWithSubs(){
 void SequencesWithSubs::init(
         QList<Sequence> &sequences,
         SubtitleTrack *subtitleTracks){
+    qDebug() << "QSize void SequencesWithSubs::init(...) called";
     SequencesWithSubs::encodingFinished = false;
     SequencesWithSubs::lastEncodedSequences
             = sequences;
@@ -52,10 +53,12 @@ void SequencesWithSubs::init(
         }
         this->sequencesWithTexts << sequencesWithSubs;
     }
+    qDebug() << "QSize void SequencesWithSubs::init(...) end";
 }
 //====================================
 void SequencesWithSubs::setScreenSize(
         QSize screenSize){
+    qDebug() << "void SequencesWithSubs::setScreenSize(...) called";
     for(QList<SequenceWithSubs>::iterator it
         = this->sequencesWithTexts.begin();
         it != this->sequencesWithTexts.end();
@@ -64,6 +67,7 @@ void SequencesWithSubs::setScreenSize(
                         it->subSequences,
                         screenSize);
     }
+    qDebug() << "void SequencesWithSubs::setScreenSize(...) end";
 }
 //====================================
 QList<SequenceWithSubs>
@@ -77,6 +81,7 @@ void SequencesWithSubs::setEnodingFinished(){
 //====================================
 bool SequencesWithSubs::isSequencesEncoded(
         QList<Sequence> &sequences){
+    qDebug() << "bool SequencesWithSubs::isSequencesEncoded(...) called";
     bool encoded
             = SequencesWithSubs::encodingFinished;
     if(encoded){
@@ -96,6 +101,7 @@ bool SequencesWithSubs::isSequencesEncoded(
             }
         }
     }
+    qDebug() << "bool SequencesWithSubs::isSequencesEncoded(...) end";
     return encoded;
 }
 //====================================

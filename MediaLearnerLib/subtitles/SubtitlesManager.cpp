@@ -11,6 +11,7 @@ namespace ML{
 //====================================
 SubtitlesManager::SubtitlesManager(QObject *parent) :
     QObject(parent){
+    qDebug() << "SubtitlesManager::SubtitlesManager() called";
     for(int i=0; i<N_MAX_TRACKS; i++){
         this->enabledTracks[i] = false;
     }
@@ -22,9 +23,11 @@ SubtitlesManager::SubtitlesManager(QObject *parent) :
                 SIGNAL(subSettingsChanged()),
                 SLOT(_initDrawingSettings()));
     this->_initDrawingSettings();
+    qDebug() << "SubtitlesManager::SubtitlesManager() end";
 }
 //====================================
 void SubtitlesManager::_initDrawingSettings(){
+    qDebug() << "void SubtitlesManager::_initDrawingSettings() called";
     SettingsManagerSingleton
             *settingsManager
             = SettingsManagerSingleton::getInstance();
@@ -46,6 +49,7 @@ void SubtitlesManager::_initDrawingSettings(){
                 setDrawingSettings(
                     drawingSettings);
     }
+    qDebug() << "void SubtitlesManager::_initDrawingSettings() end";
 }
 //====================================
 void SubtitlesManager::enableSubTrack(int position){
@@ -93,6 +97,7 @@ SubtitleTrack *SubtitlesManager::getSubtitleTracks(){
 void SubtitlesManager::setSubTrack(
         int position,
         QString subtitleFilePath){
+    qDebug() << "void SubtitlesManager::setSubTrack(...) called";
     this->subtitleTracks[position]
             .parseSubtitleFileName(
                 subtitleFilePath);
@@ -102,11 +107,13 @@ void SubtitlesManager::setSubTrack(
                 0);
     CrashManagerSingleton::getInstance()
             ->setSubtitle(position, subtitleFilePath);
+    qDebug() << "void SubtitlesManager::setSubTrack(...) end";
 }
 //====================================
 QList<SubSequenceDrawable> SubtitlesManager::getSubsAt(
         qint64 positionInMs,
         QSize screenSize){
+    qDebug() << "QList<SubSequenceDrawable> SubtitlesManager::getSubsAt(...) called";
     QList<SubSequenceDrawable> drawingTexts;
     int phrasesSpacing = screenSize.height() * 0.04;
     int firstCoords[3];
@@ -125,6 +132,7 @@ QList<SubSequenceDrawable> SubtitlesManager::getSubsAt(
     SubtitlesManager::setContext(
                 drawingTexts,
                 screenSize);
+    qDebug() << "QList<SubSequenceDrawable> SubtitlesManager::getSubsAt(...) end";
     return drawingTexts;
 }
 //====================================
@@ -132,6 +140,7 @@ void SubtitlesManager::setContext(
         QList<SubSequenceDrawable>
         &subSequencesDrawable,
         QSize screenSize){
+    qDebug() << "void SubtitlesManager::setContext(...) called";
     int phrasesSpacing = screenSize.height() * 0.04;
     int firstCoords[3];
     firstCoords[0] = phrasesSpacing;
@@ -161,6 +170,7 @@ void SubtitlesManager::setContext(
                 += heightLines
                 + phrasesSpacing;
     }
+    qDebug() << "void SubtitlesManager::setContext(...) end";
 }
 /*
 //====================================

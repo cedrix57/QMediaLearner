@@ -22,6 +22,7 @@ QString HighFrequencyExtractor::getDescription(){
 }
 //====================================
 void HighFrequencyExtractor::reset(){
+    qDebug() << "void HighFrequencyExtractor::reset() called";
     PluginSequenceExtractor::reset();
     this->nLowerFrequency = 0;
     this->nHighFrequency = 0;
@@ -32,10 +33,12 @@ void HighFrequencyExtractor::reset(){
     this->meanAtPhraseBegin = 0;
     this->phraseDuration = 0;
     this->lastValues.clear();
+    qDebug() << "void HighFrequencyExtractor::reset() end";
 }
 //====================================
 void HighFrequencyExtractor::analyseBuffer(
         QAudioBuffer audioBuffer){
+    qDebug() << "void HighFrequencyExtractor::analyseBuffer(...) called";
     int timeMeanInMs = 600;
     int timeSmallerMeanInMs = 300;
     int timeStartSpeachThresholdInMs = 200;
@@ -146,6 +149,7 @@ void HighFrequencyExtractor::analyseBuffer(
             }
         }
     }
+    qDebug() << "void HighFrequencyExtractor::analyseBuffer(...) end";
 }
 //====================================
 

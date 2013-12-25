@@ -20,6 +20,7 @@ FFmpegEncoder::FFmpegEncoder(QObject *parent) :
 }
 //====================================
 QMap<QString, ProfileInfo> FFmpegEncoder::getAvailableAudioProfiles(){
+    qDebug() << "QMap<QString, ProfileInfo> FFmpegEncoder::getAvailableAudioProfiles() called";
     QMap<QString, ProfileInfo> profileInfos;
     ProfileInfo profileInfo;
     profileInfo.ext = "mp2";
@@ -34,11 +35,13 @@ QMap<QString, ProfileInfo> FFmpegEncoder::getAvailableAudioProfiles(){
     profileInfo.name = "Vorbis (OGG)";
     profileInfo.description = "-acodec libvorbis -vn";
     profileInfos[profileInfo.name] = profileInfo;
+    qDebug() << "QMap<QString, ProfileInfo> FFmpegEncoder::getAvailableAudioProfiles() end";
     return profileInfos;
 }
 
 //====================================
 QMap<QString, ProfileInfo> FFmpegEncoder::getAvailableVideoProfiles(){
+    qDebug() << "QMap<QString, ProfileInfo> FFmpegEncoder::getAvailableVideoProfiles() called";
     QMap<QString, ProfileInfo> profileInfos;
     ProfileInfo profileInfo;
     profileInfo.ext = "mp4";
@@ -72,10 +75,12 @@ QMap<QString, ProfileInfo> FFmpegEncoder::getAvailableVideoProfiles(){
     profileInfo.name = "H.264 + acc (MOV)";
     profileInfo.description = "";
     profileInfos[profileInfo.name] = profileInfo;
+    qDebug() << "QMap<QString, ProfileInfo> FFmpegEncoder::getAvailableVideoProfiles() end";
     return profileInfos;
 }
 //====================================
 QList<EncodingInfo> FFmpegEncoder::getAvailableFormats(){
+    qDebug() << "QList<EncodingInfo> FFmpegEncoder::getAvailableFormats() called";
     QList<EncodingInfo>
             infos;
     QString ffmpegFilePath
@@ -106,25 +111,31 @@ QList<EncodingInfo> FFmpegEncoder::getAvailableFormats(){
             }
         }
     }
+    qDebug() << "QList<EncodingInfo> FFmpegEncoder::getAvailableFormats() end";
     return infos;
 }
 //====================================
 QString FFmpegEncoder::getFFmpegFilePath(){
+    qDebug() << "QString FFmpegEncoder::getFFmpegFilePath() called";
     QDir currentPath = QDir::currentPath();
     QString ffmpegFilePath
             = currentPath.filePath("ffmpeg");
+    qDebug() << "QString FFmpegEncoder::getFFmpegFilePath() end";
     return ffmpegFilePath;
 }
 //====================================
 QList<EncodingInfo> FFmpegEncoder::getAvailableVideoCodecs(){
+    qDebug() << "QList<EncodingInfo> FFmpegEncoder::getAvailableVideoCodecs() called";
     QList<EncodingInfo> infos
             = this->_getAvailableCodecs(
                 'V');
+    qDebug() << "QList<EncodingInfo> FFmpegEncoder::getAvailableVideoCodecs() end";
     return infos;
 }
 //====================================
 QList<EncodingInfo> FFmpegEncoder::_getAvailableCodecs(
         QChar type){
+    qDebug() << "QList<EncodingInfo> FFmpegEncoder::_getAvailableCodecs(...) called";
     QList<EncodingInfo>
             infos;
     QString ffmpegFilePath
@@ -155,24 +166,30 @@ QList<EncodingInfo> FFmpegEncoder::_getAvailableCodecs(
             }
         }
     }
+    qDebug() << "QList<EncodingInfo> FFmpegEncoder::_getAvailableCodecs(...) end";
     return infos;
 }
 //====================================
 QList<EncodingInfo> FFmpegEncoder::getAvailableAudioCodecs(){
+    qDebug() << "QList<EncodingInfo> FFmpegEncoder::getAvailableAudioCodecs() called";
     QList<EncodingInfo> infos
             = this->_getAvailableCodecs(
                 'A');
+    qDebug() << "QList<EncodingInfo> FFmpegEncoder::getAvailableAudioCodecs() end";
     return infos;
 }
 //====================================
 QList<EncodingInfo> FFmpegEncoder::getAvailableSubtitlesCodecs(){
+    qDebug() << "QList<EncodingInfo> FFmpegEncoder::getAvailableSubtitlesCodecs() called";
     QList<EncodingInfo> infos
             = this->_getAvailableCodecs(
                 'S');
+    qDebug() << "QList<EncodingInfo> FFmpegEncoder::getAvailableSubtitlesCodecs() end";
     return infos;
 }
 //====================================
 int FFmpegEncoder::getFps(){
+    qDebug() << "int FFmpegEncoder::getFps() called";
     QString ffmpegFilePath
             = this->getFFmpegFilePath();
     QStringList arguments;
@@ -189,24 +206,30 @@ int FFmpegEncoder::getFps(){
     bashOutput = bashOutput.split(" fps").first();
     bashOutput = bashOutput.split(" ").last();
     int fps = bashOutput.toInt();
+    qDebug() << "int FFmpegEncoder::getFps() end";
     return fps;
 }
 //====================================
 int FFmpegEncoder::getNFrame(qint64 ms, int frameRate){
+    qDebug() << "int FFmpegEncoder::getNFrame(qint64 ms, int frameRate) called";
     float frameRateMs = frameRate / 1000.0;
     int n = ms * frameRateMs + 0.5;
+    qDebug() << "int FFmpegEncoder::getNFrame(qint64 ms, int frameRate) end";
     return n;
 }
 //====================================
 QString FFmpegEncoder::getFormatedTime(qint64 ms){
+    qDebug() << "QString FFmpegEncoder::getFormatedTime(qint64 ms) called";
     QTime time(0, 0, 0, 0);
     time = time.addMSecs(ms);
     QString formatedTime
             = time.toString("hh:mm:ss.z");
+    qDebug() << "QString FFmpegEncoder::getFormatedTime(qint64 ms) end";
     return formatedTime;
 }
 //====================================
 void FFmpegEncoder::startEncoding(QString outFilePath){
+    qDebug() << "void FFmpegEncoder::startEncoding(QString outFilePath) called";
     QMap<QString, QString> fontFilePaths;
     this->argumentsList.clear();
     this->tempSequenceFilePaths.clear();
@@ -222,6 +245,7 @@ void FFmpegEncoder::startEncoding(QString outFilePath){
     this->_onProcessFinished(
                 0,
                 QProcess::NormalExit);
+    qDebug() << "void FFmpegEncoder::startEncoding(QString outFilePath) end";
     /*
     foreach(QList<DrawingSubtitleInfo> infos,
             this->texts){
@@ -245,13 +269,16 @@ void FFmpegEncoder::startEncoding(QString outFilePath){
 //====================================
 QString FFmpegEncoder::_getTempFilePath(
         QString fileName){
+    qDebug() << "QString FFmpegEncoder::_getTempFilePath(...) called";
     QString filePath
             = QDir(QDir::tempPath())
             .filePath(fileName);
+    qDebug() << "QString FFmpegEncoder::_getTempFilePath(...) end";
     return filePath;
 }
 //====================================
 void FFmpegEncoder::_encodeTempVideoCommand(){
+    qDebug() << "void FFmpegEncoder::_encodeTempVideoCommand() called";
     this->tempInVideoFilePath
             = this->_getTempFilePath(
                 "tempmedialearner.mpg");
@@ -269,10 +296,11 @@ void FFmpegEncoder::_encodeTempVideoCommand(){
     arguments << "1000k";
     arguments << this->tempInVideoFilePath;
     this->argumentsList << arguments;
+    qDebug() << "void FFmpegEncoder::_encodeTempVideoCommand() end";
 }
 //====================================
 void FFmpegEncoder::_encodeSequenceCommand(){
-    //*
+    qDebug() << "void FFmpegEncoder::_encodeSequenceCommand() called";
     QStringList filterParams;
     int idSeq = 0;
     for(QList<SequenceWithSubs>::iterator seqIt
@@ -369,10 +397,12 @@ void FFmpegEncoder::_encodeSequenceCommand(){
         this->argumentsList << arguments;
         idSeq++;
     }
+    qDebug() << "void FFmpegEncoder::_encodeSequenceCommand() end";
 }
 //====================================
 void FFmpegEncoder::_encodeCuttedSequencesCommand(
         QString outFilePath){
+    qDebug() << "void FFmpegEncoder::_encodeCuttedSequencesCommand(...) called";
     QStringList arguments;
     arguments << "-i";
     QString concatArg
@@ -410,11 +440,14 @@ void FFmpegEncoder::_encodeCuttedSequencesCommand(
     arguments << "copy";
     arguments << outFilePath;
     this->argumentsList << arguments;
+    qDebug() << "void FFmpegEncoder::_encodeCuttedSequencesCommand(...) end";
 }
 //====================================
 void FFmpegEncoder::_onProcessFinished(
         int exitCode,
         QProcess::ExitStatus exitStatus){
+    qDebug() << "void FFmpegEncoder::_onProcessFinished(...) called";
+    Q_UNUSED(exitStatus)
     QString bashOutput
             = this->encodingProcess
             .readAllStandardError()
@@ -440,14 +473,19 @@ void FFmpegEncoder::_onProcessFinished(
     }else{
         this->encodingFailed();
     }
+    qDebug() << "void FFmpegEncoder::_onProcessFinished(...) end";
 }
 //====================================
 void FFmpegEncoder::_onProcessError(
         QProcess::ProcessError error){
+    qDebug() << "void FFmpegEncoder::_onProcessError((...) called";
+    qDebug() << "error: " << error;
     this->encodingFailed();
+    qDebug() << "void FFmpegEncoder::_onProcessError((...) end";
 }
 //====================================
 QSize FFmpegEncoder::getOriginalSize(){
+    qDebug() << "QSize FFmpegEncoder::getOriginalSize() called";
     QString ffmpegFilePath
             = this->getFFmpegFilePath();
     QStringList arguments;
@@ -469,21 +507,18 @@ QSize FFmpegEncoder::getOriginalSize(){
     int width = sizeStringList.first().toInt();
     int height = sizeStringList.last().toInt();
     QSize originalSize = QSize(width, height);
+    qDebug() << "QSize FFmpegEncoder::getOriginalSize() end";
     return originalSize;
 }
 //====================================
-void FFmpegEncoder::_evalSizeEventually(){
-    if(this->newSize.isEmpty()){
-                //int bashOutpoutLen = bashOutput.size();
-    }
-}
-//====================================
 void FFmpegEncoder::_removeTempFiles(){
+    qDebug() << "void FFmpegEncoder::_removeTempFiles() called";
     QFile(this->tempInVideoFilePath).remove();
     foreach(QString tempSequenceFilePath,
             this->tempSequenceFilePaths){
         QFile(tempSequenceFilePath).remove();
     }
+    qDebug() << "void FFmpegEncoder::_removeTempFiles() end";
 }
 //====================================
 

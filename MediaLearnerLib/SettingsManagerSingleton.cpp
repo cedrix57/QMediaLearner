@@ -178,9 +178,9 @@ void SettingsManagerSingleton::setSubPosition(
     this->subSettingsChanged(subPosition);
 }
 //====================================
-const QString KEY_SORTSEQUENCESANDREMOVEINTERSECT = "lang";
+const QString KEY_SORTSEQUENCESANDREMOVEINTERSECT = "sortSequences";
 //====================================
-bool SettingsManagerSingleton::getSortSequencesAndRemoveIntersect(){
+bool SettingsManagerSingleton::isSortSequencesAndRemoveIntersect(){
     bool enabled
             = this->settings->value(
                 KEY_SORTSEQUENCESANDREMOVEINTERSECT,
@@ -192,13 +192,49 @@ bool SettingsManagerSingleton::getSortSequencesAndRemoveIntersect(){
 void SettingsManagerSingleton::setSortSequencesAndRemoveIntersect(
         bool enabled){
     bool oldEnabled
-            = this->getSortSequencesAndRemoveIntersect();
+            = this->isSortSequencesAndRemoveIntersect();
     this->settings->setValue(
                 KEY_SORTSEQUENCESANDREMOVEINTERSECT,
                 enabled);
     if(oldEnabled != enabled){
         this->sortSequencesAndRemoveIntersect(enabled);
     }
+}
+//====================================
+const QString KEY_SAVEINLOGFILE = "saveInLogFile";
+//====================================
+bool SettingsManagerSingleton::isSaveInLogFile(){
+    bool enabled
+            = this->settings->value(
+                KEY_SAVEINLOGFILE,
+                true)
+            .toBool();
+    return enabled;
+}
+//====================================
+void SettingsManagerSingleton::isSaveInLogFile(
+        bool enabled){
+    this->settings->setValue(
+                KEY_SAVEINLOGFILE,
+                enabled);
+}
+//====================================
+const QString KEY_SENDLOGFILEWHENCRASHED = "saveInLogFile";
+//====================================
+bool SettingsManagerSingleton::isSendLogFileWhenCrashed(){
+    bool enabled
+            = this->settings->value(
+                KEY_SENDLOGFILEWHENCRASHED,
+                false)
+            .toBool();
+    return enabled;
+}
+//====================================
+void SettingsManagerSingleton::isSendLogFileWhenCrashed(
+        bool enabled){
+    this->settings->setValue(
+                KEY_SENDLOGFILEWHENCRASHED,
+                enabled);
 }
 //====================================
 

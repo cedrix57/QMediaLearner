@@ -25,7 +25,9 @@ public:
     SubPosition getSubPosition(
             int subPosition);
     QString getExtractedVideoPath();
-    bool getSortSequencesAndRemoveIntersect();
+    bool isSortSequencesAndRemoveIntersect();
+    bool isSaveInLogFile();
+    bool isSendLogFileWhenCrashed();
 
 signals:
     void languageChanged(QString language);
@@ -48,7 +50,10 @@ public slots:
             int subPosition,
             SubPosition position);
     void setExtractedVideoPath(QString path);
-    void setSortSequencesAndRemoveIntersect(bool enabled);
+    void setSortSequencesAndRemoveIntersect(
+            bool enabled);
+    void isSaveInLogFile(bool enabled);
+    void isSendLogFileWhenCrashed(bool enabled);
 
 protected:
     explicit SettingsManagerSingleton(

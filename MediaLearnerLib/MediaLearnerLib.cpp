@@ -6,6 +6,7 @@ namespace ML{
 
 //====================================
 MediaLearnerLib::MediaLearnerLib(){
+    qDebug() << "MediaLearnerLib::MediaLearnerLib() called";
     CrashManagerSingleton *
             crashManager
             = CrashManagerSingleton::getInstance();
@@ -25,6 +26,7 @@ MediaLearnerLib::MediaLearnerLib(){
                 &this->encoder,
                 &EncoderInterface::encodingFinished,
                 &SequencesWithSubs::setEnodingFinished);
+    qDebug() << "MediaLearnerLib::MediaLearnerLib() end";
 }
 //====================================
 MediaLearnerLib::~MediaLearnerLib(){
@@ -44,6 +46,7 @@ SubtitlesManager
 }
 //====================================
 void MediaLearnerLib::setMedia(QString mediaPath){
+    qDebug() << "void MediaLearnerLib::setMedia(QString mediaPath) called";
     QUrl url = QUrl::fromLocalFile(mediaPath);
     QMediaContent mediaSource(url);
     this->sequenceExtractor.setMediaSource(
@@ -56,6 +59,7 @@ void MediaLearnerLib::setMedia(QString mediaPath){
     CrashManagerSingleton::getInstance()
             ->setMediaFilePath(
                 mediaPath);
+    qDebug() << "void MediaLearnerLib::setMedia(QString mediaPath) end";
 }
 //====================================
 EncoderInterface *MediaLearnerLib::getEncoder(){
@@ -80,6 +84,8 @@ QStringList MediaLearnerLib::getSupportedFormats(){
 //====================================
 bool MediaLearnerLib::isFormatSupported(
         QString &filePath){
+    qDebug() << "bool MediaLearnerLib::isFormatSupported(...) called";
+    qDebug() << "filePath: " << filePath;
     QString lowerPath = filePath.toLower();
     QStringList supportedFormats
             = this->getSupportedFormats();
@@ -90,6 +96,8 @@ bool MediaLearnerLib::isFormatSupported(
             break;
         }
     }
+    qDebug() << "supportedVideoFormat: " << supportedVideoFormat;
+    qDebug() << "bool MediaLearnerLib::isFormatSupported(...) end";
     return supportedVideoFormat;
 }
 //====================================

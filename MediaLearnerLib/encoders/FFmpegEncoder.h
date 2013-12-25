@@ -40,7 +40,6 @@ protected:
     QString getFFmpegFilePath();
     QList<EncodingInfo> _getAvailableCodecs(
             QChar type);
-    void _evalSizeEventually();
     QProcess encodingProcess;
     QList<QStringList> argumentsList;
     QString tempInVideoFilePath;

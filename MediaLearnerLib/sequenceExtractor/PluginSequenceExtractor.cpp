@@ -12,6 +12,7 @@ int PluginSequenceExtractor::getValue(
         int nChannels,
         int bytesPerFrame,
         int bytesPerValue){
+    //qDebug() << "int PluginSequenceExtractor::getValue(...) called";
     void *firstData = audioBuffer.data();
     int currentValue = 0;
     for(int j=0; j<nChannels; j++){
@@ -53,9 +54,12 @@ int PluginSequenceExtractor::getValue(
         }
     }
     currentValue /= nChannels;
+    //qDebug() << "currentValue: " << currentValue;
+    //qDebug() << "int PluginSequenceExtractor::getValue(...) end";
     return currentValue;
 }
 void AudioBuffer::init(QAudioBuffer &qtbuffer){
+    qDebug() << "void AudioBuffer::init(...) called";
     QAudioFormat audioFormat = qtbuffer.format();
     this->hzFreq = audioFormat.sampleRate();
     this->durationInMs = qtbuffer.duration()*1000;
@@ -132,6 +136,7 @@ void AudioBuffer::init(QAudioBuffer &qtbuffer){
     this->var *= tempReducFactor * tempReducFactor;
     this->mean *= tempReducFactor;
     this->sd = qSqrt(this->var);
+    qDebug() << "void AudioBuffer::init(...) end";
 }
 //====================================
 QList<PluginSequenceExtractor*>
@@ -141,6 +146,7 @@ QList<PluginSequenceExtractor*>
 PluginSequenceExtractor::PluginSequenceExtractor(
         QObject *parent) :
     QObject(parent){
+    qDebug() << "PluginSequenceExtractor::PluginSequenceExtractor(...) called";
     this->_isAnalysing = false;
     PluginSequenceExtractor::extractors
             << this;
@@ -153,10 +159,12 @@ PluginSequenceExtractor::PluginSequenceExtractor(
             = QSharedPointer<QList<Sequence> >
                 (new QList<Sequence>);
     this->reset();
+    qDebug() << "PluginSequenceExtractor::PluginSequenceExtractor(...) end";
 }
 //====================================
 QMap<QString, PluginSequenceExtractor*>
         PluginSequenceExtractor::getExtractors(){
+    qDebug() << "... PluginSequenceExtractor::getExtractors() called";
     QMap<QString, PluginSequenceExtractor*>
             extractorsMap;
     foreach(
@@ -166,12 +174,15 @@ QMap<QString, PluginSequenceExtractor*>
         QString name = extractor->getName();
         extractorsMap[name] = extractor;
     }
+    qDebug() << "... PluginSequenceExtractor::getExtractors() end";
     return extractorsMap;
 }
 //====================================
 void PluginSequenceExtractor::reset(){
+    qDebug() << "void PluginSequenceExtractor::reset() called";
     this->extractedSequences->clear();
     this->_currentTimeStampInMs = 0;
+    qDebug() << "void PluginSequenceExtractor::reset() end";
 }
 //====================================
 QList<Parameter> PluginSequenceExtractor::getParameters(){
@@ -181,20 +192,25 @@ QList<Parameter> PluginSequenceExtractor::getParameters(){
 //====================================
 void PluginSequenceExtractor::setParameterValues(
         QMap<QString, QVariant> parameterValues){
+    qDebug() << "void PluginSequenceExtractor::setParameterValues(...) called";
     foreach(QString key, parameterValues.keys()){
         QVariant value = parameterValues[key];
         this->parameterValues[key] = value;
     }
+    qDebug() << "void PluginSequenceExtractor::setParameterValues(...) end";
 }
 //====================================
 void PluginSequenceExtractor::setParameterValue(
         QString key,
         QVariant value){
+    qDebug() << "void PluginSequenceExtractor::setParameterValue(...) called";
     this->parameterValues[key] = value;
+    qDebug() << "void PluginSequenceExtractor::setParameterValue(...) end";
 }
 //====================================
 void PluginSequenceExtractor::onBufferReady(
         QAudioDecoder *audioDecoder){
+    qDebug() << "void PluginSequenceExtractor::onBufferReady(...) called";
     this->_mutexAnalyse.lock();
     this->_isAnalysing = true;
     QAudioBuffer audioBuffer
@@ -211,6 +227,7 @@ void PluginSequenceExtractor::onBufferReady(
     //qDebug() << percentage << "%...";
     this->_isAnalysing = false;
     this->_mutexAnalyse.unlock();
+    qDebug() << "void PluginSequenceExtractor::onBufferReady(...) end";
 }
 //====================================
 bool PluginSequenceExtractor::isAnalysing(){
