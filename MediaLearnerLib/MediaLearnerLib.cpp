@@ -62,6 +62,35 @@ EncoderInterface *MediaLearnerLib::getEncoder(){
     return &this->encoder;
 }
 //====================================
+QStringList MediaLearnerLib::getSupportedFormats(){
+    QStringList supportedFormats;
+    supportedFormats << "avi";
+    supportedFormats << "ts";
+    supportedFormats << "mp2";
+    supportedFormats << "mp3";
+    supportedFormats << "mp4";
+    supportedFormats << "ogg";
+    supportedFormats << "ogv";
+    supportedFormats << "flv";
+    supportedFormats << "mkv";
+    return supportedFormats;
+}
+//====================================
+bool MediaLearnerLib::isFormatSupported(
+        QString &filePath){
+    QString lowerPath = filePath.toLower();
+    QStringList supportedFormats
+            = this->getSupportedFormats();
+    bool supportedVideoFormat = false;
+    foreach(QString format, supportedFormats){
+        if(lowerPath.endsWith(format)){
+            supportedVideoFormat = true;
+            break;
+        }
+    }
+    return supportedVideoFormat;
+}
+//====================================
 
 }
 

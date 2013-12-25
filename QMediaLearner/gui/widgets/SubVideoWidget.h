@@ -16,7 +16,7 @@ public:
     ~SubVideoWidget();
     void init(
             ML::MediaLearnerLib *mediaLearner);
-    static void onDragEnterEvent(QDragEnterEvent* event);
+    void onDragEnterEvent(QDragEnterEvent* event);
 
 public slots:
     void showFullScreenOrNormal();

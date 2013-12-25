@@ -19,6 +19,9 @@ public:
     SubtitlesManager *getSubtitlesManager();
     EncoderInterface *getEncoder();
     void setMedia(QString mediaPath);
+    QStringList getSupportedFormats();
+    bool isFormatSupported(
+            QString &filePath);
 
 protected:
     QMediaPlayer mediaPlayer;

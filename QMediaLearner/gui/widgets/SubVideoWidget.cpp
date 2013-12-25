@@ -162,17 +162,11 @@ void SubVideoWidget::onDragEnterEvent(
     QList<QUrl> urls = event->mimeData()->urls();
     foreach(QUrl url, urls){
         QString path = url.path();
-        QString lowerPath = path.toLower();
-        if(lowerPath.endsWith("srt")
-                || lowerPath.endsWith("avi")
-                || lowerPath.endsWith("ts")
-                || lowerPath.endsWith("mp2")
-                || lowerPath.endsWith("mp3")
-                || lowerPath.endsWith("mp4")
-                || lowerPath.endsWith("ogg")
-                || lowerPath.endsWith("ogv")
-                || lowerPath.endsWith("flv")
-                || lowerPath.endsWith("mkv")){
+        bool isFormatSupported
+                = this->mediaLearner
+                ->isFormatSupported(
+                    path);
+        if(isFormatSupported){
                 event->accept();
                 break;
         }

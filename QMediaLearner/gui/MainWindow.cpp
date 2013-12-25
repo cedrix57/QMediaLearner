@@ -60,6 +60,9 @@ void MainWindow::closeEvent(QCloseEvent * event){
             this->stop();
             QMainWindow::closeEvent(event);
         }
+    }else{
+        this->stop();
+        QMainWindow::closeEvent(event);
     }
 }
 //====================================
@@ -410,21 +413,29 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event) {
 void MainWindow::openUrls(QList<QUrl> urls){
     foreach(QUrl url, urls){
         QString path = url.path();
+        bool isFormatSupported
+                = this->mediaLearner
+                .isFormatSupported(
+                    path);
+        if(isFormatSupported){
+            this->playVideo(path);
+            break;
+        }
+    }
+    int nextSubPosition = 0;
+    foreach(QUrl url, urls){
+        QString path = url.path();
         QString lowerPath = path.toLower();
         if(lowerPath.endsWith("srt")){
             this->openSubtrack(
-                        0,
+                        nextSubPosition,
                         path);
-        }else if(lowerPath.endsWith("avi")
-                || lowerPath.endsWith("ts")
-                || lowerPath.endsWith("mp2")
-                || lowerPath.endsWith("mp3")
-                || lowerPath.endsWith("mp4")
-                || lowerPath.endsWith("ogg")
-                || lowerPath.endsWith("ogv")
-                || lowerPath.endsWith("flv")
-                || lowerPath.endsWith("mkv")){
-            this->playVideo(path);
+            nextSubPosition++;
+            if(nextSubPosition
+                    == ML::SubtitlesManager
+                    ::N_MAX_TRACKS){
+                break;
+            }
         }
     }
 }

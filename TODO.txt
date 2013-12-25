@@ -1,15 +1,14 @@
 - Create a font directory for the font selection
 - Find out some convenient format profile
 - Test encoding window
-- Handle multi-draging
-- French translation
 - Get rid of the warnings + TODO
-- Add a log feature with log sending feature
-- Find a way to handle crash management when multiple
-  instance are launched (Define and application id?)
-- Close all of the thread before closing the application
-- Ask confirmation to close the application while encoding a video
+- Add a log feature with log sending feature (settings included)
+- French translation
+- Windows compilation
+- Check it still works with audio only media content
 
+
+OTHER:
 - Website
 - Marketing
 - Mobile application
@@ -17,6 +16,10 @@
 - Unit test on media learner lib
 
 LATER:
+- Ask confirmation to close the application while encoding a video
+- Find a way to handle crash management when multiple
+  instance are launched (Define and application id?)
+- Close all of the thread before closing the application
 - Full screen mode for linux/mac. The bottom menu bar should disappear whin the application is maximized
 - Add voice detection activity algorithm
 - Update the video widget so it can support video effects
