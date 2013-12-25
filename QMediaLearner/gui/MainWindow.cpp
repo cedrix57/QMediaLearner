@@ -22,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     QApplication::instance()
             ->installEventFilter(this);
+    this->_stopping = false;
     this->editExtractionDialog = NULL;
     this->settingsDialog = NULL;
     this->currentSettingsDialog = NULL;
@@ -571,18 +572,28 @@ void MainWindow::_onMediaPlayerStateChanged(
                 //->setIcon(QIcon(":/icons/play-24.ico"));
                 //->setText(tr("Play"));
         if(state == QMediaPlayer::StoppedState){
-            this->ui->sliderPosition->setValue(0);
-            this->ui->sliderPosition->setEnabled(false);
-            this->ui->buttonExtract->setEnabled(false);
-            this->mediaPlayer->setPosition(0);
+            bool repeatMode
+                    = this->ui->buttonRepeat->isChecked();
+            if(!this->_stopping && repeatMode){
+                this->mediaPlayer->setPosition(0);
+                this->ui->sliderPosition->setValue(0);
+                this->playOrPause();
+            }else{
+                this->ui->sliderPosition->setValue(0);
+                this->ui->sliderPosition->setEnabled(false);
+                this->ui->buttonExtract->setEnabled(false);
+                this->mediaPlayer->setPosition(0);
+            }
         }
     }
 }
 //====================================
 void MainWindow::stop(){
+    this->_stopping = true;
     this->mediaPlayer->stop();
     this->ui->buttonPlay->show();
     this->ui->buttonPause->hide();
+    this->_stopping = false;
 }
 //====================================
 void MainWindow::repeatMode(bool enabled){

@@ -1,5 +1,4 @@
 - Create a font directory for the font selection
-- Test encoding window
 - Get rid of the warnings + TODO
 - Add a log feature with log sending feature (settings included)
 - French translation
@@ -33,4 +32,5 @@ LATER:
   on a different place
 - The application shouldn't crash if using a subtitle file with mistake
 - Add "Always show this dialog" option on yes no dialog
+- Save repeat mode?
 

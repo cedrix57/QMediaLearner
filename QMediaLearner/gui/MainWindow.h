@@ -85,6 +85,7 @@ protected:
     virtual bool eventFilter(QObject *object, QEvent *event);
     virtual void closeEvent(QCloseEvent * event);
     virtual void keyPressEvent(QKeyEvent *event);
+    bool _stopping;
 
 protected slots:
     void _onMediaPlayerStateChanged(

@@ -73,6 +73,8 @@ QStringList MediaLearnerLib::getSupportedFormats(){
     supportedFormats << "ogv";
     supportedFormats << "flv";
     supportedFormats << "mkv";
+    supportedFormats << "srt";
+    supportedFormats << "mts";
     return supportedFormats;
 }
 //====================================
