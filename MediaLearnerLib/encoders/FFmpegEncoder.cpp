@@ -17,6 +17,8 @@ FFmpegEncoder::FFmpegEncoder(QObject *parent) :
                 &this->encodingProcess,
                 SIGNAL(error(QProcess::ProcessError)),
                 SLOT(_onProcessError(QProcess::ProcessError)));
+    this->nFFmpegSteps = 1;
+    this->nFFmpegStepsDone = 0;
 }
 //====================================
 QMap<QString, ProfileInfo> FFmpegEncoder::getAvailableAudioProfiles(){
@@ -242,6 +244,8 @@ void FFmpegEncoder::startEncoding(QString outFilePath){
         qDebug() << command;
         qDebug() << "---";
     }
+    this->nFFmpegSteps = this->argumentsList.size();
+    this->nFFmpegStepsDone = 0;
     this->_onProcessFinished(
                 0,
                 QProcess::NormalExit);
@@ -450,6 +454,9 @@ void FFmpegEncoder::_onProcessFinished(
         QProcess::ExitStatus exitStatus){
     qDebug() << "void FFmpegEncoder::_onProcessFinished(...) called";
     Q_UNUSED(exitStatus)
+    int percentage = this->nFFmpegStepsDone * 100 / this->nFFmpegSteps;
+    this->encodingProgressed(percentage);
+    this->nFFmpegStepsDone++;
     QString bashOutput
             = this->encodingProcess
             .readAllStandardError()

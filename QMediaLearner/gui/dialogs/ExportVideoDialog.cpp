@@ -20,6 +20,8 @@ ExportVideoDialog::ExportVideoDialog(
                 0);
     this->progressDialog.setMaximum(
                 0);
+    this->progressDialog.setLabelText(
+                "0 %");
     this->ui->buttonEditProfiles->hide();
     this->_loadInfos();
     this->_connectSlots();
@@ -66,6 +68,14 @@ void ExportVideoDialog::onProfileChanged(
     }
 }
 //====================================
+void ExportVideoDialog::onProgressChanged(int percentage){
+    QString text = QString::number(percentage);
+    text += " %";
+    qDebug() << "progress changed: " <<  text;
+    this->progressDialog.setLabelText(
+                text);
+}
+//====================================
 void ExportVideoDialog::_connectSlots(){
     ML::EncoderInterface
             *encoder
@@ -79,6 +89,10 @@ void ExportVideoDialog::_connectSlots(){
                 encoder,
                 SIGNAL(encodingFailed()),
                 SLOT(reset()));
+    this->connect(
+                encoder,
+                SIGNAL(encodingProgressed(int)),
+                SLOT(onProgressChanged(int)));
     this->connect(
                 this->ui->buttonBrowseFilePath,
                 SIGNAL(clicked()),

@@ -1,8 +1,7 @@
-- ffmpeg export format error/optimisation
 - Create a font directory for the font selection
 - Encoding: take account of the subtitle options
+- ffmpeg export format error/optimisation
 - Get rid of the warnings + TODO
-- Export video on existing file?
 - Add percentage on video saving progress
 - Windows compilation
 - French translation

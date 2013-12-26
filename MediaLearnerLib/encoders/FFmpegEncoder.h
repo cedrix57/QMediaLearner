@@ -51,6 +51,8 @@ protected:
             QString outFilePath);
     QString _getTempFilePath(QString fileName);
     void _removeTempFiles();
+    int nFFmpegSteps;
+    int nFFmpegStepsDone;
 
 };
 

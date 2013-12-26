@@ -50,6 +50,7 @@ public:
     void setPlaybackRate(double rate);
 
 signals:
+    void encodingProgressed(int percentage);
     void encodingStarted();
     void encodingFinished();
     void encodingFailed();

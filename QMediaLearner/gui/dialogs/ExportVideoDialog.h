@@ -37,6 +37,7 @@ protected slots:
     void onProfileChanged(QString profileName);
     void onWidthChanged(int width);
     void onHeightChanged(int height);
+    void onProgressChanged(int percentage);
 
 public slots:
     void browseNewVideoFilePath();
