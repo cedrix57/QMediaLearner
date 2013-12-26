@@ -1,6 +1,7 @@
 #include "ExportVideoDialog.h"
 #include "ui_ExportVideoDialog.h"
 #include <QFileDialog>
+#include <QMessageBox>
 #include <SettingsManagerSingleton.h>
 
 //====================================
@@ -165,6 +166,22 @@ ExportVideoDialog::~ExportVideoDialog(){
 }
 //====================================
 void ExportVideoDialog::accept(){
+    QString outVideoFilePath
+            = this->ui->lineEditFilePath->text();
+    bool fileExists = QFile(outVideoFilePath).exists();
+    if(fileExists){
+        QMessageBox::StandardButton reply
+                = QMessageBox::question(
+                    this,
+                    tr("The file already exist"),
+                    tr("Do you want to replace it?"),
+                    QMessageBox::Yes | QMessageBox::No);
+        if(reply == QMessageBox::No){
+            return;
+        }else{
+            QFile::remove(outVideoFilePath);
+        }
+    }
     ML::SettingsManagerSingleton *settingsManager
             = ML::SettingsManagerSingleton::getInstance();
     bool isVideo
@@ -220,8 +237,6 @@ void ExportVideoDialog::accept(){
         encoder->setNewSize(
                     newVideoSize);
     }
-    QString outVideoFilePath
-            = this->ui->lineEditFilePath->text();
     QList<ML::SequenceWithSubs>
             sequencesWithSubs
             = this->sequencesWithSubs.getSequencesWithTexts();

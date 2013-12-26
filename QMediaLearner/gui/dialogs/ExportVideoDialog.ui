@@ -147,6 +147,10 @@
        <property name="text">
         <string>Export</string>
        </property>
+       <property name="icon">
+        <iconset resource="../../QMediaLearner.qrc">
+         <normaloff>:/icons/gui/icons/save-24.ico</normaloff>:/icons/gui/icons/save-24.ico</iconset>
+       </property>
        <property name="default">
         <bool>true</bool>
        </property>
@@ -340,7 +344,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../QMediaLearner.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>buttonExport</sender>
