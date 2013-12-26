@@ -28,6 +28,8 @@ public:
     bool isSortSequencesAndRemoveIntersect();
     bool isSaveInLogFile();
     bool isSendLogFileWhenCrashed();
+    bool isLastProfileVideo();
+    QString getLastProfileName();
 
 signals:
     void languageChanged(QString language);
@@ -52,8 +54,10 @@ public slots:
     void setExtractedVideoPath(QString path);
     void setSortSequencesAndRemoveIntersect(
             bool enabled);
-    void isSaveInLogFile(bool enabled);
-    void isSendLogFileWhenCrashed(bool enabled);
+    void setSaveInLogFile(bool enabled);
+    void setSendLogFileWhenCrashed(bool enabled);
+    void setLastProfileVideo(bool is);
+    void setLastProfileName(QString name);
 
 protected:
     explicit SettingsManagerSingleton(

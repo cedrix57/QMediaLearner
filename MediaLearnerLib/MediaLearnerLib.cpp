@@ -71,6 +71,7 @@ QStringList MediaLearnerLib::getSupportedFormats(){
     supportedFormats << "avi";
     supportedFormats << "ts";
     supportedFormats << "mp2";
+    supportedFormats << "mpg";
     supportedFormats << "mp3";
     supportedFormats << "mp4";
     supportedFormats << "ogg";

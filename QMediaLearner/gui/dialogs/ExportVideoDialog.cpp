@@ -22,8 +22,13 @@ ExportVideoDialog::ExportVideoDialog(
     this->ui->buttonEditProfiles->hide();
     this->_loadInfos();
     this->_connectSlots();
-    this->ui->radioButtonAudioProfile->setChecked(true);
-    this->ui->radioButtonVideoProfile->toggle();
+    if(this->ui->radioButtonAudioProfile->isChecked()){
+        this->ui->radioButtonVideoProfile->setChecked(true);
+        this->ui->radioButtonAudioProfile->toggle();
+    }else{
+        this->ui->radioButtonAudioProfile->setChecked(true);
+        this->ui->radioButtonVideoProfile->toggle();
+    }
     this->changingSize = false;
 }
 //====================================
@@ -118,6 +123,24 @@ void ExportVideoDialog::_loadInfos(){
         this->ui->comboBoxProfilesAudio->addItem(
                     profile);
     }
+    ML::SettingsManagerSingleton *settingsManager
+            = ML::SettingsManagerSingleton::getInstance();
+    bool lastWasVideoProfile
+            = settingsManager->isLastProfileVideo();
+    QString lastProfileName
+            = settingsManager->getLastProfileName();
+    if(lastWasVideoProfile){
+        this->ui->comboBoxProfilesVideo->setCurrentText(lastProfileName);
+        this->ui->radioButtonVideoProfile->setChecked(true);
+        this->ui->radioButtonAudioProfile->setChecked(false);
+    }else{
+        this->ui->radioButtonVideoProfile->setChecked(false);
+        this->ui->radioButtonAudioProfile->setChecked(true);
+        //this->ui->radioButtonVideoProfile->show();
+        this->ui->comboBoxProfilesAudio->setCurrentText(lastProfileName);
+    }
+    //this->ui->radioButtonVideoProfile->setAutoExclusive(true);
+    //this->ui->radioButtonAudioProfile->setAutoExclusive(true);
     ML::SubtitlesManager *subManager
             = this->mediaLearner->getSubtitlesManager();
     bool sub1 = subManager->isSubTrackEnabled(0);
@@ -142,6 +165,23 @@ ExportVideoDialog::~ExportVideoDialog(){
 }
 //====================================
 void ExportVideoDialog::accept(){
+    ML::SettingsManagerSingleton *settingsManager
+            = ML::SettingsManagerSingleton::getInstance();
+    bool isVideo
+            = this->ui->radioButtonVideoProfile
+            ->isChecked();
+    QString profileName;
+    if(isVideo){
+        profileName
+                = this->ui->comboBoxProfilesVideo
+                ->currentText();
+    }else{
+        profileName
+                = this->ui->comboBoxProfilesAudio
+                ->currentText();
+    }
+    settingsManager->setLastProfileVideo(isVideo);
+    settingsManager->setLastProfileName(profileName);
     ML::EncoderInterface
             *encoder
             = this->mediaLearner

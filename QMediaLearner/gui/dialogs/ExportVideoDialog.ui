@@ -315,6 +315,9 @@
       <string>Video format profile</string>
      </property>
      <property name="checked">
+      <bool>false</bool>
+     </property>
+     <property name="autoExclusive">
       <bool>true</bool>
      </property>
     </widget>
@@ -323,6 +326,9 @@
     <widget class="QRadioButton" name="radioButtonAudioProfile">
      <property name="text">
       <string>Audio format profile</string>
+     </property>
+     <property name="autoExclusive">
+      <bool>true</bool>
      </property>
     </widget>
    </item>

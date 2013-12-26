@@ -519,7 +519,7 @@ void FFmpegEncoder::_removeTempFiles(){
     foreach(QString tempSequenceFilePath,
             this->tempSequenceFilePaths){
         qDebug() << "removing " << tempSequenceFilePath;
-        //QFile(tempSequenceFilePath).remove();
+        QFile(tempSequenceFilePath).remove();
     }
     qDebug() << "void FFmpegEncoder::_removeTempFiles() end";
 }

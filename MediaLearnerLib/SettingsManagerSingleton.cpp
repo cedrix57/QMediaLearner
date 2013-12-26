@@ -212,14 +212,14 @@ bool SettingsManagerSingleton::isSaveInLogFile(){
     return enabled;
 }
 //====================================
-void SettingsManagerSingleton::isSaveInLogFile(
+void SettingsManagerSingleton::setSaveInLogFile(
         bool enabled){
     this->settings->setValue(
                 KEY_SAVEINLOGFILE,
                 enabled);
 }
 //====================================
-const QString KEY_SENDLOGFILEWHENCRASHED = "saveInLogFile";
+const QString KEY_SENDLOGFILEWHENCRASHED = "sendLogFile";
 //====================================
 bool SettingsManagerSingleton::isSendLogFileWhenCrashed(){
     bool enabled
@@ -230,11 +230,47 @@ bool SettingsManagerSingleton::isSendLogFileWhenCrashed(){
     return enabled;
 }
 //====================================
-void SettingsManagerSingleton::isSendLogFileWhenCrashed(
+void SettingsManagerSingleton::setSendLogFileWhenCrashed(
         bool enabled){
     this->settings->setValue(
                 KEY_SENDLOGFILEWHENCRASHED,
                 enabled);
+}
+//====================================
+const QString KEY_ISLASPROFILEVIDEO = "isLastProfileVideo";
+//====================================
+bool SettingsManagerSingleton::isLastProfileVideo(){
+    bool is
+            = this->settings->value(
+                KEY_ISLASPROFILEVIDEO,
+                false)
+            .toBool();
+    return is;
+}
+//====================================
+void SettingsManagerSingleton::setLastProfileVideo(
+        bool is){
+    this->settings->setValue(
+                KEY_ISLASPROFILEVIDEO,
+                is);
+}
+//====================================
+const QString KEY_LASTPROFILENAME = "lastProfileName";
+//====================================
+QString SettingsManagerSingleton::getLastProfileName(){
+    QString lastProfileName
+            = this->settings->value(
+                KEY_LASTPROFILENAME,
+                "H.264 + acc (MP4)")
+            .toString();
+    return lastProfileName;
+}
+//====================================
+void SettingsManagerSingleton::setLastProfileName(
+        QString name){
+    this->settings->setValue(
+                KEY_LASTPROFILENAME,
+                name);
 }
 //====================================
 

@@ -9,6 +9,7 @@
 - Windows compilation
 - Saving only audio doesn't work
 - Export video on existing file
+- Add percentage on video saving progress
 
 OTHER:
 - Website
