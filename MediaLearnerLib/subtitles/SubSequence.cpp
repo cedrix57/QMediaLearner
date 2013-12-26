@@ -24,6 +24,8 @@ int DrawingSettings::getFontSize(int screenHeight){
     return fontSize;
 }
 //====================================
+//====================================
+//====================================
 SubSequenceDrawable::SubSequenceDrawable(){
 }
 //====================================
@@ -89,7 +91,8 @@ void SubSequenceDrawable::setContext(
 void SubSequenceDrawable::_assessFontSize(
         int screenHeight){
     this->fontSize
-            = this->drawingsSettings.getFontSize(screenHeight);
+            = this->drawingsSettings.getFontSize(
+                screenHeight);
 }
 
 //====================================

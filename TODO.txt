@@ -1,12 +1,14 @@
+- Change profile order
+- Save in setting last encoding profile choice
+  + disable some setting when audio encoding is choose
 - Create a font directory for the font selection
-- Check endoding video contains the text
+- Encoded video doesn't contain subtitles
 - Encoding: take account of the subtitle options
 - Get rid of the warnings + TODO
-- Add a log feature with log sending feature (settings included)
 - French translation
 - Windows compilation
 - Saving only audio doesn't work
-
+- Export video on existing file
 
 OTHER:
 - Website
@@ -35,4 +37,6 @@ LATER:
 - The application shouldn't crash if using a subtitle file with mistake
 - Add "Always show this dialog" option on yes no dialog
 - Save repeat mode?
+- Add a log sending feature
+- Add a Update notifier
 

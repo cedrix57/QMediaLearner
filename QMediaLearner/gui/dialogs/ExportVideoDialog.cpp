@@ -169,9 +169,6 @@ void ExportVideoDialog::accept(){
             = encoder->getOriginalSize();
     this->sequencesWithSubs.setScreenSize(
                 videoSize);
-    this->sequencesWithSubs.init(
-                *sequences,
-                subs);
     if(this->ui->groupBoxPlaybackRate->isChecked()){
         double playbackRate = this->ui->spinBoxRate->value();
         encoder->setPlaybackRate(playbackRate);

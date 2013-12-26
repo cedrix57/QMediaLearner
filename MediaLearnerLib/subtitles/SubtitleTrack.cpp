@@ -101,12 +101,11 @@ QList<SubSequenceDrawable> SubtitleTrack::getTexts(
         Sequence intervalInMs){
     qDebug() << "QList<SubSequenceDrawable> SubtitleTrack::getTexts(...) called";
     QList<SubSequenceDrawable> drawableTexts;
-    int nTexts
-            = this->subInfos->size();
     for(QList<SubtitleInfo>::iterator sub
         = this->subInfos->begin();
         sub != this->subInfos->end();
         ++sub){
+        SubtitleInfo tmp = *sub;
         this->currentDrawableText.beginInMs
                 = sub->startPosition;
         this->currentDrawableText.endInMs

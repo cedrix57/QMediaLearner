@@ -89,7 +89,8 @@ void SubVideoWidget::_drawSubtitles(
             textItem->setDefaultTextColor(
                         drawingSettings.textColor);
                         //drawingSettings.colorText);
-            int fontSize = drawingSettings.getFontSize(screenHeight);
+            //int fontSize = drawingSettings.getFontSize(screenHeight);
+            int fontSize = drawingText.getPixelSize();
             QFont font(
                         drawingSettings.fontFamily,
                         fontSize);

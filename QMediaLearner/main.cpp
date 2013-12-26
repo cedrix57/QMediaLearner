@@ -9,8 +9,7 @@
 
 #include <Utils/log.h>
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]){
     QApplication app(argc, argv);
     //QStringList styles = QStyleFactory::keys();
     //app.setStyle("Windows");

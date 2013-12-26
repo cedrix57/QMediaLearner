@@ -295,6 +295,7 @@ void FFmpegEncoder::_encodeTempVideoCommand(){
     arguments << "-bufsize";
     arguments << "1000k";
     arguments << this->tempInVideoFilePath;
+    qDebug() << "ffmpeg " << arguments.join(" ");
     this->argumentsList << arguments;
     qDebug() << "void FFmpegEncoder::_encodeTempVideoCommand() end";
 }
@@ -353,9 +354,7 @@ void FFmpegEncoder::_encodeSequenceCommand(){
                 drawTextParam += QString::number(y);
                 drawTextParam += ":";
                 drawTextParam += "fontsize=";
-                int screenHeight = this->newSize.height();
-                int fontSize = drawingSettings.getFontSize(
-                            screenHeight);
+                int fontSize = subSeqIt->getPixelSize();
                 drawTextParam += QString::number(fontSize);
                 int begin = this->getNFrame(
                             subSeqIt->beginInMs,
@@ -394,6 +393,7 @@ void FFmpegEncoder::_encodeSequenceCommand(){
         arguments << tempSequenceFilePath;
         this->tempSequenceFilePaths
                 << tempSequenceFilePath;
+        qDebug() << "ffmpeg " << arguments.join(" ");
         this->argumentsList << arguments;
         idSeq++;
     }
@@ -440,6 +440,7 @@ void FFmpegEncoder::_encodeCuttedSequencesCommand(
     arguments << "copy";
     arguments << outFilePath;
     this->argumentsList << arguments;
+    qDebug() << "ffmpeg " << arguments.join(" ");
     qDebug() << "void FFmpegEncoder::_encodeCuttedSequencesCommand(...) end";
 }
 //====================================
@@ -516,7 +517,8 @@ void FFmpegEncoder::_removeTempFiles(){
     QFile(this->tempInVideoFilePath).remove();
     foreach(QString tempSequenceFilePath,
             this->tempSequenceFilePaths){
-        QFile(tempSequenceFilePath).remove();
+        qDebug() << "removing " << tempSequenceFilePath;
+        //QFile(tempSequenceFilePath).remove();
     }
     qDebug() << "void FFmpegEncoder::_removeTempFiles() end";
 }

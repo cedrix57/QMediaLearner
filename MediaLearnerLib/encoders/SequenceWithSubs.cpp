@@ -42,14 +42,17 @@ void SequencesWithSubs::init(
             QList<SubSequenceDrawable>
                     subSequencesDrawables
                     = subtitleTracks[i].getTexts(*seq);
-            for(QList<SubSequenceDrawable>::iterator it
-                = subSequencesDrawables.begin();
-                it != subSequencesDrawables.end();
-                ++it){
-                it->project(*seq);
+            int nSubSeq = subSequencesDrawables.size();
+            if(nSubSeq > 0){
+                for(QList<SubSequenceDrawable>::iterator it
+                    = subSequencesDrawables.begin();
+                    it != subSequencesDrawables.end();
+                    ++it){
+                    it->project(*seq);
+                }
+                sequencesWithSubs.subSequences
+                        << subSequencesDrawables;
             }
-            sequencesWithSubs.subSequences
-                    << subSequencesDrawables;
         }
         this->sequencesWithTexts << sequencesWithSubs;
     }
