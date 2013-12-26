@@ -1,8 +1,8 @@
+- ffmpeg export format error/optimisation
 - Change profile order
 - Save in setting last encoding profile choice
   + disable some setting when audio encoding is choose
 - Create a font directory for the font selection
-- Encoded video doesn't contain subtitles
 - Encoding: take account of the subtitle options
 - Get rid of the warnings + TODO
 - French translation

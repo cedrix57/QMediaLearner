@@ -346,8 +346,9 @@ void FFmpegEncoder::_encodeSequenceCommand(){
                 drawTextParam += drawingSettings.textColor.name();
                 drawTextParam += ":";
                 drawTextParam += "x=";
-                int x = lineIt->position.x();
-                drawTextParam += QString::number(x);
+                //int x = lineIt->position.x();
+                //drawTextParam += QString::number(x);
+                drawTextParam += "(main_w-text_w)/2";
                 drawTextParam += ":";
                 drawTextParam += "y=";
                 int y = lineIt->position.y();
