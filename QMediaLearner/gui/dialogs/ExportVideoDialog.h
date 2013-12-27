@@ -31,6 +31,7 @@ protected:
     QProgressDialog progressDialog;
     QSize originalVideoSize;
     bool changingSize;
+    void _saveSrtSubEventually();
 
 protected slots:
     void onAudioProfileToogled(bool val);

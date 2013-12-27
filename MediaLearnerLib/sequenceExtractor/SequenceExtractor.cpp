@@ -379,6 +379,9 @@ void SequenceExtractor::sortAndMergeSequences(){
             i--;
         }
     }
+    CrashManagerSingleton::getInstance()
+            ->setSequences(
+                this->extractedSequences);
     qDebug() << "void SequenceExtractor::sortAndMergeSequences() end";
 }
 //====================================

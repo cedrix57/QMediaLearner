@@ -1,10 +1,19 @@
 - Create a font directory for the font selection
-- Encoding: take account of the subtitle options
+- Encoding: add srt subtitle saving
 - ffmpeg export format error/optimisation
 - Get rid of the warnings + TODO
-- Add percentage on video saving progress
 - Windows compilation
 - French translation
+- In the drag an drop of a subtitle track,
+  new transparent area should appear and
+  allow to put a new subtitle track on
+  the bottom or on top, and on a new
+  place, or replacing an existing one.
+  The replacement would be automatic if
+  openin a subtitle for the second place
+  on a different place
+- Check if a lot of cadoc are available and
+  ask to download some if requiered
 
 OTHER:
 - Website
@@ -22,17 +31,10 @@ LATER:
 - Add voice detection activity algorithm
 - Update the video widget so it can support video effects
 - Voice activity detection algorithm test application
-- In the drag an drop of a subtitle track,
-  new transparent area should appear and
-  allow to put a new subtitle track on
-  the bottom or on top, and on a new
-  place, or replacing an existing one.
-  The replacement would be automatic if
-  openin a subtitle for the second place
-  on a different place
 - The application shouldn't crash if using a subtitle file with mistake
 - Add "Always show this dialog" option on yes no dialog
 - Save repeat mode?
 - Add a log sending feature
 - Add a Update notifier
+- Add ffmpeg subtitle encoding
 

@@ -172,6 +172,17 @@ void SubtitlesManager::setContext(
     }
     qDebug() << "void SubtitlesManager::setContext(...) end";
 }
+//====================================
+void SubtitlesManager::saveSubtitle(
+        int position,
+        QString subtitleFilePath,
+        QList<Sequence> &sequences){
+    this->subtitleTracks[position]
+            .saveSubtitle(
+                subtitleFilePath,
+                sequences);
+}
+//====================================
 /*
 //====================================
 QList<QList<DrawingSubtitleInfo> >

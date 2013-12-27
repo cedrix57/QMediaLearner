@@ -229,13 +229,22 @@ void ExportVideoDialog::accept(){
             sequences
             = sequenceExtractor
             ->getExtractedSequences();
-    ML::SubtitleTrack*
-            subs
-            = subtitlesManager
-            ->getSubtitleTracks();
-    this->sequencesWithSubs.init(
-                *sequences,
-                subs);
+    bool embedSubtitle
+            = this->ui->checkBoxSaveSubEmbedded
+            ->isChecked()
+            && isVideo;
+    if(embedSubtitle){
+        ML::SubtitleTrack*
+                subs
+                = subtitlesManager
+                ->getSubtitleTracks();
+        this->sequencesWithSubs.init(
+                    *sequences,
+                    subs);
+    }else{
+        this->sequencesWithSubs.init(
+                    *sequences);
+    }
     QSize videoSize
             = encoder->getOriginalSize();
     this->sequencesWithSubs.setScreenSize(
@@ -259,8 +268,63 @@ void ExportVideoDialog::accept(){
     encoder->encode(
                 outVideoFilePath);
     this->progressDialog.show();
+    this->_saveSrtSubEventually();
     //*/
     //TODO progress dialog
+}
+//====================================
+void ExportVideoDialog::_saveSrtSubEventually(){
+    ML::SequenceExtractor
+            *sequenceExtractor
+            = this->mediaLearner
+            ->getSequenceExtractor();
+    QSharedPointer<QList<ML::Sequence> >
+            sequences
+            = sequenceExtractor
+            ->getExtractedSequences();
+    bool saveStr
+            = this->ui->checkBoxSaveSubWithSrt
+            ->isChecked();
+    if(saveStr){
+        QString outVideoFilePath
+                = this->ui->lineEditFilePath->text();
+        QStringList cuttedFilePath
+                = outVideoFilePath.split(".");
+        cuttedFilePath.takeLast();
+        QString baseSrtFilePath
+                = cuttedFilePath.join(".");
+        ML::SubtitlesManager
+                *subtitlesManager
+                = this->mediaLearner
+                ->getSubtitlesManager();
+        bool save1
+                = this->ui->checkBoxTrack1
+                ->isChecked();
+        if(save1){
+            subtitlesManager->saveSubtitle(
+                        0,
+                        baseSrtFilePath + "_1.srt",
+                        *sequences);
+        }
+        bool save2
+                = this->ui->checkBoxTrack2
+                ->isChecked();
+        if(save2){
+            subtitlesManager->saveSubtitle(
+                        1,
+                        baseSrtFilePath + "_2.srt",
+                        *sequences);
+        }
+        bool save3
+                = this->ui->checkBoxTrack3
+                ->isChecked();
+        if(save3){
+            subtitlesManager->saveSubtitle(
+                        2,
+                        baseSrtFilePath + "_3.srt",
+                        *sequences);
+        }
+    }
 }
 //====================================
 void ExportVideoDialog::browseNewVideoFilePath(){

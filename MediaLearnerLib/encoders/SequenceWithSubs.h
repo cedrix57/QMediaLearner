@@ -20,6 +20,8 @@ class SequencesWithSubs{
 public:
     SequencesWithSubs();
     void init(
+            QList<Sequence> &sequences);
+    void init(
             QList<Sequence> &sequences,
             SubtitleTrack *subtitleTracks);
     void setScreenSize(QSize screenSize);

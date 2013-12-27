@@ -24,6 +24,11 @@ SequencesWithSubs::SequencesWithSubs(){
 }
 //====================================
 void SequencesWithSubs::init(
+        QList<Sequence> &sequences){
+    this->init(sequences, NULL);
+}
+//====================================
+void SequencesWithSubs::init(
         QList<Sequence> &sequences,
         SubtitleTrack *subtitleTracks){
     qDebug() << "QSize void SequencesWithSubs::init(...) called";
@@ -38,20 +43,22 @@ void SequencesWithSubs::init(
         SequenceWithSubs sequencesWithSubs;
         sequencesWithSubs.beginInMs = seq->beginInMs;
         sequencesWithSubs.endInMs = seq->endInMs;
-        for(int i=0; i<SubtitlesManager::N_MAX_TRACKS; i++){
-            QList<SubSequenceDrawable>
-                    subSequencesDrawables
-                    = subtitleTracks[i].getTexts(*seq);
-            int nSubSeq = subSequencesDrawables.size();
-            if(nSubSeq > 0){
-                for(QList<SubSequenceDrawable>::iterator it
-                    = subSequencesDrawables.begin();
-                    it != subSequencesDrawables.end();
-                    ++it){
-                    it->project(*seq);
+        if(subtitleTracks != NULL){
+            for(int i=0; i<SubtitlesManager::N_MAX_TRACKS; i++){
+                QList<SubSequenceDrawable>
+                        subSequencesDrawables
+                        = subtitleTracks[i].getTexts(*seq);
+                int nSubSeq = subSequencesDrawables.size();
+                if(nSubSeq > 0){
+                    for(QList<SubSequenceDrawable>::iterator it
+                        = subSequencesDrawables.begin();
+                        it != subSequencesDrawables.end();
+                        ++it){
+                        it->project(*seq);
+                    }
+                    sequencesWithSubs.subSequences
+                            << subSequencesDrawables;
                 }
-                sequencesWithSubs.subSequences
-                        << subSequencesDrawables;
             }
         }
         this->sequencesWithTexts << sequencesWithSubs;

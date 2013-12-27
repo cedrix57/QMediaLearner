@@ -1,6 +1,7 @@
 #include "SubtitleTrack.h"
 
 #include <QFile>
+#include <QTextStream>
 #include <QDebug>
 
 namespace ML{
@@ -122,6 +123,93 @@ QList<SubSequenceDrawable> SubtitleTrack::getTexts(
     }
     qDebug() << "QList<SubSequenceDrawable> SubtitleTrack::getTexts(...) end";
     return drawableTexts;
+}
+//====================================
+void SubtitleTrack::saveSubtitle(
+        QString subtitleFilePath){
+    QFile file(subtitleFilePath);
+    file.open(QIODevice::WriteOnly);
+    QTextStream stream(&file);
+    int currentN = 1;
+    for(QList<SubtitleInfo>::iterator it
+        = this->subInfos->begin();
+        it != this->subInfos->end();
+        ++it){
+        stream << QString::number(currentN) << endl;
+        QTime startTime(0, 0, 0, 0);
+        startTime
+                = startTime
+                .addMSecs(it->startPosition);
+        QTime endTime(0, 0, 0, 0);
+        endTime
+                = endTime
+                .addMSecs(it->endPosition);
+        QString startTimeStrimg
+                = startTime.toString(
+                    "hh:mm:ss,zzz");
+        QString endTimeStrimg
+                = endTime.toString(
+                    "hh:mm:ss,zzz");
+        stream << startTimeStrimg
+                  << " --> "
+                  << endTimeStrimg
+                  << endl;
+        foreach(QString line, it->lines){
+            stream << line << endl;
+        }
+        stream << endl;
+        currentN++;
+    }
+    file.close();
+    //TODO
+}
+//====================================
+void SubtitleTrack::saveSubtitle(
+        QString subtitleFilePath,
+        QList<Sequence> sequences){
+    QFile file(subtitleFilePath);
+    file.open(QIODevice::WriteOnly);
+    QTextStream stream(&file);
+    int currentN = 1;
+    int totalLength = 0;
+    foreach(Sequence sequence, sequences){
+        int toRemove = sequence.beginInMs - totalLength;
+        QList<SubSequenceDrawable>
+                subSequencesDrawable
+                = this->getTexts(
+                    sequence);
+        foreach(SubSequenceDrawable seq, subSequencesDrawable){
+            seq.substract(toRemove);
+            stream << QString::number(currentN) << endl;
+            QTime startTime(0, 0, 0, 0);
+            startTime
+                    = startTime
+                    .addMSecs(seq.beginInMs);
+            QTime endTime(0, 0, 0, 0);
+            endTime
+                    = endTime
+                    .addMSecs(seq.endInMs);
+            QString startTimeStrimg
+                    = startTime.toString(
+                        "hh:mm:ss,zzz");
+            QString endTimeStrimg
+                    = endTime.toString(
+                        "hh:mm:ss,zzz");
+            stream << startTimeStrimg
+                      << " --> "
+                      << endTimeStrimg
+                      << endl;
+            foreach(QString line, seq.lines){
+                stream << line << endl;
+            }
+            stream << endl;
+            currentN++;
+        }
+        int sequenceLength
+                = sequence.getDuration();
+        totalLength += sequenceLength;
+    }
+    file.close();
 }
 //====================================
 

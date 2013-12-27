@@ -35,6 +35,13 @@ public:
             &subSequencesDrawable,
             QSize screenSize);
     SubtitleTrack *getSubtitleTracks();
+    void saveSubtitle(
+            int position,
+            QString subtitleFilePath);
+    void saveSubtitle(
+            int position,
+            QString subtitleFilePath,
+            QList<Sequence> &sequences);
     /*
     QList<QList<DrawingSubtitleInfo> > getSubsAt(
             QSharedPointer<QList<Sequence> >
