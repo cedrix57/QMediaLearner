@@ -1,4 +1,5 @@
 #include "FFmpegEncoder.h"
+#include "../FontManagerSingleton.h"
 
 #include <QDir>
 #include <QString>
@@ -232,7 +233,6 @@ QString FFmpegEncoder::getFormatedTime(qint64 ms){
 //====================================
 void FFmpegEncoder::startEncoding(QString outFilePath){
     qDebug() << "void FFmpegEncoder::startEncoding(QString outFilePath) called";
-    QMap<QString, QString> fontFilePaths;
     this->argumentsList.clear();
     this->tempSequenceFilePaths.clear();
     this->fps = this->getFps();
@@ -333,17 +333,11 @@ void FFmpegEncoder::_encodeSequenceCommand(){
                 drawTextParam += "'" + lineIt->text + "'";
                 drawTextParam += ":";
                 drawTextParam += "fontfile=";
-                /*
-                QString fontFamily = drawingSettings.fontFamily;
-                if(!fontFilePaths.contains(
-                            fontFamily)){
-                    fontFilePaths[fontFamily]
-                            = this->getFontPath(
-                                fontFamily);
-                }
-                //QString fontPath = fontFilePaths[fontFamily];
-                //*/
-                QString fontPath = "/usr/share/fonts/truetype/msttcorefonts/Arial.ttf";
+                QString fontPath = FontManagerSingleton
+                        ::getInstance()
+                        ->getFontPath(
+                            drawingSettings.fontFamily);
+                //QString fontPath = "/usr/share/fonts/truetype/msttcorefonts/Arial.ttf";
                 drawTextParam += fontPath;
                 drawTextParam += ":";
                 drawTextParam += "fontcolor=";

@@ -1,11 +1,13 @@
 #include "MediaLearnerLib.h"
 #include "CrashManagerSingleton.h"
+#include "SettingsManagerSingleton.h"
 
 
 namespace ML{
 
 //====================================
-MediaLearnerLib::MediaLearnerLib(){
+MediaLearnerLib::MediaLearnerLib(QObject *parent)
+    : QObject(parent){
     qDebug() << "MediaLearnerLib::MediaLearnerLib() called";
     CrashManagerSingleton *
             crashManager
@@ -26,6 +28,13 @@ MediaLearnerLib::MediaLearnerLib(){
                 &this->encoder,
                 &EncoderInterface::encodingFinished,
                 &SequencesWithSubs::setEnodingFinished);
+    SettingsManagerSingleton
+            *settingsManager
+            = SettingsManagerSingleton::getInstance();
+    this->connect(
+                settingsManager,
+                SIGNAL(subSettingsChanged()),
+                SLOT(_onDrawingSettingsChanged()));
     qDebug() << "MediaLearnerLib::MediaLearnerLib() end";
 }
 //====================================
@@ -100,6 +109,17 @@ bool MediaLearnerLib::isFormatSupported(
     qDebug() << "supportedVideoFormat: " << supportedVideoFormat;
     qDebug() << "bool MediaLearnerLib::isFormatSupported(...) end";
     return supportedVideoFormat;
+}
+//====================================
+void MediaLearnerLib::_onDrawingSettingsChanged(){
+    bool isPaused
+            = this->mediaPlayer.state()
+            == QMediaPlayer::PausedState;
+    if(isPaused){
+        int position = this->mediaPlayer.position();
+        this->mediaPlayer.setPosition(position);
+    }
+
 }
 //====================================
 

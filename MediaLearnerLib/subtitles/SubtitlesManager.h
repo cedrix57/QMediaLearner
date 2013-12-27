@@ -4,6 +4,8 @@
 #include <QObject>
 #include "SubtitleTrack.h"
 #include "../sequenceExtractor/SequenceExtractor.h"
+#include <QMap>
+#include <QString>
 
 
 namespace ML{

@@ -3,6 +3,7 @@
 #include <SettingsManagerSingleton.h>
 #include <QPixmap>
 #include <QColorDialog>
+#include <FontManagerSingleton.h>
 
 //====================================
 SettingsDialog::SettingsDialog(QWidget *parent) :
@@ -43,11 +44,30 @@ void SettingsDialog::loadSettings(){
             = settingsManager->getSubFontFamily(1);
     QString fontFamily3
             = settingsManager->getSubFontFamily(2);
-    this->ui->fontComboSub1
+    QStringList availableFont
+            = ML::FontManagerSingleton
+            ::getInstance()
+            ->getFontNames();
+    this->ui->comboBoxFont1
+            ->clear();
+    this->ui->comboBoxFont2
+            ->clear();
+    this->ui->comboBoxFont3
+            ->clear();
+    this->ui->comboBoxFont1
+            ->addItems(
+                availableFont);
+    this->ui->comboBoxFont2
+            ->addItems(
+                availableFont);
+    this->ui->comboBoxFont3
+            ->addItems(
+                availableFont);
+    this->ui->comboBoxFont1
             ->setCurrentText(fontFamily1);
-    this->ui->fontComboSub2
+    this->ui->comboBoxFont2
             ->setCurrentText(fontFamily2);
-    this->ui->fontComboSub3
+    this->ui->comboBoxFont3
             ->setCurrentText(fontFamily3);
     ML::SubSize
             subSize1
@@ -121,19 +141,19 @@ void SettingsDialog::saveSettings(){
             = ML::SettingsManagerSingleton
             ::getInstance();
     QString fontFamily1
-            = this->ui->fontComboSub1
+            = this->ui->comboBoxFont1
             ->currentText();
             settingsManager->setSubFontFamily(
                         0,
                         fontFamily1);
     QString fontFamily2
-            = this->ui->fontComboSub2
+            = this->ui->comboBoxFont2
             ->currentText();
             settingsManager->setSubFontFamily(
                         1,
                         fontFamily2);
     QString fontFamily3
-            = this->ui->fontComboSub3
+            = this->ui->comboBoxFont3
             ->currentText();
             settingsManager->setSubFontFamily(
                         2,

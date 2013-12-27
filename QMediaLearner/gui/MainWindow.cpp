@@ -14,6 +14,7 @@
 #include "dialogs/CurrentSessionSettingsDialog.h"
 #include <CrashManagerSingleton.h>
 #include <QTimer>
+#include <QFontDatabase>
 
 //====================================
 MainWindow::MainWindow(QWidget *parent) :

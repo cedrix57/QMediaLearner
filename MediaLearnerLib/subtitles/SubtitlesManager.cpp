@@ -2,10 +2,12 @@
 
 #include <QFontMetrics>
 #include <QDebug>
+#include <QDir>
 #include <QSet>
 
 #include "../SettingsManagerSingleton.h"
 #include "CrashManagerSingleton.h"
+
 namespace ML{
 
 //====================================
@@ -37,6 +39,11 @@ void SubtitlesManager::_initDrawingSettings(){
                 = settingsManager
                 ->getSubColor(i);
         drawingSettings.fontFamily
+                //= SubtitlesManager::getFontNames()[1];
+                //= QFontDatabase::applicationFontFamilies(15).at(0);
+                //= SubtitlesManager::fontPaths.keys()[5];
+                //= SubtitlesManager::fontPaths
+                //[SubtitlesManager::fontPaths.keys()[1]];
                 = settingsManager
                 ->getSubFontFamily(i);
         drawingSettings.subPosition
@@ -182,6 +189,7 @@ void SubtitlesManager::saveSubtitle(
                 subtitleFilePath,
                 sequences);
 }
+
 //====================================
 /*
 //====================================

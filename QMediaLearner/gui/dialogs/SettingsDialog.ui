@@ -59,7 +59,7 @@
         </sizepolicy>
        </property>
        <property name="currentIndex">
-        <number>2</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="page">
         <layout class="QGridLayout" name="gridLayout">
@@ -193,14 +193,7 @@
                </property>
               </widget>
              </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="label_4">
-               <property name="text">
-                <string>Font</string>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="1">
+             <item row="4" column="2">
               <spacer name="verticalSpacer_3">
                <property name="orientation">
                 <enum>Qt::Vertical</enum>
@@ -213,29 +206,7 @@
                </property>
               </spacer>
              </item>
-             <item row="1" column="1">
-              <widget class="QFontComboBox" name="fontComboSub1"/>
-             </item>
-             <item row="2" column="1">
-              <widget class="QComboBox" name="comboBoxSize1">
-               <item>
-                <property name="text">
-                 <string>Small</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Medium</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Huge</string>
-                </property>
-               </item>
-              </widget>
-             </item>
-             <item row="3" column="1">
+             <item row="3" column="2">
               <widget class="QComboBox" name="comboBoxPosition1">
                <item>
                 <property name="text">
@@ -254,7 +225,26 @@
                </item>
               </widget>
              </item>
-             <item row="3" column="2">
+             <item row="2" column="2">
+              <widget class="QComboBox" name="comboBoxSize1">
+               <item>
+                <property name="text">
+                 <string>Small</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Medium</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Huge</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item row="3" column="3">
               <spacer name="horizontalSpacer_3">
                <property name="orientation">
                 <enum>Qt::Horizontal</enum>
@@ -267,12 +257,22 @@
                </property>
               </spacer>
              </item>
-             <item row="0" column="1">
+             <item row="0" column="2">
               <widget class="QPushButton" name="buttonColor1">
                <property name="text">
                 <string/>
                </property>
               </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_4">
+               <property name="text">
+                <string>Font</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="2">
+              <widget class="QFontComboBox" name="comboBoxFont1"/>
              </item>
             </layout>
            </widget>
@@ -285,15 +285,19 @@
                </property>
               </widget>
              </item>
+             <item row="0" column="1">
+              <widget class="QPushButton" name="buttonColor2">
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
              <item row="1" column="0">
               <widget class="QLabel" name="label_12">
                <property name="text">
                 <string>Font</string>
                </property>
               </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QFontComboBox" name="fontComboSub2"/>
              </item>
              <item row="2" column="0">
               <widget class="QLabel" name="label_10">
@@ -373,12 +377,8 @@
                </property>
               </spacer>
              </item>
-             <item row="0" column="1">
-              <widget class="QPushButton" name="buttonColor2">
-               <property name="text">
-                <string/>
-               </property>
-              </widget>
+             <item row="1" column="1">
+              <widget class="QFontComboBox" name="comboBoxFont2"/>
              </item>
             </layout>
            </widget>
@@ -391,24 +391,7 @@
                </property>
               </widget>
              </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="label_16">
-               <property name="text">
-                <string>Font</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QFontComboBox" name="fontComboSub3"/>
-             </item>
-             <item row="2" column="0">
-              <widget class="QLabel" name="label_15">
-               <property name="text">
-                <string>Size</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="1">
+             <item row="3" column="2">
               <widget class="QComboBox" name="comboBoxSize3">
                <item>
                 <property name="text">
@@ -427,14 +410,41 @@
                </item>
               </widget>
              </item>
-             <item row="3" column="0">
+             <item row="5" column="2">
+              <spacer name="verticalSpacer_6">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>159</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item row="0" column="2">
+              <widget class="QPushButton" name="buttonColor3">
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="0">
               <widget class="QLabel" name="label_13">
                <property name="text">
                 <string>Position</string>
                </property>
               </widget>
              </item>
-             <item row="3" column="1">
+             <item row="2" column="0">
+              <widget class="QLabel" name="label_16">
+               <property name="text">
+                <string>Font</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="2">
               <widget class="QComboBox" name="comboBoxPosition3">
                <item>
                 <property name="text">
@@ -453,7 +463,7 @@
                </item>
               </widget>
              </item>
-             <item row="3" column="2">
+             <item row="4" column="3">
               <spacer name="horizontalSpacer_6">
                <property name="orientation">
                 <enum>Qt::Horizontal</enum>
@@ -466,25 +476,15 @@
                </property>
               </spacer>
              </item>
-             <item row="4" column="1">
-              <spacer name="verticalSpacer_6">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>159</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item row="0" column="1">
-              <widget class="QPushButton" name="buttonColor3">
+             <item row="3" column="0">
+              <widget class="QLabel" name="label_15">
                <property name="text">
-                <string/>
+                <string>Size</string>
                </property>
               </widget>
+             </item>
+             <item row="2" column="2">
+              <widget class="QFontComboBox" name="comboBoxFont3"/>
              </item>
             </layout>
            </widget>

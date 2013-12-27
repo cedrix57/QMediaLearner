@@ -6,8 +6,8 @@
 #include <QVideoWidget>
 #include <QMediaPlayer>
 #include <QStyleFactory>
-
 #include <Utils/log.h>
+
 
 int main(int argc, char *argv[]){
     QApplication app(argc, argv);

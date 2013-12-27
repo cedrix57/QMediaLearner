@@ -1,9 +1,3 @@
-- Create a font directory for the font selection
-- Encoding: add srt subtitle saving
-- ffmpeg export format error/optimisation
-- Get rid of the warnings + TODO
-- Windows compilation
-- French translation
 - In the drag an drop of a subtitle track,
   new transparent area should appear and
   allow to put a new subtitle track on
@@ -12,8 +6,14 @@
   The replacement would be automatic if
   openin a subtitle for the second place
   on a different place
-- Check if a lot of cadoc are available and
+- Check if a sufficient codecs are available and
   ask to download some if requiered
+- ffmpeg export format error/optimisation
+- Get rid of the warnings + TODO
+- Windows compilation
+- French translation
+- When font settings are changed, they are not applied before the application restarts
+
 
 OTHER:
 - Website
