@@ -13,6 +13,7 @@ OTHER:
 - Voice activity detection algorithm test application
 
 LATER:
+- Find out why the application can crashes some times
 - Ask if the user want to sort and merge sequences if not so
 - The subtitles have duplication
 - Add "Always show this dialog" option on yes no dialog
