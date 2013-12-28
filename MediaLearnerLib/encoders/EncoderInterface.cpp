@@ -74,6 +74,14 @@ void EncoderInterface::selectFormatProfile(
     this->profileName = profileName;
 }
 //====================================
+ProfileInfo EncoderInterface::getProfile(QString profileName){
+    QMap<QString, ProfileInfo>
+            profiles
+            = this->getAvailableProfiles();
+    ProfileInfo profile = profiles[profileName];
+    return profile;
+}
+//====================================
 QMap<QString, ProfileInfo>
 EncoderInterface::getAvailableProfiles(){
     QMap<QString, ProfileInfo>  profiles

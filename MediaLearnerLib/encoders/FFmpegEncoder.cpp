@@ -410,18 +410,19 @@ void FFmpegEncoder::_encodeCuttedSequencesCommand(
             + this->tempSequenceFilePaths
             .join("|");
     arguments << concatArg;
-    if(this->playbackRate != -1 && this->playbackRate != 1){
+    qDebug() << "this->playbackRate: " << this->playbackRate;
+    int playbackInt = this->playbackRate + 0.5;
+    if(playbackInt != 0 && playbackInt != 1){
         arguments << "-filter:v";
         arguments << "setpts="
                      + QString::number(this->playbackRate)
                      + "*PTS";
     }
     bool audioOnly = false;
+    qDebug() << "Profile name: " << this->profileName;
     if(!this->profileName.isEmpty()){
-        QMap<QString, ProfileInfo> formatProfiles
-                = this->getAvailableVideoProfiles();
         ProfileInfo encodingInfo
-                = formatProfiles[this->profileName];
+                = this->getProfile(this->profileName);
         QStringList encodingArguments
                 = encodingInfo.description.split(" ");
         arguments << encodingArguments;
@@ -429,15 +430,14 @@ void FFmpegEncoder::_encodeCuttedSequencesCommand(
             audioOnly = true;
         }
     }
-    if(!this->newSize.isNull() && !audioOnly){
+    qDebug() << "this->newSize: " << this->newSize;
+    if(this->newSize.isValid() && !audioOnly){
         arguments << "-vf";
         arguments << "scale="
                      + QString::number(this->newSize.width())
                      + ":"
                      + QString::number(this->newSize.height());
     }
-    arguments << "-c";
-    arguments << "copy";
     arguments << outFilePath;
     this->argumentsList << arguments;
     qDebug() << "ffmpeg " << arguments.join(" ");

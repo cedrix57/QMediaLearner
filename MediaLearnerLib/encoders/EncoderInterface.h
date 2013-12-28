@@ -28,6 +28,7 @@ public:
     virtual QMap<QString, ProfileInfo> getAvailableVideoProfiles() = 0;
     virtual QMap<QString, ProfileInfo> getAvailableAudioProfiles() = 0;
     QMap<QString, ProfileInfo> getAvailableProfiles();
+    ProfileInfo getProfile(QString profileName);
     QSet<QString> getAvailableVideoProfileExts();
     QSet<QString> getAvailableAudioProfileExts();
     QString getSelectedProfileExt();

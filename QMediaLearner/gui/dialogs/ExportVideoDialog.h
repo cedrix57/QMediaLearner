@@ -20,6 +20,7 @@ public:
             *mediaLearner,
             QWidget *parent = 0);
     ~ExportVideoDialog();
+    QString getProfileName();
     
 protected:
     Ui::ExportVideoDialog *ui;

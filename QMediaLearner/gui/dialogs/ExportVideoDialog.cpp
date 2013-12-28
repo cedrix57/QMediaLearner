@@ -41,6 +41,25 @@ void ExportVideoDialog::onAudioProfileToogled(
     this->ui->comboBoxProfilesVideo->setEnabled(!val);
     this->ui->checkBoxSaveSubEmbedded->setEnabled(!val);
     this->ui->checkBoxSaveSubEncoded->setEnabled(!val);
+    QString profileName = this->getProfileName();
+    this->onProfileChanged(profileName);
+}
+//====================================
+QString ExportVideoDialog::getProfileName(){
+    bool isVideo
+            = this->ui->radioButtonVideoProfile
+            ->isChecked();
+    QString profileName;
+    if(isVideo){
+        profileName
+                = this->ui->comboBoxProfilesVideo
+                ->currentText();
+    }else{
+        profileName
+                = this->ui->comboBoxProfilesAudio
+                ->currentText();
+    }
+    return profileName;
 }
 //====================================
 void ExportVideoDialog::onProfileChanged(
@@ -198,25 +217,17 @@ void ExportVideoDialog::accept(){
     }
     ML::SettingsManagerSingleton *settingsManager
             = ML::SettingsManagerSingleton::getInstance();
+    QString profileName = this->getProfileName();
     bool isVideo
             = this->ui->radioButtonVideoProfile
             ->isChecked();
-    QString profileName;
-    if(isVideo){
-        profileName
-                = this->ui->comboBoxProfilesVideo
-                ->currentText();
-    }else{
-        profileName
-                = this->ui->comboBoxProfilesAudio
-                ->currentText();
-    }
     settingsManager->setLastProfileVideo(isVideo);
     settingsManager->setLastProfileName(profileName);
     ML::EncoderInterface
             *encoder
             = this->mediaLearner
             ->getEncoder();
+    encoder->selectFormatProfile(profileName);
     ML::SequenceExtractor
             *sequenceExtractor
             = this->mediaLearner
