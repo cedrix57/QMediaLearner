@@ -159,19 +159,26 @@ void ExportVideoDialog::_loadInfos(){
     }
     ML::SettingsManagerSingleton *settingsManager
             = ML::SettingsManagerSingleton::getInstance();
+    bool saveSRTsubs
+            = settingsManager->isSaveSRTsubs();
+    this->ui->checkBoxSaveSubWithSrt
+            ->setChecked(saveSRTsubs);
     bool lastWasVideoProfile
             = settingsManager->isLastProfileVideo();
-    QString lastProfileName
-            = settingsManager->getLastProfileName();
+    QString lastVideoProfileName
+            = settingsManager->getLastVideoProfileName();
+    this->ui->comboBoxProfilesVideo
+            ->setCurrentText(lastVideoProfileName);
+    QString lastAudioProfileName
+            = settingsManager->getLastAudioProfileName();
+    this->ui->comboBoxProfilesAudio
+            ->setCurrentText(lastAudioProfileName);
     if(lastWasVideoProfile){
-        this->ui->comboBoxProfilesVideo->setCurrentText(lastProfileName);
         this->ui->radioButtonVideoProfile->setChecked(true);
         this->ui->radioButtonAudioProfile->setChecked(false);
     }else{
         this->ui->radioButtonVideoProfile->setChecked(false);
         this->ui->radioButtonAudioProfile->setChecked(true);
-        //this->ui->radioButtonVideoProfile->show();
-        this->ui->comboBoxProfilesAudio->setCurrentText(lastProfileName);
     }
     //this->ui->radioButtonVideoProfile->setAutoExclusive(true);
     //this->ui->radioButtonAudioProfile->setAutoExclusive(true);
@@ -217,12 +224,23 @@ void ExportVideoDialog::accept(){
     }
     ML::SettingsManagerSingleton *settingsManager
             = ML::SettingsManagerSingleton::getInstance();
-    QString profileName = this->getProfileName();
     bool isVideo
             = this->ui->radioButtonVideoProfile
             ->isChecked();
+    QString videoProfileName
+            = this->ui->comboBoxProfilesVideo
+            ->currentText();
+    QString audioProfileName
+            = this->ui->comboBoxProfilesAudio
+            ->currentText();
+    bool saveSRTsubs
+            = this->ui->checkBoxSaveSubWithSrt
+            ->isChecked();
     settingsManager->setLastProfileVideo(isVideo);
-    settingsManager->setLastProfileName(profileName);
+    settingsManager->setLastVideoProfileName(videoProfileName);
+    settingsManager->setLastAudioProfileName(audioProfileName);
+    settingsManager->setSaveSRTsubs(saveSRTsubs);
+    QString profileName = this->getProfileName();
     ML::EncoderInterface
             *encoder
             = this->mediaLearner

@@ -1,12 +1,8 @@
-- ffmpeg export format error/optimisation
-- Check if a sufficient codecs are available and
-  ask to download some if requiered
 - Get rid of the warnings + TODO
-
 - Windows compilation
 - French translation
 
-- ask if the user want to sort and merge sequences if not so
+
 
 OTHER:
 - Website
@@ -17,11 +13,14 @@ OTHER:
 - Voice activity detection algorithm test application
 
 LATER:
+- Ask if the user want to sort and merge sequences if not so
 - The subtitles have duplication
 - Add "Always show this dialog" option on yes no dialog
 - Save repeat mode?
 - Add ffmpeg subtitle encoding
 - Remove log file if more than 5 log files
+- Check if a sufficient codecs are available and
+  ask to download some if requiered
 - Add a log sending feature
 - Add a Update notifier
 - Find a way to handle crash management when multiple

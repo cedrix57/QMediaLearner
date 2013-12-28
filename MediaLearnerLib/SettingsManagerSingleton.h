@@ -29,7 +29,9 @@ public:
     bool isSaveInLogFile();
     bool isSendLogFileWhenCrashed();
     bool isLastProfileVideo();
-    QString getLastProfileName();
+    bool isSaveSRTsubs();
+    QString getLastVideoProfileName();
+    QString getLastAudioProfileName();
 
 signals:
     void languageChanged(QString language);
@@ -57,7 +59,9 @@ public slots:
     void setSaveInLogFiles(bool enabled);
     void setSendLogFileWhenCrashed(bool enabled);
     void setLastProfileVideo(bool is);
-    void setLastProfileName(QString name);
+    bool setSaveSRTsubs(bool is);
+    void setLastVideoProfileName(QString name);
+    void setLastAudioProfileName(QString name);
 
 protected:
     explicit SettingsManagerSingleton(

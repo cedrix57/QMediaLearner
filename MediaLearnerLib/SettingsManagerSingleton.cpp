@@ -255,24 +255,60 @@ void SettingsManagerSingleton::setLastProfileVideo(
                 is);
 }
 //====================================
-const QString KEY_LASTPROFILENAME = "lastProfileName";
+const QString KEY_LASTVIDEOPROFILENAME = "lastVideoProfileName";
 //====================================
-QString SettingsManagerSingleton::getLastProfileName(){
-    QString lastProfileName
+QString SettingsManagerSingleton::getLastVideoProfileName(){
+    QString lastVideoProfileName
             = this->settings->value(
-                KEY_LASTPROFILENAME,
+                KEY_LASTVIDEOPROFILENAME,
                 "H.264 + acc (MP4)")
             .toString();
-    return lastProfileName;
+    return lastVideoProfileName;
 }
 //====================================
-void SettingsManagerSingleton::setLastProfileName(
+void SettingsManagerSingleton::setLastVideoProfileName(
         QString name){
     this->settings->setValue(
-                KEY_LASTPROFILENAME,
+                KEY_LASTVIDEOPROFILENAME,
                 name);
+}
+//====================================
+const QString KEY_LASTAUDIOPROFILENAME = "lastAudioProfileName";
+//====================================
+QString SettingsManagerSingleton::getLastAudioProfileName(){
+    QString lastAudioProfileName
+            = this->settings->value(
+                KEY_LASTAUDIOPROFILENAME,
+                "MP3")
+            .toString();
+    return lastAudioProfileName;
+}
+//====================================
+void SettingsManagerSingleton::setLastAudioProfileName(
+        QString name){
+    this->settings->setValue(
+                KEY_LASTAUDIOPROFILENAME,
+                name);
+}
+//====================================
+const QString KEY_ISSAVESRTSUBS = "saveSRTsubs";
+//====================================
+bool SettingsManagerSingleton::isSaveSRTsubs(){
+    bool is
+            = this->settings->value(
+                KEY_ISSAVESRTSUBS,
+                false)
+            .toBool();
+    return is;
+}
+//====================================
+bool SettingsManagerSingleton::setSaveSRTsubs(bool is){
+    this->settings->setValue(
+                KEY_ISSAVESRTSUBS,
+                is);
 }
 //====================================
 
 }
+
 
