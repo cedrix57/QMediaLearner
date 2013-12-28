@@ -118,6 +118,7 @@ QList<SubSequenceDrawable> SubtitleTrack::getTexts(
             this->currentDrawableText.clearLines();
             this->currentDrawableText.setLines(
                     sub->lines);
+            //this->currentDrawableText.project(intervalInMs);
             drawableTexts << this->currentDrawableText;
         }
     }
@@ -179,6 +180,7 @@ void SubtitleTrack::saveSubtitle(
                 = this->getTexts(
                     sequence);
         foreach(SubSequenceDrawable seq, subSequencesDrawable){
+            seq.project(sequence);
             seq.substract(toRemove);
             stream << QString::number(currentN) << endl;
             QTime startTime(0, 0, 0, 0);

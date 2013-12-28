@@ -17,6 +17,13 @@ OTHER:
 - Voice activity detection algorithm test application
 
 LATER:
+- The subtitles have duplication
+- Add "Always show this dialog" option on yes no dialog
+- Save repeat mode?
+- Add ffmpeg subtitle encoding
+- Remove log file if more than 5 log files
+- Add a log sending feature
+- Add a Update notifier
 - Find a way to handle crash management when multiple
   instance are launched (Define and application id?)
 - Full screen mode for linux/mac. The bottom menu bar
@@ -24,9 +31,3 @@ LATER:
 - Add voice detection activity algorithm
 - Update the video widget so it can support video effects
 - The application shouldn't crash if using a subtitle file with mistake
-- Add "Always show this dialog" option on yes no dialog
-- Save repeat mode?
-- Add a log sending feature
-- Add a Update notifier
-- Add ffmpeg subtitle encoding
-- Remove log file if more than 5 log files

@@ -423,11 +423,13 @@ void FFmpegEncoder::_encodeCuttedSequencesCommand(
     if(!this->profileName.isEmpty()){
         ProfileInfo encodingInfo
                 = this->getProfile(this->profileName);
-        QStringList encodingArguments
-                = encodingInfo.description.split(" ");
-        arguments << encodingArguments;
-        if(encodingInfo.description.contains("-vn")){
-            audioOnly = true;
+        if(!encodingInfo.description.isEmpty()){
+            QStringList encodingArguments
+                    = encodingInfo.description.split(" ");
+            arguments << encodingArguments;
+            if(encodingInfo.description.contains("-vn")){
+                audioOnly = true;
+            }
         }
     }
     qDebug() << "this->newSize: " << this->newSize;
@@ -521,7 +523,7 @@ void FFmpegEncoder::_removeTempFiles(){
     foreach(QString tempSequenceFilePath,
             this->tempSequenceFilePaths){
         qDebug() << "removing " << tempSequenceFilePath;
-        //QFile(tempSequenceFilePath).remove();
+        QFile(tempSequenceFilePath).remove();
     }
     qDebug() << "void FFmpegEncoder::_removeTempFiles() end";
 }
