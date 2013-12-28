@@ -9,11 +9,13 @@
 #include <QMutex>
 #include <QAudioDecoder>
 #include <QTime>
+#include "medialearnerlib_global.h"
 #include "../Utils/Sequence.h"
 
 namespace ML{
 
-struct SharedBuffer{
+struct MEDIALEARNERLIBSHARED_EXPORT
+        SharedBuffer{
     int *buffer;
     SharedBuffer(){
         this->buffer = NULL;
@@ -24,7 +26,8 @@ struct SharedBuffer{
 };
 
 
-struct AudioBuffer{
+struct MEDIALEARNERLIBSHARED_EXPORT
+        AudioBuffer{
     //int *buffer;
     QSharedPointer<SharedBuffer> buffer;
     int bufferSize;
@@ -60,12 +63,14 @@ struct Sequence{
     }
 };
 //*/
-struct Parameter{
+struct MEDIALEARNERLIBSHARED_EXPORT
+        Parameter{
     QString name;
     QVariant defaultValue;
 };
 
-class PluginSequenceExtractor : public QObject{
+class MEDIALEARNERLIBSHARED_EXPORT
+        PluginSequenceExtractor : public QObject{
     Q_OBJECT
 
 public:

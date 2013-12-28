@@ -8,10 +8,12 @@
 #include <QColor>
 
 #include "subtitles/SubSequence.h"
+#include "medialearnerlib_global.h"
 
 namespace ML{
 
-class SettingsManagerSingleton : public QObject{
+class MEDIALEARNERLIBSHARED_EXPORT
+        SettingsManagerSingleton : public QObject{
     Q_OBJECT
 public:
     static SettingsManagerSingleton *getInstance();

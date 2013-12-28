@@ -1,6 +1,7 @@
 #ifndef SUBSEQUENCE_H
 #define SUBSEQUENCE_H
 
+#include "medialearnerlib_global.h"
 #include "../Utils/Sequence.h"
 #include <QStringList>
 #include <QColor>
@@ -10,24 +11,29 @@
 
 namespace ML{
 
-enum SubSize{Small, Medium, Big};
-enum SubPosition{Top, Center, Bottom};
+enum MEDIALEARNERLIBSHARED_EXPORT
+        SubSize{Small, Medium, Big};
+enum MEDIALEARNERLIBSHARED_EXPORT
+        SubPosition{Top, Center, Bottom};
 
 //====================================
-struct SubSequence : Sequence{
+struct MEDIALEARNERLIBSHARED_EXPORT
+        SubSequence : Sequence{
 public:
     SubSequence();
     QStringList lines;
 };
 //====================================
 //====================================
-struct FittedLine{
+struct MEDIALEARNERLIBSHARED_EXPORT
+        FittedLine{
     QPoint position;
     QString text;
 };
 //====================================
 //====================================
-struct DrawingSettings{
+struct MEDIALEARNERLIBSHARED_EXPORT
+        DrawingSettings{
     QColor textColor;
     QString fontFamily;
     SubSize subSize;
@@ -38,7 +44,8 @@ struct DrawingSettings{
 };
 //====================================
 //====================================
-class SubSequenceDrawable : public SubSequence{
+class MEDIALEARNERLIBSHARED_EXPORT
+        SubSequenceDrawable : public SubSequence{
     public:
     SubSequenceDrawable();
     int getPixelSize();

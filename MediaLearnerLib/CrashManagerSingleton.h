@@ -6,10 +6,12 @@
 #include <QList>
 #include <QSettings>
 #include <sequenceExtractor/PluginSequenceExtractor.h>
+#include "medialearnerlib_global.h"
 
 namespace ML{
 
-class CrashManagerSingleton : public QObject{
+class MEDIALEARNERLIBSHARED_EXPORT
+        CrashManagerSingleton : public QObject{
     Q_OBJECT
 public:
     static CrashManagerSingleton *getInstance();

@@ -4,13 +4,15 @@
 #include <QObject>
 #include <QStringList>
 #include <QProcess>
+#include "medialearnerlib_global.h"
 
 #include "EncoderInterface.h"
 
 namespace ML{
 
 
-class FFmpegEncoder : public EncoderInterface{ //TODO add abstract EncoderInterface
+class MEDIALEARNERLIBSHARED_EXPORT
+        FFmpegEncoder : public EncoderInterface{ //TODO add abstract EncoderInterface
     Q_OBJECT
 public:
     explicit FFmpegEncoder(

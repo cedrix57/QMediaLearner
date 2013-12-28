@@ -3,11 +3,18 @@
 
 #include <QDebug>
 
+#include "medialearnerlib_global.h"
+
 namespace ML{
 
-QString getLogFilePath();
-void resetLogFile();
-void fileMessageHandler(
+QString MEDIALEARNERLIBSHARED_EXPORT
+getLogFilePath();
+
+void MEDIALEARNERLIBSHARED_EXPORT
+resetLogFile();
+
+void MEDIALEARNERLIBSHARED_EXPORT
+fileMessageHandler(
         QtMsgType type,
         const QMessageLogContext &context,
         const QString &msg);

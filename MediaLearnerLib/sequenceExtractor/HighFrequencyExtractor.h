@@ -1,12 +1,14 @@
 #ifndef HIGHFREQUENCYEXTRACTOR_H
 #define HIGHFREQUENCYEXTRACTOR_H
 
+#include "medialearnerlib_global.h"
 #include "PluginSequenceExtractor.h"
 #include <QQueue>
 
 namespace ML{
 
-class HighFrequencyExtractor
+class MEDIALEARNERLIBSHARED_EXPORT
+        HighFrequencyExtractor
         : public PluginSequenceExtractor{
     Q_OBJECT
 public:

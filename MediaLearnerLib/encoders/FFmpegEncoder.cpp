@@ -123,6 +123,9 @@ QString FFmpegEncoder::getFFmpegFilePath(){
     QDir currentPath = QDir::currentPath();
     QString ffmpegFilePath
             = currentPath.filePath("ffmpeg");
+    #ifdef Q_OS_WIN
+        ffmpegFilePath += ".exe";
+    #endif
     qDebug() << "QString FFmpegEncoder::getFFmpegFilePath() end";
     return ffmpegFilePath;
 }

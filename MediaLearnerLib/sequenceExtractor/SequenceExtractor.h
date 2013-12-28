@@ -13,11 +13,13 @@
 #include <QMediaPlayer>
 //#include <QtConcurrentRun>
 //#include <QFutureWatcher>
+#include "medialearnerlib_global.h"
 #include "PluginSequenceExtractor.h"
 
 namespace ML{
 
-class SequenceExtractor : public QObject{
+class MEDIALEARNERLIBSHARED_EXPORT
+        SequenceExtractor : public QObject{
     Q_OBJECT
 public:
     explicit SequenceExtractor(QObject *parent = 0);

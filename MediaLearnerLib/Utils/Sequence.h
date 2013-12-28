@@ -4,9 +4,12 @@
 #include <QString>
 #include <QMetaType>
 
+#include "medialearnerlib_global.h"
+
 namespace ML{
 
-struct Sequence{
+struct MEDIALEARNERLIBSHARED_EXPORT
+        Sequence{
     Sequence();
     qint64 beginInMs;
     qint64 endInMs;

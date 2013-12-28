@@ -1,16 +1,18 @@
 #ifndef SUBTITLESMANAGER_H
 #define SUBTITLESMANAGER_H
 
-#include <QObject>
-#include "SubtitleTrack.h"
-#include "../sequenceExtractor/SequenceExtractor.h"
 #include <QMap>
 #include <QString>
+#include <QObject>
 
+#include "medialearnerlib_global.h"
+#include "SubtitleTrack.h"
+#include "../sequenceExtractor/SequenceExtractor.h"
 
 namespace ML{
 
-class SubtitlesManager : public QObject{
+class MEDIALEARNERLIBSHARED_EXPORT
+        SubtitlesManager : public QObject{
     Q_OBJECT
 public:
     static const int N_MAX_TRACKS = 3;

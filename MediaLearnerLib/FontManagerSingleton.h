@@ -3,10 +3,12 @@
 
 #include <QObject>
 #include <QMap>
+#include "medialearnerlib_global.h"
 
 namespace ML{
 
-class FontManagerSingleton : public QObject{
+class MEDIALEARNERLIBSHARED_EXPORT
+        FontManagerSingleton : public QObject{
     Q_OBJECT
 public:
     static FontManagerSingleton *getInstance();

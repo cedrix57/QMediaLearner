@@ -5,23 +5,27 @@
 #include <QMap>
 #include <QSize>
 #include <QSet>
+#include "medialearnerlib_global.h"
 #include "../sequenceExtractor/SequenceExtractor.h"
 #include "../subtitles/SubtitleTrack.h"
 #include "SequenceWithSubs.h"
 
 namespace ML{
 
-struct EncodingInfo{
+struct MEDIALEARNERLIBSHARED_EXPORT
+        EncodingInfo{
     QString name;
     QString description;
 };
-struct ProfileInfo{
+struct MEDIALEARNERLIBSHARED_EXPORT
+        ProfileInfo{
     QString name;
     QString description;
     QString ext;
 };
 
-class EncoderInterface : public QObject{
+class MEDIALEARNERLIBSHARED_EXPORT
+        EncoderInterface : public QObject{
     Q_OBJECT
 public:
     explicit EncoderInterface(QObject *parent = 0);
