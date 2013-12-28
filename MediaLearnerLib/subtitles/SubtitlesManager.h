@@ -20,6 +20,7 @@ public:
     void setSubTrack(int position, QString subtitleFilePath);
     //TODO feature to enable/disable track
     void enableSubTrack(int position);
+    void disableAllSubTrack();
     void disableSubTrack(int position);
     void setSubTrackEnabled(int position, bool enabled);
     bool isSubTrackEnabled(int position);

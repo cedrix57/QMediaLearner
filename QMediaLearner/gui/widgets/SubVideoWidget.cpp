@@ -4,6 +4,8 @@
 #include <QPainter>
 #include <QDragEnterEvent>
 #include <QMimeData>
+#include <QFontMetrics>
+#include <SettingsManagerSingleton.h>
 
 //====================================
 SubVideoWidget::~SubVideoWidget(){
@@ -43,6 +45,7 @@ void SubVideoWidget::init(
     QMediaPlayer *mediaPlayer
     = this->mediaLearner->getMediaPlayer();
     mediaPlayer->setVideoOutput(&this->videoItem);
+    this->initDragRects();
     this->connect(
                 mediaPlayer,
                 SIGNAL(positionChanged(qint64)),
@@ -51,12 +54,100 @@ void SubVideoWidget::init(
                 mediaPlayer,
                 SIGNAL(stateChanged(QMediaPlayer::State)),
                 SLOT(_onMediaPlayerStateChanged(QMediaPlayer::State)));
+    ML::SettingsManagerSingleton
+            *settingsManager
+            = ML::SettingsManagerSingleton::getInstance();
+    this->connect(
+                settingsManager,
+                SIGNAL(subSettingsChanged()),
+                SLOT(initDragRectColors()));
 }
 //====================================
 void SubVideoWidget::_onPlayerPositionChanged(
         qint64 position){
     this->_drawSubtitles(
                 position);
+}
+//====================================
+void SubVideoWidget::initDragRects(){
+    QGraphicsScene *scene = this->scene();
+    for(int i=0;
+        i<ML::SubtitlesManager::N_MAX_TRACKS;
+        i++){
+        scene->addItem(
+                &this->dragRects[i]);
+        scene->addItem(
+                &this->dragTexts[i]);
+        QString subTrackText
+                = tr("Subtrack n°")
+                + QString::number(i+1);
+        this->dragTexts[i].setPlainText(subTrackText);
+        this->dragRects[i].setAcceptDrops(true);
+        this->dragTexts[i].setAcceptDrops(true);
+    }
+    this->initDragRectColors();
+    this->hideDragRects();
+}
+//====================================
+void SubVideoWidget::initDragRectColors(){
+    ML::SettingsManagerSingleton
+            *settingsManager
+            = ML::SettingsManagerSingleton::getInstance();
+    for(int i=0;
+        i<ML::SubtitlesManager::N_MAX_TRACKS;
+        i++){
+        QColor color
+                = settingsManager
+                ->getSubColor(i);
+        this->dragRects[i].setPen(color);
+        this->dragTexts[i].setDefaultTextColor(color);
+        color.setAlpha(80);
+        QBrush brush(color);
+        this->dragRects[i].setBrush(brush);
+    }
+}
+//====================================
+void SubVideoWidget::shouDragRects(){
+    QSize size = this->size();
+    int widthRect = size.width();
+    int heightRect = size.height() / 3;
+    int fontSize = heightRect * 0.08 + 0.5;
+    QFont font("Arial", fontSize);
+    QFontMetrics fontMetrics(font);
+    int yTextShift = heightRect*0.05 + 0.5;
+    yTextShift = qMin(8, yTextShift);
+    for(int i=0;
+        i<ML::SubtitlesManager::N_MAX_TRACKS;
+        i++){
+        this->dragRects[i].setRect(
+                    0,
+                    0,
+                    widthRect,
+                    heightRect);
+        this->dragRects[i].setX(0);
+        int yRect
+                = (ML::SubtitlesManager::N_MAX_TRACKS
+                   - i - 1)
+                * heightRect;
+        this->dragRects[i].setY(yRect);
+        QString text = this->dragTexts[i].toPlainText();
+        int textWidth = fontMetrics.width(text);
+        int xText = (widthRect - textWidth) / 2;
+        this->dragTexts[i].setX(xText);
+        this->dragTexts[i].setY(yRect + yTextShift);
+        this->dragTexts[i].setFont(font);
+        this->dragRects[i].show();
+        this->dragTexts[i].show();
+    }
+}
+//====================================
+void SubVideoWidget::hideDragRects(){
+    for(int i = 0;
+        i<ML::SubtitlesManager::N_MAX_TRACKS;
+        i++){
+        this->dragRects[i].hide();
+        this->dragTexts[i].hide();
+    }
 }
 //====================================
 void SubVideoWidget::_drawSubtitles(
@@ -153,7 +244,7 @@ void SubVideoWidget::resizeEvent(
 //*
 //====================================
 void SubVideoWidget::dragEnterEvent(QDragEnterEvent* event){
-    SubVideoWidget::onDragEnterEvent(event);
+    this->onDragEnterEvent(event);
 }
 //*/
 //====================================
@@ -161,6 +252,12 @@ void SubVideoWidget::onDragEnterEvent(
         QDragEnterEvent* event){
     const QMimeData *data = event->mimeData();
     QList<QUrl> urls = event->mimeData()->urls();
+    foreach(QUrl url, urls){
+        QString path = url.path();
+        if(path.endsWith("srt", Qt::CaseInsensitive)){
+            this->shouDragRects();
+        }
+    }
     foreach(QUrl url, urls){
         QString path = url.path();
         bool isFormatSupported
@@ -176,8 +273,26 @@ void SubVideoWidget::onDragEnterEvent(
 //*
 //====================================
 void SubVideoWidget::dropEvent(QDropEvent* event){
+    this->hideDragRects();
     QList<QUrl> urls = event->mimeData()->urls();
-    this->urlsDropped(urls);
+    event->accept();
+    QSize size = this->size();
+    int heightRect = size.height() / 3;
+    QPoint pos = event->pos();
+    int y = pos.y();
+    int idSub
+            = ML::SubtitlesManager::N_MAX_TRACKS
+            - (y / heightRect)
+            - 1;
+    if(idSub >= ML::SubtitlesManager::N_MAX_TRACKS){
+        idSub = ML::SubtitlesManager::N_MAX_TRACKS - 1;
+    }
+    this->urlsDropped(urls, idSub);
+}
+//====================================
+void SubVideoWidget::dragLeaveEvent(
+        QDragLeaveEvent* event){
+    this->hideDragRects();
 }
 //====================================
 void SubVideoWidget::mouseDoubleClickEvent(

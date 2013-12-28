@@ -45,7 +45,7 @@ public slots:
     //Bottom tool bar
     void playOrPause();
     void playVideo(QString fileName);
-    void openUrls(QList<QUrl> urls);
+    void openUrls(QList<QUrl> urls, int subPos);
     void stop();
     void repeatMode(bool enabled);
     void editExtractions();

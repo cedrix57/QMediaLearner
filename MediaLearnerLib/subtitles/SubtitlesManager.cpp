@@ -73,6 +73,12 @@ void SubtitlesManager::setSubTrackEnabled(
             ->setSubtitleEnabled(position, enabled);
 }
 //====================================
+void SubtitlesManager::disableAllSubTrack(){
+    for(int i=0; i<N_MAX_TRACKS; i++){
+        this->disableSubTrack(i);
+    }
+}
+//====================================
 void SubtitlesManager::disableSubTrack(int position){
     this->setSubTrackEnabled(
                 position,

@@ -71,6 +71,16 @@ void MediaLearnerLib::setMedia(QString mediaPath){
     qDebug() << "void MediaLearnerLib::setMedia(QString mediaPath) end";
 }
 //====================================
+QString MediaLearnerLib::getMediaFilePath(){
+    QUrl mediaUrl
+            = this->mediaPlayer
+            .media()
+            .canonicalUrl();
+    QString mediaFilePath
+            = mediaUrl.path();
+    return mediaFilePath;
+}
+//====================================
 EncoderInterface *MediaLearnerLib::getEncoder(){
     return &this->encoder;
 }
@@ -96,12 +106,11 @@ bool MediaLearnerLib::isFormatSupported(
         QString &filePath){
     qDebug() << "bool MediaLearnerLib::isFormatSupported(...) called";
     qDebug() << "filePath: " << filePath;
-    QString lowerPath = filePath.toLower();
     QStringList supportedFormats
             = this->getSupportedFormats();
     bool supportedVideoFormat = false;
     foreach(QString format, supportedFormats){
-        if(lowerPath.endsWith(format)){
+        if(filePath.endsWith(format, Qt::CaseInsensitive)){
             supportedVideoFormat = true;
             break;
         }

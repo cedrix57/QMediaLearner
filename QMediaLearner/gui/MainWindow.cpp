@@ -201,8 +201,8 @@ void MainWindow::_connectMenaBarSlots(){
                 SLOT(close()));
     this->connect(
                 this->ui->graphicsViewVideo,
-                SIGNAL(urlsDropped(QList<QUrl>)),
-                SLOT(openUrls(QList<QUrl>)));
+                SIGNAL(urlsDropped(QList<QUrl>, int)),
+                SLOT(openUrls(QList<QUrl>, int)));
     //Extractions
     //Subtitles
     this->connect(
@@ -412,31 +412,58 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event) {
     return false;
 }
 //====================================
-void MainWindow::openUrls(QList<QUrl> urls){
+void MainWindow::openUrls(
+        QList<QUrl> urls,
+        int subPos){
+    QList<QUrl> srtUrls;
+    QList<QUrl> videoUrls;
     foreach(QUrl url, urls){
         QString path = url.path();
-        bool isFormatSupported
-                = this->mediaLearner
-                .isFormatSupported(
-                    path);
-        if(isFormatSupported){
-            this->playVideo(path);
-            break;
+        if(path.endsWith("srt", Qt::CaseInsensitive)){
+            srtUrls << url;
+        }else{
+            bool isFormatSupported
+                    = this->mediaLearner
+                    .isFormatSupported(
+                        path);
+            if(isFormatSupported){
+                videoUrls << url;
+            }
         }
     }
-    int nextSubPosition = 0;
-    foreach(QUrl url, urls){
-        QString path = url.path();
-        QString lowerPath = path.toLower();
-        if(lowerPath.endsWith("srt")){
+    int nVideoUrls = videoUrls.size();
+    if(nVideoUrls > 0){
+        ML::SubtitlesManager
+                *subtitlesManager
+                = this->mediaLearner
+                .getSubtitlesManager();
+        subtitlesManager->disableAllSubTrack();
+        QString path = videoUrls.first().path();
+        this->playVideo(path);
+    }
+    QString videoFilePath
+            = this->mediaLearner
+            .getMediaFilePath();
+    if(!videoFilePath.isEmpty()){
+        int nSubs = srtUrls.size();
+        if(nSubs == 1){
+            QString path = srtUrls.first().path();
             this->openSubtrack(
-                        nextSubPosition,
+                        subPos,
                         path);
-            nextSubPosition++;
-            if(nextSubPosition
-                    == ML::SubtitlesManager
-                    ::N_MAX_TRACKS){
-                break;
+        }else if(nSubs > 0){
+            int nextSubPosition = 0;
+            foreach(QUrl url, srtUrls){
+                QString path = url.path();
+                this->openSubtrack(
+                            nextSubPosition,
+                            path);
+                nextSubPosition++;
+                if(nextSubPosition
+                        == ML::SubtitlesManager
+                        ::N_MAX_TRACKS){
+                    break;
+                }
             }
         }
     }
