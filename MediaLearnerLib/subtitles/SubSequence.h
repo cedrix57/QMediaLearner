@@ -56,6 +56,9 @@ class SubSequenceDrawable : public SubSequence{
     int getHeightLines();
     int getNLines();
     void setLines(QStringList &lines);
+    int priority;
+    bool operator<(const SubSequenceDrawable &other) const;
+    Sequence toSequence() const;
 
     protected:
     DrawingSettings drawingsSettings;

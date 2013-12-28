@@ -329,17 +329,18 @@ void FFmpegEncoder::_encodeSequenceCommand(){
                 ++lineIt){
 
                 QString drawTextParam = "drawtext=";
+                QString goodLine = lineIt->text.replace("'", "’");
                 drawTextParam += "text=";
-                drawTextParam += "'" + lineIt->text + "'";
+                drawTextParam += "'" + goodLine + "'";
                 drawTextParam += ":";
-                drawTextParam += "fontfile=";
+                drawTextParam += "fontfile='";
                 QString fontPath = FontManagerSingleton
                         ::getInstance()
                         ->getFontPath(
                             drawingSettings.fontFamily);
                 //QString fontPath = "/usr/share/fonts/truetype/msttcorefonts/Arial.ttf";
                 drawTextParam += fontPath;
-                drawTextParam += ":";
+                drawTextParam += "':";
                 drawTextParam += "fontcolor=";
                 drawTextParam += drawingSettings.textColor.name();
                 drawTextParam += ":";
@@ -409,7 +410,7 @@ void FFmpegEncoder::_encodeCuttedSequencesCommand(
             + this->tempSequenceFilePaths
             .join("|");
     arguments << concatArg;
-    if(this->playbackRate != -1){
+    if(this->playbackRate != -1 && this->playbackRate != 1){
         arguments << "-filter:v";
         arguments << "setpts="
                      + QString::number(this->playbackRate)
@@ -520,7 +521,7 @@ void FFmpegEncoder::_removeTempFiles(){
     foreach(QString tempSequenceFilePath,
             this->tempSequenceFilePaths){
         qDebug() << "removing " << tempSequenceFilePath;
-        QFile(tempSequenceFilePath).remove();
+        //QFile(tempSequenceFilePath).remove();
     }
     qDebug() << "void FFmpegEncoder::_removeTempFiles() end";
 }

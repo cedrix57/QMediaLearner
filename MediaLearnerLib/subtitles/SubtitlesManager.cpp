@@ -165,7 +165,7 @@ void SubtitlesManager::setContext(
         it != subSequencesDrawable.end();
         ++it){
         SubSequenceDrawable tmp = *it;
-        if(it->beginInMs < lastEnd){
+        if(it->beginInMs > lastEnd){
             firstCoords[0] = phrasesSpacing;
             firstCoords[1] = 0;
             firstCoords[2] = phrasesSpacing;

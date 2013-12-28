@@ -29,6 +29,27 @@ int DrawingSettings::getFontSize(int screenHeight){
 SubSequenceDrawable::SubSequenceDrawable(){
 }
 //====================================
+bool SubSequenceDrawable::operator<(
+        const SubSequenceDrawable &other) const{
+    //Sequence otherSeq = other.toSequence();
+    //bool intersect
+            //= this->intersect(otherSeq);
+    bool inf;
+    if(this->beginInMs == other.beginInMs){
+        inf = this->priority < other.priority;
+    }else{
+        inf = this->beginInMs < other.beginInMs;
+    }
+    return inf;
+
+}
+//====================================
+Sequence SubSequenceDrawable::toSequence() const{
+    Sequence sequence;
+    sequence.beginInMs = this->beginInMs;
+    sequence.endInMs = this->endInMs;
+}
+//====================================
 int SubSequenceDrawable::getPixelSize(){
     return this->fontSize;
 }

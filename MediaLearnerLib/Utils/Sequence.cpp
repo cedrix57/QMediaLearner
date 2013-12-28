@@ -20,14 +20,14 @@ bool Sequence::isNull(){
     return isNull;
 }
 //====================================
-bool Sequence::contains(long value){
+bool Sequence::contains(long value) const{
     bool contains
             = value >= this->beginInMs
             && value <= this->endInMs;
     return contains;
 }
 //====================================
-bool Sequence::intersect(Sequence &other){
+bool Sequence::intersect(Sequence &other) const{
     bool intersect
             = this->contains(other.beginInMs)
             || this->contains(other.endInMs)

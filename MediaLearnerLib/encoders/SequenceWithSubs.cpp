@@ -55,6 +55,7 @@ void SequencesWithSubs::init(
                         it != subSequencesDrawables.end();
                         ++it){
                         it->project(*seq);
+                        it->priority = i;
                     }
                     sequencesWithSubs.subSequences
                             << subSequencesDrawables;

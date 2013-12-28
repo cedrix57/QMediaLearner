@@ -1,12 +1,12 @@
-- Close all of the thread before closing the application
+- ffmpeg export format error/optimisation
 - Check if a sufficient codecs are available and
   ask to download some if requiered
-- ffmpeg export format error/optimisation
 - Get rid of the warnings + TODO
 
 - Windows compilation
 - French translation
 
+- ask if the user want to sort and merge sequences if not so
 
 OTHER:
 - Website
@@ -29,5 +29,4 @@ LATER:
 - Add a log sending feature
 - Add a Update notifier
 - Add ffmpeg subtitle encoding
-- Remove if more than 5 log files
-- Improve ffmpeg subtitle height position
+- Remove log file if more than 5 log files

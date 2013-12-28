@@ -11,8 +11,8 @@ struct Sequence{
     qint64 beginInMs;
     qint64 endInMs;
     bool isNull();
-    bool contains(long value);
-    bool intersect(Sequence &other);
+    bool contains(long value) const;
+    bool intersect(Sequence &other) const;
     int getDuration();
     virtual void project(Sequence &other);
     virtual void substract(int ms);
