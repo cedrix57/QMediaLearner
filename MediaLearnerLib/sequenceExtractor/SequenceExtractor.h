@@ -22,6 +22,7 @@ class SequenceExtractor : public QObject{
 public:
     explicit SequenceExtractor(QObject *parent = 0);
     void reset();
+    void stop();
     QMap<QString, PluginSequenceExtractor*>
     getAvailableExtractors();
     void setExtractor(PluginSequenceExtractor *extractor);

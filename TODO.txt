@@ -1,4 +1,3 @@
-- The subtitles can collapse
 - Close all of the thread before closing the application
 - Check if a sufficient codecs are available and
   ask to download some if requiered
@@ -31,3 +30,4 @@ LATER:
 - Add a Update notifier
 - Add ffmpeg subtitle encoding
 - Remove if more than 5 log files
+- Improve ffmpeg subtitle height position

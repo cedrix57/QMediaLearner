@@ -17,6 +17,7 @@ class MEDIALEARNERLIBSHARED_EXPORT MediaLearnerLib
 public:
     MediaLearnerLib(QObject *parent = NULL);
     ~MediaLearnerLib();
+    void stop();
     QMediaPlayer *getMediaPlayer();
     SequenceExtractor *getSequenceExtractor();
     SubtitlesManager *getSubtitlesManager();

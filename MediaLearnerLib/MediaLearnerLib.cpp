@@ -39,6 +39,12 @@ MediaLearnerLib::MediaLearnerLib(QObject *parent)
 }
 //====================================
 MediaLearnerLib::~MediaLearnerLib(){
+    this->stop();
+}
+//====================================
+void MediaLearnerLib::stop(){
+    this->mediaPlayer.stop();
+    this->sequenceExtractor.stop();
 }
 //====================================
 QMediaPlayer *MediaLearnerLib::getMediaPlayer(){

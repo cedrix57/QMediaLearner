@@ -60,10 +60,12 @@ void MainWindow::closeEvent(QCloseEvent * event){
                     QMessageBox::Yes | QMessageBox::No);
         if(reply == QMessageBox::Yes){
             this->stop();
+            this->mediaLearner.stop();
             QMainWindow::closeEvent(event);
         }
     }else{
         this->stop();
+        this->mediaLearner.stop();
         QMainWindow::closeEvent(event);
     }
 }

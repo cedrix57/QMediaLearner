@@ -38,6 +38,12 @@ void SequenceExtractor::reset(){
     qDebug() << "void SequenceExtractor::reset() end";
 }
 //====================================
+void SequenceExtractor::stop(){
+    this->mediaPlayer.stop();
+    this->decoder.stop();
+    this->futurBuffer.waitForFinished();
+}
+//====================================
 void SequenceExtractor::_connectSlots(){
     this->connect(
                 &this->decoder,
