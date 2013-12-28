@@ -54,7 +54,7 @@ public slots:
     void setExtractedVideoPath(QString path);
     void setSortSequencesAndRemoveIntersect(
             bool enabled);
-    void setSaveInLogFile(bool enabled);
+    void setSaveInLogFiles(bool enabled);
     void setSendLogFileWhenCrashed(bool enabled);
     void setLastProfileVideo(bool is);
     void setLastProfileName(QString name);

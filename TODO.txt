@@ -1,11 +1,12 @@
 - The subtitles can collapse
+- Close all of the thread before closing the application
 - Check if a sufficient codecs are available and
   ask to download some if requiered
 - ffmpeg export format error/optimisation
 - Get rid of the warnings + TODO
+
 - Windows compilation
 - French translation
-- When font settings are changed, they are not applied before the application restarts
 
 
 OTHER:
@@ -14,20 +15,19 @@ OTHER:
 - Mobile application
 - Unit tests on the subtitles features
 - Unit test on media learner lib
+- Voice activity detection algorithm test application
 
 LATER:
-- Ask confirmation to close the application while encoding a video
 - Find a way to handle crash management when multiple
   instance are launched (Define and application id?)
-- Close all of the thread before closing the application
-- Full screen mode for linux/mac. The bottom menu bar should disappear whin the application is maximized
+- Full screen mode for linux/mac. The bottom menu bar
+  should disappear whin the application is maximized
 - Add voice detection activity algorithm
 - Update the video widget so it can support video effects
-- Voice activity detection algorithm test application
 - The application shouldn't crash if using a subtitle file with mistake
 - Add "Always show this dialog" option on yes no dialog
 - Save repeat mode?
 - Add a log sending feature
 - Add a Update notifier
 - Add ffmpeg subtitle encoding
-
+- Remove if more than 5 log files

@@ -38,6 +38,14 @@ void SettingsDialog::loadSettings(){
             *settingsManager
             = ML::SettingsManagerSingleton
             ::getInstance();
+    bool sendLogWhenCrashed
+            = settingsManager->isSendLogFileWhenCrashed();
+    this->ui->checkBoxSendLog
+            ->setChecked(sendLogWhenCrashed);
+    bool saveLogs
+            = settingsManager->isSaveInLogFile();
+    this->ui->checkBoxSaveLog
+            ->setChecked(saveLogs);
     QString fontFamily1
             = settingsManager->getSubFontFamily(0);
     QString fontFamily2
@@ -140,6 +148,16 @@ void SettingsDialog::saveSettings(){
             *settingsManager
             = ML::SettingsManagerSingleton
             ::getInstance();
+    bool sendLogWhenCrashed
+            = this->ui->checkBoxSendLog
+            ->isChecked();
+    settingsManager->setSendLogFileWhenCrashed(
+                sendLogWhenCrashed);
+    bool saveLogs
+            = this->ui->checkBoxSaveLog
+            ->isChecked();
+    settingsManager->setSaveInLogFiles(
+                saveLogs);
     QString fontFamily1
             = this->ui->comboBoxFont1
             ->currentText();

@@ -7,6 +7,7 @@
 #include <QMediaPlayer>
 #include <QStyleFactory>
 #include <Utils/log.h>
+#include <SettingsManagerSingleton.h>
 
 
 int main(int argc, char *argv[]){
@@ -27,9 +28,15 @@ int main(int argc, char *argv[]){
     view.show();
     //*/
     #ifndef QT_DEBUG
-        ML::resetLogFile();
-        qInstallMessageHandler(
-                    ML::fileMessageHandler);
+        bool saveInLog
+                = SettingsManagerSingleton
+                getInstance()->
+                isSaveInLogFile();
+        if(saveInLog){
+            ML::resetLogFile();
+            qInstallMessageHandler(
+                        ML::fileMessageHandler);
+        }
     #endif
 
     MainWindow mainWindow;

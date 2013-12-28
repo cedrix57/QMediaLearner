@@ -212,7 +212,7 @@ bool SettingsManagerSingleton::isSaveInLogFile(){
     return enabled;
 }
 //====================================
-void SettingsManagerSingleton::setSaveInLogFile(
+void SettingsManagerSingleton::setSaveInLogFiles(
         bool enabled){
     this->settings->setValue(
                 KEY_SAVEINLOGFILE,
