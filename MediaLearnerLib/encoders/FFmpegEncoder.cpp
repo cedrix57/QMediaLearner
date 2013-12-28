@@ -235,7 +235,7 @@ void FFmpegEncoder::startEncoding(QString outFilePath){
     qDebug() << "void FFmpegEncoder::startEncoding(QString outFilePath) called";
     this->argumentsList.clear();
     this->tempSequenceFilePaths.clear();
-    this->fps = this->getFps();
+    //this->fps = this->getFps();
     this->_encodeTempVideoCommand();
     this->_encodeSequenceCommand();
     this->_encodeCuttedSequencesCommand(outFilePath);
@@ -356,15 +356,17 @@ void FFmpegEncoder::_encodeSequenceCommand(){
                 drawTextParam += "fontsize=";
                 int fontSize = subSeqIt->getPixelSize();
                 drawTextParam += QString::number(fontSize);
-                int begin = this->getNFrame(
-                            subSeqIt->beginInMs,
-                            this->fps);
-                int end = this->getNFrame(
-                            subSeqIt->endInMs,
-                            this->fps);
+                //int begin = this->getNFrame(
+                            //subSeqIt->beginInMs,
+                            //this->fps);
+                //int end = this->getNFrame(
+                            //subSeqIt->endInMs,
+                            //this->fps);
+                double begin = subSeqIt->beginInMs / 1000.0;
+                double end = subSeqIt->endInMs / 1000.0;
                 drawTextParam += ":";
                 drawTextParam += "enable=";
-                drawTextParam += "'between(n,"
+                drawTextParam += "'between(t,"
                         + QString::number(begin)
                         + ","
                         + QString::number(end)

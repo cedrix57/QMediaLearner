@@ -1,7 +1,7 @@
+- On big video on analyse buffer is not in a thread
 - Get rid of the warnings + TODO
 - Windows compilation
 - French translation
-
 
 
 OTHER:

@@ -44,7 +44,6 @@ protected:
     QList<QStringList> argumentsList;
     QString tempInVideoFilePath;
     QStringList tempSequenceFilePaths;
-    int fps;
     void _encodeTempVideoCommand();
     void _encodeSequenceCommand();
     void _encodeCuttedSequencesCommand(
