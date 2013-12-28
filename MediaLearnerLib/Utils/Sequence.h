@@ -20,6 +20,7 @@ struct Sequence{
     virtual ~Sequence();
     bool operator==(const Sequence &other);
     bool operator!=(const Sequence &other);
+    bool operator<(const Sequence &other) const;
 };
 
 

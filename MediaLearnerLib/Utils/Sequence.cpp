@@ -88,4 +88,10 @@ bool Sequence::operator!=(
     return different;
 }
 //====================================
+bool Sequence::operator<(
+        const Sequence &other) const{
+    bool inf = this->beginInMs < other.beginInMs;
+    return inf;
+}
+//====================================
 }

@@ -156,13 +156,22 @@ void SubtitlesManager::setContext(
     qDebug() << "void SubtitlesManager::setContext(...) called";
     int phrasesSpacing = screenSize.height() * 0.04;
     int firstCoords[3];
+    firstCoords[0] = phrasesSpacing;
+    firstCoords[1] = 0;
+    firstCoords[2] = phrasesSpacing;
+    int lastEnd = 0;
     for(QList<SubSequenceDrawable>::iterator it
         = subSequencesDrawable.begin();
         it != subSequencesDrawable.end();
         ++it){
-        firstCoords[0] = phrasesSpacing;
-        firstCoords[1] = 0;
-        firstCoords[2] = phrasesSpacing;
+        SubSequenceDrawable tmp = *it;
+        if(it->beginInMs < lastEnd){
+            firstCoords[0] = phrasesSpacing;
+            firstCoords[1] = 0;
+            firstCoords[2] = phrasesSpacing;
+        }
+        lastEnd = it->endInMs;
+        //}
         ML::DrawingSettings
                 drawingSettings
                 = it->getDrawingSettings();

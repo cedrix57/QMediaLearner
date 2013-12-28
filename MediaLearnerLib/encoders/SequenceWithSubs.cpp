@@ -60,6 +60,8 @@ void SequencesWithSubs::init(
                             << subSequencesDrawables;
                 }
             }
+            qSort(sequencesWithSubs.subSequences);
+            //Sort sequencesWithSubs.subSequences
         }
         this->sequencesWithTexts << sequencesWithSubs;
     }
