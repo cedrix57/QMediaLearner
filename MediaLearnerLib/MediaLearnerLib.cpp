@@ -93,6 +93,7 @@ EncoderInterface *MediaLearnerLib::getEncoder(){
 //====================================
 QStringList MediaLearnerLib::getSupportedFormats(){
     QStringList supportedFormats;
+    //TODO find out available supported format & codecs
     supportedFormats << "avi";
     supportedFormats << "ts";
     supportedFormats << "mp2";
@@ -105,6 +106,7 @@ QStringList MediaLearnerLib::getSupportedFormats(){
     supportedFormats << "mkv";
     supportedFormats << "srt";
     supportedFormats << "mts";
+    supportedFormats << "wmv";
     return supportedFormats;
 }
 //====================================

@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow){
     ui->setupUi(this);
+    ML::SequenceExtractor::loadExtractors();
     QApplication::instance()
             ->installEventFilter(this);
     this->_stopping = false;
@@ -34,6 +35,7 @@ MainWindow::MainWindow(QWidget *parent) :
 }
 //====================================
 MainWindow::~MainWindow(){
+    ML::SequenceExtractor::loadExtractors();
     delete ui;
     ML::CrashManagerSingleton *crashManager
             = ML::CrashManagerSingleton

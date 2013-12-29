@@ -2,10 +2,13 @@
 #include <QtConcurrentRun>
 #include <QDebug>
 #include "../CrashManagerSingleton.h"
+#include "HighFrequencyExtractor.h"
 //#include <QVideoWidget>
 
 namespace ML{
 
+QList<PluginSequenceExtractor*>
+    SequenceExtractor::extractors;
 //====================================
 SequenceExtractor::SequenceExtractor(
         QObject *parent) :
@@ -27,6 +30,22 @@ SequenceExtractor::SequenceExtractor(
     this->reset();
     qDebug() << "SequenceExtractor::SequenceExtractor(...) end";
 }
+//====================================
+void SequenceExtractor::loadExtractors(){
+    PluginSequenceExtractor *plugin
+            = new HighFrequencyExtractor;
+    SequenceExtractor::extractors
+            << plugin;
+}
+//====================================
+void SequenceExtractor::closeExtractors(){
+    foreach(
+            PluginSequenceExtractor *plugin,
+            SequenceExtractor::extractors){
+        delete plugin;
+    }
+}
+
 //====================================
 void SequenceExtractor::reset(){
     qDebug() << "void SequenceExtractor::reset() called";

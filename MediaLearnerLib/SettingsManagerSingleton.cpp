@@ -70,7 +70,7 @@ const QString KEY_SUBFONTFAMILY = "fontFamily";
 QString SettingsManagerSingleton::getSubFontFamily(
         int subPosition){
     QString key = KEY_SUBFONTFAMILY + subPosition;
-    QString defaultFamily("Arial");
+    QString defaultFamily("DejaVu Sans");
     QString family
             = this->settings->value(
                 key,

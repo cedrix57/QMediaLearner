@@ -3,8 +3,8 @@
 
 namespace ML{
 //====================================
-HighFrequencyExtractor
-    HighFrequencyExtractor::insance;
+//HighFrequencyExtractor
+    //HighFrequencyExtractor::insance;
 //====================================
 HighFrequencyExtractor::HighFrequencyExtractor(
         QObject *parent) :

@@ -59,6 +59,8 @@ public:
             sequences);
     Sequence getSelectedSequence();
     QMediaPlayer *getMediaPlayer();
+    static void loadExtractors();
+    static void closeExtractors();
 
 signals:
     void sequenceExtracted(
@@ -99,6 +101,8 @@ protected:
     QMediaPlayer mediaPlayer;
     int selectedSequence;
     bool _pausing;
+    static QList<PluginSequenceExtractor*>
+        extractors;
 };
 
 }
