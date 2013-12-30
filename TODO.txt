@@ -13,6 +13,10 @@ OTHER:
 - Voice activity detection algorithm test application
 
 LATER:
+- At the start of the application a unic windows should ask for
+  - Search update
+  - Send log if case of crashe
+  - Install codecs
 - Find out why the application can crashes some times
 - Ask if the user want to sort and merge sequences if not so
 - The subtitles have duplication

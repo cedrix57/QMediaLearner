@@ -8,10 +8,13 @@
 #include <QStyleFactory>
 #include <Utils/log.h>
 #include <SettingsManagerSingleton.h>
+#include <QMediaServiceProviderPlugin>
+#include <QMediaServiceProviderHint>
 
 
 int main(int argc, char *argv[]){
     QApplication app(argc, argv);
+    QMediaServiceProvider::setDefaultServiceProvider(NULL);
     //QStringList styles = QStyleFactory::keys();
     //app.setStyle("Windows");
     /*
