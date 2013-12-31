@@ -31,12 +31,14 @@ UI_DIR = ../tmpcompil/$$TARGET/ui
 
 SOURCES += ffmpegmultimediaplugin.cpp \
     mediaPlayer/ffmpegmediaplayercontrol.cpp \
-    mediaPlayer/ffmpegplayerservice.cpp
+    mediaPlayer/ffmpegplayerservice.cpp \
+    mediaPlayer/ffmpegvideowidgetcontrol.cpp
 
 HEADERS += ffmpegmultimediaplugin.h\
         ffmpegmultimediaplugin_global.h \
     mediaPlayer/ffmpegmediaplayercontrol.h \
-    mediaPlayer/ffmpegplayerservice.h
+    mediaPlayer/ffmpegplayerservice.h \
+    mediaPlayer/ffmpegvideowidgetcontrol.h
 
 unix:!symbian {
     maemo5 {

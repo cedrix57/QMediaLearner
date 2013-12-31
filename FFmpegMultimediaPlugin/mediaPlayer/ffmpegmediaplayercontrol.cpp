@@ -103,6 +103,10 @@ void FFmpegMediaPlayerControl::setPosition(
 //====================================
 void FFmpegMediaPlayerControl::play(){
     this->_state = QMediaPlayer::PlayingState;
+    this->currentFrame
+            = QVideoFrame(
+                QImage(
+                    "/home/cedric/Images/ffmpeg_qtplugin_01.png"));
     this->tempPlay();
     this->stateChanged(this->_state);
 }
@@ -139,6 +143,7 @@ void FFmpegMediaPlayerControl::tempPlay(){
                         this,
                         SLOT(tempPlay()));
             this->positionChanged(this->_position);
+            this->frameAvailable(this->currentFrame);
         }else{
             this->_state = QMediaPlayer::StoppedState;
             this->stateChanged(this->_state);

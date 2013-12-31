@@ -2,6 +2,7 @@
 #define FFMPEGMEDIAPLAYERCONTROL_H
 
 #include <QMediaPlayerControl>
+#include <QVideoFrame>
 
 class FFmpegMediaPlayerControl
         : public QMediaPlayerControl{
@@ -50,8 +51,8 @@ public:
     void pause();
     void stop();
 
-
-
+signals:
+    void frameAvailable(QVideoFrame frame);
 
 protected:
     QMediaPlayer::State _state;
@@ -62,6 +63,7 @@ protected:
     bool _muted;
     QMediaContent mediaContent;
     qint64 _position;
+    QVideoFrame currentFrame;
     
 protected Q_SLOTS:
     void tempPlay();
