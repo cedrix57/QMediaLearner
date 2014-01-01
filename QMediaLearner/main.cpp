@@ -8,13 +8,24 @@
 #include <QStyleFactory>
 #include <Utils/log.h>
 #include <SettingsManagerSingleton.h>
-#include <QMediaServiceProviderPlugin>
-#include <QMediaServiceProviderHint>
+#include <private/qmediaserviceprovider_p.h>
+//#include <qmediaserviceprovider_p.h>
+//#include <QMediaServiceProviderFactoryInterface>
+//#include <QMediaServiceProviderPlugin>
+//#include <QMediaServiceProviderHint>
 
+#include <ffmpegmultimediaplugin.h>
 
 int main(int argc, char *argv[]){
     QApplication app(argc, argv);
-    QMediaServiceProvider::setDefaultServiceProvider(NULL);
+    //ML::SequenceExtractor::loadExtractors();
+    //QMediaServiceProvider* defaultServiceProvider
+            //= QMediaServiceProvider::defaultServiceProvider();
+    //QMediaServiceProviderPlugin *ffmpegBackend
+            //= new FFmpegMultimediaPlugin;
+    //QString objName = serviceProvider->objectName();
+    //QMediaServiceProviderPlugin::setDefaultServiceProvider(
+                //ffmpegBackend);
     //QStringList styles = QStyleFactory::keys();
     //app.setStyle("Windows");
     /*
@@ -45,5 +56,7 @@ int main(int argc, char *argv[]){
     MainWindow mainWindow;
     mainWindow.show();
     
-    return app.exec();
+    int ret = app.exec();
+    //ML::SequenceExtractor::closeExtractors();
+    return ret;
 }

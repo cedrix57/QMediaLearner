@@ -69,8 +69,10 @@ struct MEDIALEARNERLIBSHARED_EXPORT
     QVariant defaultValue;
 };
 
+class SequenceExtractor;
 class MEDIALEARNERLIBSHARED_EXPORT
         PluginSequenceExtractor : public QObject{
+    //friend SequenceExtractor;
     Q_OBJECT
 
 public:

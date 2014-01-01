@@ -12,7 +12,7 @@ class MEDIALEARNERLIBSHARED_EXPORT
         : public PluginSequenceExtractor{
     Q_OBJECT
 public:
-    static HighFrequencyExtractor insance;
+    static HighFrequencyExtractor instance;
     explicit HighFrequencyExtractor(
             QObject *parent = 0);
     virtual QString getName();

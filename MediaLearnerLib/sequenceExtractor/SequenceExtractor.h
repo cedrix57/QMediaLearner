@@ -101,8 +101,8 @@ protected:
     QMediaPlayer mediaPlayer;
     int selectedSequence;
     bool _pausing;
-    static QList<PluginSequenceExtractor*>
-        extractors;
+    //static QList<PluginSequenceExtractor*>
+        //extractors;
 };
 
 }

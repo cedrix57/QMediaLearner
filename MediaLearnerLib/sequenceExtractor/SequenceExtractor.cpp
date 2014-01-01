@@ -7,8 +7,8 @@
 
 namespace ML{
 
-QList<PluginSequenceExtractor*>
-    SequenceExtractor::extractors;
+//QList<PluginSequenceExtractor*>
+    //SequenceExtractor::extractors;
 //====================================
 SequenceExtractor::SequenceExtractor(
         QObject *parent) :
@@ -34,16 +34,16 @@ SequenceExtractor::SequenceExtractor(
 void SequenceExtractor::loadExtractors(){
     PluginSequenceExtractor *plugin
             = new HighFrequencyExtractor;
-    SequenceExtractor::extractors
-            << plugin;
+    //PluginSequenceExtractor::extractors
+            //<< plugin;
 }
 //====================================
 void SequenceExtractor::closeExtractors(){
-    foreach(
-            PluginSequenceExtractor *plugin,
-            SequenceExtractor::extractors){
-        delete plugin;
-    }
+    //foreach(
+            //PluginSequenceExtractor *plugin,
+            //PluginSequenceExtractor::extractors){
+        //delete plugin;
+    //}
 }
 
 //====================================

@@ -20,7 +20,7 @@ QT       -= gui
 TARGET = FFmpegMultimediaPlugin
 TEMPLATE = lib
 
-DESTDIR = ../binaries
+DESTDIR = ../binaries/plugins/mediaservice
 OBJECTS_DIR = ../tmpcompil/$$TARGET/obj
 MOC_DIR = ../tmpcompil/$$TARGET/moc
 RCC_DIR = ../tmpcompil/$$TARGET/rcc

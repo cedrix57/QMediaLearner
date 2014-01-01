@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
+QT       += multimedia-private
 QT       += multimedia concurrent multimediawidgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -19,10 +20,14 @@ RCC_DIR = ../tmpcompil/$$TARGET/rcc
 UI_DIR = ../tmpcompil/$$TARGET/ui
 
 LIBS += -L$$DESTDIR -lMediaLearnerLib
+LIBS += -L$$DESTDIR/plugins/mediaservice -lFFmpegMultimediaPlugin
 
-INCLUDEPATH += ../MediaLearnerLib
 INCLUDEPATH += gui/widgets
+INCLUDEPATH += ../MediaLearnerLib
+INCLUDEPATH += ../FFmpegMultimediaPlugin
+
 DEPENDPATH += ../MediaLearnerLib
+DEPENDPATH += ../FFmpegMultimediaPlugin
 
 SOURCES += main.cpp\
         gui/MainWindow.cpp \

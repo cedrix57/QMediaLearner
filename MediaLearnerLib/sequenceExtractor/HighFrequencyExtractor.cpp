@@ -3,8 +3,8 @@
 
 namespace ML{
 //====================================
-//HighFrequencyExtractor
-    //HighFrequencyExtractor::insance;
+HighFrequencyExtractor
+    HighFrequencyExtractor::instance;
 //====================================
 HighFrequencyExtractor::HighFrequencyExtractor(
         QObject *parent) :
@@ -12,7 +12,7 @@ HighFrequencyExtractor::HighFrequencyExtractor(
 }
 //====================================
 QString HighFrequencyExtractor::getName(){
-    QString name = "High frequncy";
+    QString name = "High frequency";
     return name;
 }
 //====================================
