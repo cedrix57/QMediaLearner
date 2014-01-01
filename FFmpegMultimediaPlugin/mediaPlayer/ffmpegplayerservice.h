@@ -7,6 +7,10 @@ QT_BEGIN_NAMESPACE
 
 class FFmpegMediaPlayerControl;
 class FFmpegVideoWidgetControl;
+class FFmpegVideoRenderControl;
+class FFmpegMetaDataReaderControl;
+class FFmpegMediaNetworkAccessControl;
+class FFmpegMediaAvailabilityControl;
 
 class FFmpegPlayerService : public QMediaService{
     Q_OBJECT
@@ -19,6 +23,13 @@ public:
 protected:
     FFmpegMediaPlayerControl *mediaPlayerControl;
     FFmpegVideoWidgetControl *videoWidgetControl;
+    FFmpegVideoRenderControl *videoRenderControl;
+    FFmpegMetaDataReaderControl *metaDataReaderControl;
+    FFmpegMediaNetworkAccessControl *mediaNetworkAccessControl;
+    FFmpegMediaAvailabilityControl *mediaAvailabilityControl;
+    void createControls();
+    void connectSlots();
+    void disconnectFrameSlots();
 };
 
 QT_END_NAMESPACE

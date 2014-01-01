@@ -24,26 +24,26 @@ class FFmpegVideoWidgetControl
     Q_OBJECT
 public:
     explicit FFmpegVideoWidgetControl(
-            QObject *parent = 0);
-    virtual QWidget *videoWidget() = 0;
+            QObject *parent = NULL);
+    virtual QWidget *videoWidget();
 
-    virtual Qt::AspectRatioMode aspectRatioMode() const = 0;
-    virtual void setAspectRatioMode(Qt::AspectRatioMode mode) = 0;
+    virtual Qt::AspectRatioMode aspectRatioMode() const;
+    virtual void setAspectRatioMode(Qt::AspectRatioMode mode);
 
-    virtual bool isFullScreen() const = 0;
-    virtual void setFullScreen(bool fullScreen) = 0;
+    virtual bool isFullScreen() const;
+    virtual void setFullScreen(bool fullScreen);
 
-    virtual int brightness() const = 0;
-    virtual void setBrightness(int brightness) = 0;
+    virtual int brightness() const;
+    virtual void setBrightness(int brightness);
 
-    virtual int contrast() const = 0;
-    virtual void setContrast(int contrast) = 0;
+    virtual int contrast() const;
+    virtual void setContrast(int contrast);
 
-    virtual int hue() const = 0;
-    virtual void setHue(int hue) = 0;
+    virtual int hue() const;
+    virtual void setHue(int hue);
 
-    virtual int saturation() const = 0;
-    virtual void setSaturation(int saturation) = 0;
+    virtual int saturation() const;
+    virtual void setSaturation(int saturation);
 
 public slots:
     void setDisplayedFrame(QVideoFrame frame);
