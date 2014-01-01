@@ -1,4 +1,8 @@
-- On big video on analyse buffer is not in a thread
+- Change the way to register automatically new Sequence extractors
+- Improve the HighSequenceExtractor
+- Don't ask to restore a session is the video playing didn't start?
+- Create a ffmpeg Qt backend
+- Find out why on big movie the application can crashes at start
 - Get rid of the warnings + TODO
 - Windows compilation
 - French translation

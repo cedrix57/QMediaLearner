@@ -20,14 +20,11 @@ RCC_DIR = ../tmpcompil/$$TARGET/rcc
 UI_DIR = ../tmpcompil/$$TARGET/ui
 
 LIBS += -L$$DESTDIR -lMediaLearnerLib
-LIBS += -L$$DESTDIR/plugins/mediaservice -lFFmpegMultimediaPlugin
 
 INCLUDEPATH += gui/widgets
 INCLUDEPATH += ../MediaLearnerLib
-INCLUDEPATH += ../FFmpegMultimediaPlugin
 
 DEPENDPATH += ../MediaLearnerLib
-DEPENDPATH += ../FFmpegMultimediaPlugin
 
 SOURCES += main.cpp\
         gui/MainWindow.cpp \

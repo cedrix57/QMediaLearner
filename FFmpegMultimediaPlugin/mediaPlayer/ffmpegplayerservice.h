@@ -6,6 +6,7 @@
 QT_BEGIN_NAMESPACE
 
 class FFmpegMediaPlayerControl;
+class FFmpegVideoWidgetControl;
 
 class FFmpegPlayerService : public QMediaService{
     Q_OBJECT
@@ -17,6 +18,7 @@ public:
     
 protected:
     FFmpegMediaPlayerControl *mediaPlayerControl;
+    FFmpegVideoWidgetControl *videoWidgetControl;
 };
 
 QT_END_NAMESPACE
