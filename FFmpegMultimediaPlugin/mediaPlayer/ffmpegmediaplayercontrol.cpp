@@ -11,6 +11,8 @@ FFmpegMediaPlayerControl::FFmpegMediaPlayerControl(
     QMediaPlayerControl(parent){
     this->_rate = 1.0;
     this->_volume = 100;
+    this->_position = 0;
+    this->_duration = 30000;
     this->_muted = false;
     this->_state = QMediaPlayer::StoppedState;
     this->_mediaStatus = QMediaPlayer::NoMedia;
@@ -33,7 +35,7 @@ qint64 FFmpegMediaPlayerControl::position() const{
 }
 //====================================
 qint64 FFmpegMediaPlayerControl::duration() const{
-    return 30000;
+    return this->_duration;
 }
 //====================================
 int FFmpegMediaPlayerControl::bufferStatus() const{
@@ -107,8 +109,11 @@ void FFmpegMediaPlayerControl::play(){
             = QVideoFrame(
                 QImage(
                     "/home/cedric/Images/ffmpeg_qtplugin_01.png"));
-    this->tempPlay();
+    this->bufferStatusChanged(100);
+    this->durationChanged(this->_duration);
     this->stateChanged(this->_state);
+    this->seekableChanged(true);
+    this->tempPlay();
 }
 //====================================
 void FFmpegMediaPlayerControl::pause(){
@@ -135,11 +140,13 @@ void FFmpegMediaPlayerControl::setMuted(
 //====================================
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 void FFmpegMediaPlayerControl::tempPlay(){
+    qDebug() << "Temp play...";
     if(this->_state == QMediaPlayer::PlayingState){
-        this->_position += 1000;
+        int interval = 200;
+        this->_position += interval;
         if(this->_position < this->duration()){
             QTimer::singleShot(
-                        1000,
+                        interval,
                         this,
                         SLOT(tempPlay()));
             this->positionChanged(this->_position);

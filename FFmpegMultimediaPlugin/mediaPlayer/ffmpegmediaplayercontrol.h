@@ -64,7 +64,8 @@ protected:
     QMediaContent mediaContent;
     qint64 _position;
     QVideoFrame currentFrame;
-    
+    qint64 _duration;
+
 protected Q_SLOTS:
     void tempPlay();
 };
