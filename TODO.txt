@@ -2,11 +2,15 @@
 - Improve the HighSequenceExtractor
 - Don't ask to restore a session is the video playing didn't start?
 - Create a ffmpeg Qt backend
+- Ask to remove and sort the sequence eventually before video export
+- Double click on the video should maximize the application
+- Get ride of the dual slider and add cursor on the sequence time edits
+- Subs shall be in extracting window
+- Slider of the sequences player should be clickable
 - Find out why on big movie the application can crashes at start
 - Get rid of the warnings + TODO
 - Windows compilation
 - French translation
-
 
 OTHER:
 - Website
