@@ -11,6 +11,7 @@
 - Get rid of the warnings + TODO
 - Windows compilation
 - French translation
+- QT_BEGIN_NAMESPACE dans les plugins
 
 OTHER:
 - Website

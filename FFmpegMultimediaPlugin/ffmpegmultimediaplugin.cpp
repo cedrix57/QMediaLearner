@@ -1,6 +1,7 @@
 #include "ffmpegmultimediaplugin.h"
 #include <QDebug>
 #include "mediaPlayer/ffmpegplayerservice.h"
+#include "audioDecoder/ffmpegaudiodecoderservice.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -16,8 +17,10 @@ QMediaService* FFmpegMultimediaPlugin::create(
     QMediaService* mediaService = NULL;
     if (key == QLatin1String(Q_MEDIASERVICE_MEDIAPLAYER)){
         mediaService = new FFmpegPlayerService;
+    }else if (key == QLatin1String(Q_MEDIASERVICE_AUDIODECODER)){
+        mediaService = new FFmpegAudioDecoderService;
     }else{
-        qWarning() << "FFmpeg service plugin: unsupported key:" << key;
+        qWarning() << "FFmpeg service plugin: unsupported key: " << key;
     }
     return mediaService; //TODO
 }

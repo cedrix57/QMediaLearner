@@ -17,8 +17,8 @@ class FFmpegPlayerService : public QMediaService{
 public:
     explicit FFmpegPlayerService(QObject *parent = 0);
     
-    QMediaControl *requestControl(const char *name);
-    void releaseControl(QMediaControl *control);
+    virtual QMediaControl *requestControl(const char *name);
+    virtual void releaseControl(QMediaControl *control);
     
 protected:
     FFmpegMediaPlayerControl *mediaPlayerControl;

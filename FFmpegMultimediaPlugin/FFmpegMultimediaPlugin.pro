@@ -36,7 +36,9 @@ SOURCES += ffmpegmultimediaplugin.cpp \
     mediaPlayer/ffmpegvideorendercontrol.cpp \
     mediaPlayer/ffmpegmetadatareadercontrol.cpp \
     mediaPlayer/ffmpegmediaavailabilitycontrol.cpp \
-    mediaPlayer/ffmpegmedianetworkaccesscontrol.cpp
+    mediaPlayer/ffmpegmedianetworkaccesscontrol.cpp \
+    audioDecoder/ffmpegaudiodecoderservice.cpp \
+    audioDecoder/ffmpegaudiodecodercontrol.cpp
 
 HEADERS += ffmpegmultimediaplugin.h\
     mediaPlayer/ffmpegmediaplayercontrol.h \
@@ -45,7 +47,9 @@ HEADERS += ffmpegmultimediaplugin.h\
     mediaPlayer/ffmpegvideorendercontrol.h \
     mediaPlayer/ffmpegmetadatareadercontrol.h \
     mediaPlayer/ffmpegmediaavailabilitycontrol.h \
-    mediaPlayer/ffmpegmedianetworkaccesscontrol.h
+    mediaPlayer/ffmpegmedianetworkaccesscontrol.h \
+    audioDecoder/ffmpegaudiodecoderservice.h \
+    audioDecoder/ffmpegaudiodecodercontrol.h
 
 unix:!symbian {
     maemo5 {

@@ -81,7 +81,7 @@ QMediaControl *FFmpegPlayerService::requestControl(
 //====================================
 void FFmpegPlayerService::releaseControl(
         QMediaControl *control){
-    delete control;
+    //TODO
 }
 //====================================
 
