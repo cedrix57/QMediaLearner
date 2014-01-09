@@ -88,14 +88,27 @@ const QIODevice *FFmpegMediaPlayerControl::mediaStream() const{
 void FFmpegMediaPlayerControl::setMedia(
         const QMediaContent& mediaContent,
         QIODevice *device){
-    this->_mediaStatus = QMediaPlayer::LoadedMedia;
-    this->mediaContent = mediaContent;
-    this->_device = device;
-    if(device != NULL){
+    QUrl url = mediaContent.canonicalUrl();
+    QString filePath = url.path();
+    QByteArray filePathBytes = filePath.toLatin1();
+    char *filePathChar = filePathBytes.data();
+    int ret = avformat_open_input(
+                &this->ff_formatContex,
+                filePathChar,
+                NULL,
+                NULL);
+    if(ret != 0){
+        qWarning() << "Couldn't open " << filePath;
     }else{
+        this->_mediaStatus = QMediaPlayer::LoadedMedia;
+        this->mediaContent = mediaContent;
+        this->_device = device;
+        if(device != NULL){
+        }else{
+        }
+        this->mediaStatusChanged(this->_mediaStatus);
+        this->mediaChanged(this->mediaContent);
     }
-    this->mediaStatusChanged(this->_mediaStatus);
-    this->mediaChanged(this->mediaContent);
 }
 //====================================
 void FFmpegMediaPlayerControl::setPosition(

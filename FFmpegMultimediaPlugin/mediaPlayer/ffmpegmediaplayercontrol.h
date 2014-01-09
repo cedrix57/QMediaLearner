@@ -4,6 +4,12 @@
 #include <QMediaPlayerControl>
 #include <QVideoFrame>
 
+extern "C"
+{
+#include <avcodec.h>
+#include <avformat.h>
+}
+
 class FFmpegMediaPlayerControl
         : public QMediaPlayerControl{
     Q_OBJECT
@@ -55,6 +61,7 @@ signals:
     void frameAvailable(QVideoFrame frame);
 
 protected:
+    AVFormatContext *ff_formatContex;
     QMediaPlayer::State _state;
     QMediaPlayer::MediaStatus _mediaStatus;
     QIODevice *_device;

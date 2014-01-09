@@ -10,9 +10,26 @@
 #include <SettingsManagerSingleton.h>
 #include <private/qmediaserviceprovider_p.h>
 
+/*
+extern "C"
+{
+#include <avcodec.h>
+#include <avformat.h>
+}
+//*/
 
 int main(int argc, char *argv[]){
     QApplication app(argc, argv);
+    char *filePathChar
+            = "/home/cedric/Vidéos/musique_21sec.mp4";
+    /*
+    AVFormatContext *ff_formatContex;
+    int ffret = avformat_open_input(
+                &ff_formatContex,
+                filePathChar,
+                NULL,
+                NULL);
+                //*/
     //ML::SequenceExtractor::loadExtractors();
     //QMediaServiceProvider* defaultServiceProvider
             //= QMediaServiceProvider::defaultServiceProvider();

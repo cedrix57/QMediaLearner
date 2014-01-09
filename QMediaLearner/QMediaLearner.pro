@@ -19,7 +19,19 @@ MOC_DIR = ../tmpcompil/$$TARGET/moc
 RCC_DIR = ../tmpcompil/$$TARGET/rcc
 UI_DIR = ../tmpcompil/$$TARGET/ui
 
+unix{
+DEFINES += __STDC_LIMIT_MACROS
+DEFINES += __STDC_CONSTANT_MACROS
+}
+
+INCLUDEPATH += $$PWD/../FFmpegMultimediaPlugin/ffmpeg
+INCLUDEPATH += $$PWD/../FFmpegMultimediaPlugin/ffmpeg/libavcodec
+INCLUDEPATH += $$PWD/../FFmpegMultimediaPlugin/ffmpeg/libavformat
+
 LIBS += -L$$DESTDIR -lMediaLearnerLib
+LIBS += -L$$PWD/../FFmpegMultimediaPlugin/ffmpeg/libavcodec -lavcodec
+LIBS += -L$$PWD/../FFmpegMultimediaPlugin/ffmpeg/libavformat -lavformat
+LIBS += -L$$PWD/../FFmpegMultimediaPlugin/ffmpeg/libavutil -lavutil
 
 INCLUDEPATH += gui/widgets
 INCLUDEPATH += ../MediaLearnerLib

@@ -11,6 +11,7 @@ qtHaveModule(widgets) {
     DEFINES += HAVE_WIDGETS
 }
 
+
 PLUGIN_TYPE=mediaservice
 PLUGIN_CLASS_NAME = FFmpegServicePlugin
 load(qt_build_config)
@@ -26,8 +27,21 @@ MOC_DIR = ../tmpcompil/$$TARGET/moc
 RCC_DIR = ../tmpcompil/$$TARGET/rcc
 UI_DIR = ../tmpcompil/$$TARGET/ui
 
+#ffmpeg
 
-#DEFINES += FFMPEGMULTIMEDIAPLUGIN_LIBRARY
+unix{
+DEFINES += __STDC_LIMIT_MACROS
+DEFINES += __STDC_CONSTANT_MACROS
+}
+
+INCLUDEPATH += ffmpeg
+INCLUDEPATH += ffmpeg/libavcodec
+INCLUDEPATH += ffmpeg/libavformat
+
+LIBS += -L$$PWD/ffmpeg/libavcodec -lavcodec
+LIBS += -L$$PWD/ffmpeg/libavformat -lavformat
+LIBS += -L$$PWD/ffmpeg/libavutil -lavutil
+#QMAKE_CXXFLAGS += -fPIC
 
 SOURCES += ffmpegmultimediaplugin.cpp \
     mediaPlayer/ffmpegmediaplayercontrol.cpp \
