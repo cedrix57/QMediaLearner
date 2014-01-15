@@ -8,6 +8,7 @@ extern "C"
 {
 #include <avcodec.h>
 #include <avformat.h>
+#include <swscale.h>
 }
 
 class FFmpegMediaPlayerControl
@@ -62,6 +63,8 @@ signals:
 
 protected:
     AVFormatContext *ff_formatContex;
+    AVFrame *ff_frame;
+    AVFrame *ff_frameRGB;
     QMediaPlayer::State _state;
     QMediaPlayer::MediaStatus _mediaStatus;
     QIODevice *_device;
@@ -72,6 +75,9 @@ protected:
     qint64 _position;
     QVideoFrame currentFrame;
     qint64 _duration;
+    void _setMediaStatus(
+            QMediaPlayer::MediaStatus status);
+    QImage tempImage;
 
 protected Q_SLOTS:
     void tempPlay();

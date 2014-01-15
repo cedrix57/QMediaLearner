@@ -37,10 +37,12 @@ DEFINES += __STDC_CONSTANT_MACROS
 INCLUDEPATH += ffmpeg
 INCLUDEPATH += ffmpeg/libavcodec
 INCLUDEPATH += ffmpeg/libavformat
+INCLUDEPATH += ffmpeg/libswscale
 
 LIBS += -L$$PWD/ffmpeg/libavcodec -lavcodec
 LIBS += -L$$PWD/ffmpeg/libavformat -lavformat
 LIBS += -L$$PWD/ffmpeg/libavutil -lavutil
+LIBS += -L$$PWD/ffmpeg/libswscale -lswscale
 #QMAKE_CXXFLAGS += -fPIC
 
 SOURCES += ffmpegmultimediaplugin.cpp \
