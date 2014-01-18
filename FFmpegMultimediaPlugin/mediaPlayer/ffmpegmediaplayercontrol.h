@@ -27,7 +27,6 @@ public:
     qint64 position() const;
     void setPosition(qint64 pos);
 
-
     int volume() const;
     void setVolume(int _volume);
 

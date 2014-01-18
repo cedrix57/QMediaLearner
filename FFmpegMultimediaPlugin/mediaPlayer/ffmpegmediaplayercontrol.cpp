@@ -157,7 +157,7 @@ void FFmpegMediaPlayerControl::setMedia(
                                     codecContex->width,
                                     codecContex->height);
                         SwsContext *img_convert_ctx
-                                = img_convert_ctx = sws_getContext(
+                                = sws_getContext(
                                     codecContex->width,
                                     codecContex->height,
                                     codecContex->pix_fmt,

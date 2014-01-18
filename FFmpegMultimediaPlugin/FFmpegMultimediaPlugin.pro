@@ -54,7 +54,8 @@ SOURCES += ffmpegmultimediaplugin.cpp \
     mediaPlayer/ffmpegmediaavailabilitycontrol.cpp \
     mediaPlayer/ffmpegmedianetworkaccesscontrol.cpp \
     audioDecoder/ffmpegaudiodecoderservice.cpp \
-    audioDecoder/ffmpegaudiodecodercontrol.cpp
+    audioDecoder/ffmpegaudiodecodercontrol.cpp \
+    mediaPlayer/ffmpegplayersession.cpp
 
 HEADERS += ffmpegmultimediaplugin.h\
     mediaPlayer/ffmpegmediaplayercontrol.h \
@@ -65,7 +66,8 @@ HEADERS += ffmpegmultimediaplugin.h\
     mediaPlayer/ffmpegmediaavailabilitycontrol.h \
     mediaPlayer/ffmpegmedianetworkaccesscontrol.h \
     audioDecoder/ffmpegaudiodecoderservice.h \
-    audioDecoder/ffmpegaudiodecodercontrol.h
+    audioDecoder/ffmpegaudiodecodercontrol.h \
+    mediaPlayer/ffmpegplayersession.h
 
 unix:!symbian {
     maemo5 {
