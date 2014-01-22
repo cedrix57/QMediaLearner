@@ -11,6 +11,8 @@ extern "C"
 #include <swscale.h>
 }
 
+class FFmpegPlayerSession;
+
 class FFmpegMediaPlayerControl
         : public QMediaPlayerControl{
     Q_OBJECT
@@ -18,6 +20,8 @@ public:
     virtual ~FFmpegMediaPlayerControl();
     explicit FFmpegMediaPlayerControl(
             QObject *parent = NULL);
+    void setFFmpegPlayerSession(
+            FFmpegPlayerSession *session);
     
     QMediaPlayer::State state() const;
     QMediaPlayer::MediaStatus mediaStatus() const;
@@ -57,29 +61,12 @@ public:
     void pause();
     void stop();
 
-signals:
-    void frameAvailable(QVideoFrame frame);
 
 protected:
-    AVFormatContext *ff_formatContex;
-    AVFrame *ff_frame;
-    AVFrame *ff_frameRGB;
-    QMediaPlayer::State _state;
-    QMediaPlayer::MediaStatus _mediaStatus;
+    FFmpegPlayerSession *session;
     QIODevice *_device;
-    int _volume;
-    qreal _rate;
-    bool _muted;
-    QMediaContent mediaContent;
-    qint64 _position;
-    QVideoFrame currentFrame;
-    qint64 _duration;
-    void _setMediaStatus(
-            QMediaPlayer::MediaStatus status);
-    QImage tempImage;
+    QMediaContent _mediaContent;
 
-protected Q_SLOTS:
-    void tempPlay();
 };
 
 #endif // FFMPEGMEDIAPLAYERCONTROL_H

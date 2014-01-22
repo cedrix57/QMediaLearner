@@ -5,6 +5,7 @@
 #include "ffmpegmediaavailabilitycontrol.h"
 #include "ffmpegmedianetworkaccesscontrol.h"
 #include "ffmpegmetadatareadercontrol.h"
+#include "ffmpegplayersession.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -17,8 +18,13 @@ FFmpegPlayerService::FFmpegPlayerService(QObject *parent) :
 }
 //====================================
 void FFmpegPlayerService::createControls(){
+    this->playerSession
+            = new FFmpegPlayerSession(this);
     this->mediaPlayerControl
             = new FFmpegMediaPlayerControl(this);
+    this->mediaPlayerControl
+            ->setFFmpegPlayerSession(
+                this->playerSession);
     this->videoWidgetControl
             = new FFmpegVideoWidgetControl(this);
     this->videoRenderControl
@@ -35,16 +41,16 @@ void FFmpegPlayerService::connectSlots(){
 }
 //====================================
 void FFmpegPlayerService::disconnectFrameSlots(){
-    this->videoWidgetControl->disconnect(
-                this->mediaPlayerControl,
-                SIGNAL(frameAvailable(QVideoFrame)),
-                this->videoWidgetControl,
-                SLOT(setDisplayedFrame(QVideoFrame)));
-    this->videoWidgetControl->disconnect(
-                this->mediaPlayerControl,
-                SIGNAL(frameAvailable(QVideoFrame)),
+    //this->videoWidgetControl->disconnect(
+                //this->playerSession,
+                //SIGNAL(currentFrameChanged(QSharedPointer<QImage>))
+                //this->videoWidgetControl,
+                //SLOT(set
+    this->videoRenderControl->disconnect(
+                this->playerSession,
+                SIGNAL(currentFrameChanged(QSharedPointer<QImage>)),
                 this->videoRenderControl,
-                SLOT(setDisplayedFrame(QVideoFrame)));
+                SLOT(setDisplayedFrame(QSharedPointer<QImage>)));
 }
 //====================================
 QMediaControl *FFmpegPlayerService::requestControl(
@@ -54,11 +60,13 @@ QMediaControl *FFmpegPlayerService::requestControl(
         mediaControl = this->mediaPlayerControl;
     }else if (qstrcmp(name, QVideoWidgetControl_iid) == 0){
         mediaControl = this->videoWidgetControl;
+        /*
         this->disconnectFrameSlots();
         this->videoWidgetControl->connect(
                     this->mediaPlayerControl,
                     SIGNAL(frameAvailable(QVideoFrame)),
                     SLOT(setDisplayedFrame(QVideoFrame)));
+                    //*/
     }else if (qstrcmp(name, QMetaDataReaderControl_iid) == 0){
         mediaControl = this->metaDataReaderControl;
     }else if (qstrcmp(name, QMediaNetworkAccessControl_iid) == 0){
@@ -67,11 +75,13 @@ QMediaControl *FFmpegPlayerService::requestControl(
         mediaControl = this->mediaAvailabilityControl;
     }else if (qstrcmp(name, QVideoRendererControl_iid) == 0){
         mediaControl = this->videoRenderControl;
-        this->disconnectFrameSlots();
-        this->videoRenderControl->connect(
-                    this->mediaPlayerControl,
-                    SIGNAL(frameAvailable(QVideoFrame)),
-                    SLOT(setDisplayedFrame(QVideoFrame)));
+        //this->disconnectFrameSlots();
+        this->connect(
+                    this->playerSession,
+                    SIGNAL(currentFrameChanged(QSharedPointer<QImage>)),
+                    this->videoRenderControl,
+                    SLOT(setDisplayedFrame(QSharedPointer<QImage>)),
+                    Qt::BlockingQueuedConnection);
     }
     //}else if (qstrcmp(name, QMediaVideoProbeControl_iid) == 0){
     //}else if (qstrcmp(name, QMediaAudioProbeControl_iid) == 0){

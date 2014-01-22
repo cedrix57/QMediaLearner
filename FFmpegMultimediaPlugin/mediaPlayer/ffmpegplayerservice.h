@@ -11,6 +11,7 @@ class FFmpegVideoRenderControl;
 class FFmpegMetaDataReaderControl;
 class FFmpegMediaNetworkAccessControl;
 class FFmpegMediaAvailabilityControl;
+class FFmpegPlayerSession;
 
 class FFmpegPlayerService : public QMediaService{
     Q_OBJECT
@@ -27,6 +28,7 @@ protected:
     FFmpegMetaDataReaderControl *metaDataReaderControl;
     FFmpegMediaNetworkAccessControl *mediaNetworkAccessControl;
     FFmpegMediaAvailabilityControl *mediaAvailabilityControl;
+    FFmpegPlayerSession *playerSession;
     void createControls();
     void connectSlots();
     void disconnectFrameSlots();

@@ -10,6 +10,11 @@ FFmpegPlayerSession::FFmpegPlayerSession(
     this->_muted = false;
     this->_volume = 100;
     this->_position = 0;
+    static bool isRegisteredFFmpegFormats = false;
+    if(!isRegisteredFFmpegFormats){
+        av_register_all();
+        isRegisteredFFmpegFormats = true;
+    }
     this->reset();
 }
 //====================================
@@ -18,8 +23,11 @@ FFmpegPlayerSession::~FFmpegPlayerSession(){
 }
 //====================================
 void FFmpegPlayerSession::reset(){
+    qDebug() << "void FFmpegPlayerSession::reset() called";
     this->_position = 0;
     this->_toSeek = -1;
+    this->videoStreamId = -1;
+    this->audioStreamId = -1;
     //TODO free memory eventually
     this->avFormatContex = NULL;
     this->avVideoCodecContex = NULL;
@@ -27,16 +35,24 @@ void FFmpegPlayerSession::reset(){
     this->swImageConvertContext = NULL;
     this->avFrameRGB = NULL;
     this->_rbgFrameBuffer = NULL;
+    qDebug() << "void FFmpegPlayerSession::reset() end";
 }
 //====================================
 void FFmpegPlayerSession::freeMemory(){
+    qDebug() << "void FFmpegPlayerSession::freeMemory() called";
     av_free(this->_rbgFrameBuffer);
+    this->_rbgFrameBuffer = NULL;
     av_free(this->avFrameRGB);
+    this->avFrameRGB = NULL;
 
     avcodec_close(this->avAudioCodecContex);
+    this->avAudioCodecContex = NULL;
     avcodec_close(this->avVideoCodecContex);
+    this->avVideoCodecContex = NULL;
 
     av_close_input_file(this->avFormatContex);
+    this->avFormatContex = NULL;
+    qDebug() << "void FFmpegPlayerSession::freeMemory() end";
 }
 //====================================
 QString FFmpegPlayerSession::mediaUrl() const{
@@ -45,6 +61,7 @@ QString FFmpegPlayerSession::mediaUrl() const{
 //====================================
 void FFmpegPlayerSession::setMediaUrl(
         QString mediaUrl){
+    qDebug() << "void FFmpegPlayerSession::setMediaUrl(...) called";
     this->_setMediaStatus(QMediaPlayer::LoadingMedia);
     this->freeMemory();
     this->reset();
@@ -123,10 +140,9 @@ void FFmpegPlayerSession::setMediaUrl(
                                 NULL,
                                 NULL,
                                 NULL);
-                    if(this->swImageConvertContext != NULL){
+                    if(this->swImageConvertContext ==  NULL){
                         this->videoStreamId = -1;
-                    }else{
-                    qWarning() << "FFmpeg: Couldn't create ffmpeg sws image conveverter context of "
+                        qWarning() << "FFmpeg: Couldn't create ffmpeg sws image conveverter context of "
                                << mediaUrl;
                     }
                 }
@@ -151,13 +167,18 @@ void FFmpegPlayerSession::setMediaUrl(
         }
     }
     if(this->audioStreamId == -1 && this->audioStreamId == -1){
-        this->_setMediaStatus(QMediaPlayer::LoadedMedia);
-    }else{
+        qDebug() << "Setting NoMedia status...";
         this->_setMediaStatus(QMediaPlayer::NoMedia);
+    }else{
+        this->_setMediaStatus(QMediaPlayer::LoadedMedia);
+        qint64 duration = this->duration();
+        this->durationChanged(duration);
     }
+    qDebug() << "void FFmpegPlayerSession::setMediaUrl(...) end";
 }
 //====================================
 void FFmpegPlayerSession::play(){
+    qDebug() << "void FFmpegPlayerSession::play() called";
     if(this->_mediaStatus == QMediaPlayer::LoadedMedia
             || this->_mediaStatus == QMediaPlayer::BufferingMedia
             || this->_mediaStatus == QMediaPlayer::BufferedMedia
@@ -169,6 +190,7 @@ void FFmpegPlayerSession::play(){
     }else{
         qWarning() << "Can't play the media yet.";
     }
+    qDebug() << "void FFmpegPlayerSession::play() end";
 }
 //====================================
 void FFmpegPlayerSession::pause(){
@@ -182,6 +204,7 @@ void FFmpegPlayerSession::stop(){
 }
 //====================================
 void FFmpegPlayerSession::run(){
+    qDebug() << "void FFmpegPlayerSession::run() called";
     AVFrame *avFrame = av_frame_alloc();
     double timeBase
             = av_q2d(
@@ -189,18 +212,23 @@ void FFmpegPlayerSession::run(){
                 ->streams[this->videoStreamId]->time_base);
     double msTimeBase = timeBase * 1000;
     while(av_read_frame(this->avFormatContex, &this->_avPacket)>=0){
+        qDebug() << "Reading frame...";
         //TODO if(this->_toSeek != -1)
         qint64 dts = this->_avPacket.dts * msTimeBase;
         qint64 pts = this->_avPacket.pts * msTimeBase;
         QDateTime decodingDateTime = QDateTime::currentDateTime();
         int frameFinished = 0;
+        qDebug() << "this->_avPacket.stream_index: " << this->_avPacket.stream_index;
         if(this->_avPacket.stream_index == this->videoStreamId){
+            qDebug() << "if ok";
+            qDebug() << "this->_state: " << this->_state;
             while(this->_state == QMediaPlayer::PausedState){
                 this->usleep(100);
             }
             if(this->_state == QMediaPlayer::StoppedState){
                 break;
             }
+            qDebug() << "Locking...";
             this->stateMutex.lock();
             //TODO decode up to 5 frame in a buffer
             avcodec_decode_video2(this->avVideoCodecContex,
@@ -209,6 +237,7 @@ void FFmpegPlayerSession::run(){
                                   &this->_avPacket);
             // Did we get a video frame?
             if(frameFinished){
+                qDebug() << "frame finished";
                 // Convert the image from its native format to RGB
                 sws_scale(
                             this->swImageConvertContext,
@@ -222,9 +251,13 @@ void FFmpegPlayerSession::run(){
                         = QDateTime::currentDateTime();
                 int ellapsedMSecs = decodingDateTime.
                         msecsTo(currentDateTime);
+                qDebug() << "dts " << dts;
+                qDebug() << "pts " << pts;
+                qDebug() << "ellapsedMSecs " << ellapsedMSecs;
                 qint64 advance = (pts - dts) / this->_playbackRate - ellapsedMSecs;
                 if(advance > 0){
-                    this->usleep(advance);
+                    qDebug() << "Sleeping " << advance << " us...";
+                    this->msleep(advance);
                 }
                 //this->imageMutex.lock();
                 this->currentImage
@@ -235,6 +268,9 @@ void FFmpegPlayerSession::run(){
                                 this->avVideoCodecContex->height,
                                 this->avFrameRGB->linesize[0],
                                 QImage::Format_RGB555));
+
+                qDebug() << "Sending new frame...";
+                this->currentFrameChanged(this->currentImage);
                 this->_setPosition(pts);
                 //this->imageMutex.unlock();
             }
@@ -245,15 +281,31 @@ void FFmpegPlayerSession::run(){
     av_free(avFrame);
     this->stop();
     this->_setMediaStatus(QMediaPlayer::EndOfMedia);
+    qDebug() << "void FFmpegPlayerSession::run() end";
 }
 //====================================
 qint64 FFmpegPlayerSession::duration() const{
     qint64 duration = 0;
     if(this->avFormatContex != NULL){
         duration = this->avFormatContex->duration;
-        duration *= AV_TIME_BASE * 1000;
+        qDebug() << "DURATION: " << this->avFormatContex->duration;
+        duration /= AV_TIME_BASE / 1000;
     }
     return duration;
+}
+//====================================
+bool FFmpegPlayerSession::isAudioAvailable() const{
+    bool available = this->audioStreamId != -1;
+    return available;
+}
+//====================================
+bool FFmpegPlayerSession::isVideoAvailable() const{
+    bool available = this->videoStreamId != -1;
+    return available;
+}
+//====================================
+bool FFmpegPlayerSession::isSeekable() const{
+    return true; //TODO
 }
 //====================================
 qint64 FFmpegPlayerSession::position() const{

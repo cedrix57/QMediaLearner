@@ -3,6 +3,10 @@
 
 #include <QVideoRendererControl>
 #include <QVideoFrame>
+#include <QImage>
+#include <QSharedPointer>
+
+//class FFmpegPlayerSession;
 
 class FFmpegVideoRenderControl
         : public QVideoRendererControl{
@@ -10,15 +14,17 @@ class FFmpegVideoRenderControl
 public:
     explicit FFmpegVideoRenderControl(
             QObject *parent = 0);
-    
+    //void setFFmpegPlayerSession(
+            //FFmpegPlayerSession *session);
+
     virtual QAbstractVideoSurface *surface() const;
     virtual void setSurface(QAbstractVideoSurface *surface);
 
-    
-public slots:
-    void setDisplayedFrame(QVideoFrame frame);
+public Q_SLOTS:
+    void setDisplayedFrame(QSharedPointer<QImage> image);
 
 protected:
+    //FFmpegPlayerSession *session;
     QAbstractVideoSurface *_surface;
     QVideoFrame currentFrame;
 

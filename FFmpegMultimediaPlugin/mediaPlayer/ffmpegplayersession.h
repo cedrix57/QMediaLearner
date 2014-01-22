@@ -64,11 +64,11 @@ public:
     void stop();
 
 signals:
-    void audioAvailableChanged(bool audio);
+    void audioAvailableChanged(bool audio); //TODO send this signal
     void availablePlaybackRangesChanged(const QMediaTimeRange & ranges);
     void bufferStatusChanged(int progress);
-    void durationChanged(qint64 duration);
-    void error(int error, const QString & errorString);
+    void durationChanged(qint64 duration); //TODO
+    void error(int error, const QString & errorString); //TODO
     void mediaChanged(const QMediaContent & content);
     void mediaStatusChanged(QMediaPlayer::MediaStatus status);
     void mutedChanged(bool mute);
@@ -78,6 +78,8 @@ signals:
     void stateChanged(QMediaPlayer::State state);
     void videoAvailableChanged(bool video);
     void volumeChanged(int volume);
+
+    void currentFrameChanged(QSharedPointer<QImage>);
 
 protected:
     virtual void run();
