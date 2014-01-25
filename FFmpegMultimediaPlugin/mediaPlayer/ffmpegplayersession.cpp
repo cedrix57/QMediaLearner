@@ -10,6 +10,7 @@ FFmpegPlayerSession::FFmpegPlayerSession(
     this->_muted = false;
     this->_volume = 100;
     this->_position = 0;
+    this->timePosition.start();
     static bool isRegisteredFFmpegFormats = false;
     if(!isRegisteredFFmpegFormats){
         av_register_all();
@@ -47,7 +48,9 @@ void FFmpegPlayerSession::freeMemory(){
 
     avcodec_close(this->avAudioCodecContex);
     this->avAudioCodecContex = NULL;
-    avcodec_close(this->avVideoCodecContex);
+    qDebug() << "Closing this->avVideoCodecContex...";
+    avcodec_close(this->avVideoCodecContex); //TODO find why it crashes here
+    qDebug() << "this->avVideoCodecContex closed.";
     this->avVideoCodecContex = NULL;
 
     av_close_input_file(this->avFormatContex);
@@ -183,9 +186,13 @@ void FFmpegPlayerSession::play(){
             || this->_mediaStatus == QMediaPlayer::BufferingMedia
             || this->_mediaStatus == QMediaPlayer::BufferedMedia
             || this->_mediaStatus == QMediaPlayer::EndOfMedia){
-        this->_setState(QMediaPlayer::PlayingState);
+        if(this->_state != QMediaPlayer::PlayingState){
+            this->timePosition.restart();
+            this->_setState(QMediaPlayer::PlayingState);
+        }
         if(!this->isRunning()){
             this->start();
+        }else{
         }
     }else{
         qWarning() << "Can't play the media yet.";
@@ -213,8 +220,41 @@ void FFmpegPlayerSession::run(){
     double msTimeBase = timeBase * 1000;
     while(av_read_frame(this->avFormatContex, &this->_avPacket)>=0){
         qDebug() << "Reading frame...";
-        //TODO if(this->_toSeek != -1)
-        qint64 dts = this->_avPacket.dts * msTimeBase;
+        if(this->_toSeek != -1){
+            qint64 toSeek = this->_toSeek;
+            this->_toSeek = -1;
+            qDebug() << "msTimeBase : " << msTimeBase;
+            qint64 toSeekFFmpeg = toSeek / msTimeBase;
+            qDebug() << "toSeekFFmpeg: " << toSeekFFmpeg;
+            if(this->videoStreamId != -1 || this->audioStreamId != -1){
+                int streamInedx = this->videoStreamId;
+                if(streamInedx == -1){
+                    int streamInedx = this->audioStreamId;
+                }
+                int seekFlag = 0;
+                if(toSeek < this->_position){
+                    seekFlag = AVSEEK_FLAG_BACKWARD;
+                }
+                av_seek_frame(
+                            this->avFormatContex,
+                            streamInedx,
+                            toSeekFFmpeg,
+                            seekFlag);
+                this->_setPosition(toSeek);
+                qDebug() << "Seeking " << toSeek << " in ffmpeg unit: " << toSeekFFmpeg;
+            }
+            /*
+            if(this->audioStreamId != -1){
+                av_seek_frame(
+                            this->avFormatContex,
+                            this->audioStreamId,
+                            toSeekFFmpeg,
+                            AVSEEK_FLAG_ANY);
+            }
+            ///*/
+        }
+        //qint64 dts = this->timePosition.elapsed();
+        qint64 dts = this->_getElapsed();
         qint64 pts = this->_avPacket.pts * msTimeBase;
         QDateTime decodingDateTime = QDateTime::currentDateTime();
         int frameFinished = 0;
@@ -224,12 +264,14 @@ void FFmpegPlayerSession::run(){
             qDebug() << "this->_state: " << this->_state;
             while(this->_state == QMediaPlayer::PausedState){
                 this->usleep(100);
+                qDebug() << "Sleeping...";
             }
             if(this->_state == QMediaPlayer::StoppedState){
+                qDebug() << "Stopping...";
                 break;
             }
-            qDebug() << "Locking...";
-            this->stateMutex.lock();
+            //qDebug() << "Locking...";
+            //this->stateMutex.lock();
             //TODO decode up to 5 frame in a buffer
             avcodec_decode_video2(this->avVideoCodecContex,
                                   avFrame,
@@ -274,7 +316,8 @@ void FFmpegPlayerSession::run(){
                 this->_setPosition(pts);
                 //this->imageMutex.unlock();
             }
-            this->stateMutex.unlock();
+            //qDebug() << "unlocking...";
+            //this->stateMutex.unlock();
         }
         av_free_packet(&this->_avPacket);
     }
@@ -316,12 +359,18 @@ void FFmpegPlayerSession::setPosition(
         qint64 pos){
     //process with a toSeek variable
     this->_toSeek = pos;
-    this->_setPosition(pos);
 }
 //====================================
 void FFmpegPlayerSession::_setPosition(qint64 pos){
     this->_position = pos;
+    this->timePosition.restart();
     this->positionChanged(this->_position);
+}
+//====================================
+qint64 FFmpegPlayerSession::_getElapsed(){
+    qint64 elapsed = this->timePosition.elapsed();
+    elapsed += this->_position;
+    return elapsed;
 }
 //====================================
 int FFmpegPlayerSession::volume() const{
@@ -360,9 +409,11 @@ FFmpegPlayerSession::mediaStatus() const{
 //====================================
 void FFmpegPlayerSession::_setState(
         QMediaPlayer::State state){
-    QMutexLocker mutexLocker(&this->stateMutex);
+    qDebug() << "void FFmpegPlayerSession::_setState(...) called";
+    //QMutexLocker mutexLocker(&this->stateMutex);
     this->_state = state;
     this->stateChanged(this->_state);
+    qDebug() << "void FFmpegPlayerSession::_setState(...) end";
 }
 //====================================
 void FFmpegPlayerSession::_setMediaStatus(

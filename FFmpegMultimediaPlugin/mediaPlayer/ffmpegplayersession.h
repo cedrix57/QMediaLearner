@@ -7,7 +7,7 @@
 #include <QImage>
 #include <QSharedPointer>
 #include <QMutex>
-#include <QDateTime>
+#include <QTime>
 
 
 extern "C"
@@ -88,6 +88,7 @@ protected:
     void _setState(QMediaPlayer::State state);
     void _setMediaStatus(QMediaPlayer::MediaStatus mediaStatus);
     void _setPosition(qint64 pos);
+    qint64 _getElapsed();
     AVFormatContext *avFormatContex;
     SwsContext *swImageConvertContext;
     AVCodecContext *avVideoCodecContex;
@@ -98,6 +99,7 @@ protected:
     int audioStreamId;
     qint64 _toSeek;
     quint8 *_rbgFrameBuffer;
+    QTime timePosition;
 
     QSharedPointer<QImage> currentImage;
     QMutex stateMutex;

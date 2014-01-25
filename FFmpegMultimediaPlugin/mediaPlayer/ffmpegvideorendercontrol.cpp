@@ -25,10 +25,7 @@ void FFmpegVideoRenderControl::setSurface(
 //====================================
 void FFmpegVideoRenderControl::setDisplayedFrame(
         QSharedPointer<QImage> image){
-    qDebug() << "this->_surface != NULL?";
     if(this->_surface != NULL){
-        qDebug() << "Displaying frame...";
-        image->save("/home/cedric/Vidéos/debug.bmp");
         QVideoFrame videoFrame(*image);
         //TODO warning if format not supported
         QVideoFrame::PixelFormat frameFormat
@@ -36,9 +33,6 @@ void FFmpegVideoRenderControl::setDisplayedFrame(
         QVideoSurfaceFormat surfaceFormat
                 = this->_surface->surfaceFormat();
         bool isSurfaceFormatValid = surfaceFormat.isValid();
-        qDebug() << "isSurfaceFormatValid: "<< isSurfaceFormatValid;
-        qDebug() << "frameFormat: "<< frameFormat;
-        qDebug() << "surfaceFormat: "<< surfaceFormat;
         if(!isSurfaceFormatValid){
             QSize frameSize = videoFrame.size();
             QVideoSurfaceFormat rightSurfaceFormat(
@@ -46,7 +40,6 @@ void FFmpegVideoRenderControl::setDisplayedFrame(
                         frameFormat);
             bool formatSet = this->_surface->start(rightSurfaceFormat);
             qDebug() << "formatSet: "<< formatSet;
-
         }
         QList<QVideoFrame::PixelFormat> supportedFormats
                 = this->_surface->supportedPixelFormats();

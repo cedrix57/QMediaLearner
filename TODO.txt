@@ -1,3 +1,9 @@
+MULTIMEDIA PLUGIN:
+- Switching from pause to play take a lot of time
+- Add mutex on state changing
+- Add mutex while seeking position + make seeking works
+
+
 - Change the way to register automatically new Sequence extractors
 - Improve the HighSequenceExtractor
 - Don't ask to restore a session is the video playing didn't start?
