@@ -8,6 +8,8 @@
 #include <QSharedPointer>
 #include <QMutex>
 #include <QTime>
+#include <QQueue>
+#include <QTimer>
 
 
 extern "C"
@@ -17,8 +19,67 @@ extern "C"
 #include <swscale.h>
 }
 
-class FFmpegPlayerSession : public QThread{
+struct FFmpegBufferedImage{
+    AVFrame *avFrameRGB;
+    quint8 *avFrameBuffer;
+    qint64 pts;
+};
+
+class FFmpegPlayerSession;
+
+class FFmpegProducer: public QThread{
     Q_OBJECT
+    public:
+    FFmpegProducer(QObject *parent = NULL)
+        : QThread(parent){
+        this->session = NULL;
+    }
+    void init(FFmpegPlayerSession *playerSession){
+        this->session = playerSession;
+    }
+    void pause(){
+        this->pauseMutex.lock();
+    }
+    void unpause(){
+        this->pauseMutex.unlock();
+    }
+
+    protected:
+    virtual void run();
+    FFmpegPlayerSession *session;
+    QMutex pauseMutex;
+};
+
+class FFmpegConsumer: public QThread{
+    Q_OBJECT
+    public:
+    FFmpegConsumer(QObject *parent = NULL)
+        : QThread(parent){
+        this->session = NULL;
+    }
+    void init(FFmpegPlayerSession *playerSession){
+        this->session = playerSession;
+    }
+    void pause(){
+        this->pauseMutex.lock();
+    }
+    void unpause(){
+        this->pauseMutex.unlock();
+    }
+
+    protected:
+    virtual void run();
+    FFmpegPlayerSession *session;
+    QMutex pauseMutex;
+};
+
+
+class FFmpegPlayerSession : public QObject{
+    Q_OBJECT
+
+friend FFmpegProducer;
+friend FFmpegConsumer;
+
 public:
     explicit FFmpegPlayerSession(
             QObject *parent = NULL);
@@ -81,8 +142,11 @@ signals:
 
     void currentFrameChanged(QSharedPointer<QImage>);
 
+
+public:
+    static const int bufferSize = 10;
 protected:
-    virtual void run();
+    //virtual void run();
     void reset();
     void freeMemory();
     void _setState(QMediaPlayer::State state);
@@ -94,15 +158,19 @@ protected:
     AVCodecContext *avVideoCodecContex;
     AVCodecContext *avAudioCodecContex;
     AVPacket _avPacket;
-    AVFrame *avFrameRGB;
+    //FFmpegBufferedImage imageBuffer[bufferSize];
     int videoStreamId;
     int audioStreamId;
     qint64 _toSeek;
-    quint8 *_rbgFrameBuffer;
+    QQueue<FFmpegBufferedImage> bufferOfImages;
+    QQueue<FFmpegBufferedImage> bufferOfEmptyImages;
+    QMutex imagesMutex;
+    QMutex emptyImagesMutex;
+    FFmpegConsumer consumer;
+    FFmpegProducer producer;
     QTime timePosition;
 
     QSharedPointer<QImage> currentImage;
-    QMutex stateMutex;
     QMediaPlayer::State _state;
     QMediaPlayer::MediaStatus _mediaStatus;
     QIODevice *_device;
@@ -113,5 +181,6 @@ protected:
     qint64 _position;
 
 };
+
 
 #endif // FFMPEGPLAYERSESSION_H

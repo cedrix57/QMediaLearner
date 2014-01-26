@@ -3,8 +3,9 @@
 
 #include <QVideoRendererControl>
 #include <QVideoFrame>
-#include <QImage>
 #include <QSharedPointer>
+#include <QImage>
+#include <QMutex>
 
 //class FFmpegPlayerSession;
 
@@ -27,7 +28,6 @@ protected:
     //FFmpegPlayerSession *session;
     QAbstractVideoSurface *_surface;
     QVideoFrame currentFrame;
-
 };
 
 #endif // FFMPEGVIDEORENDRECONTROL_H

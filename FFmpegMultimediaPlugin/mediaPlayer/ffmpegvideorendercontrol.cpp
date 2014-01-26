@@ -26,6 +26,9 @@ void FFmpegVideoRenderControl::setSurface(
 void FFmpegVideoRenderControl::setDisplayedFrame(
         QSharedPointer<QImage> image){
     if(this->_surface != NULL){
+        //static int i = 0;
+        //image->save("/home/cedric/Images/atmp2/qmediaLearner" + QString::number(i) + ".bmp");
+        //i++;
         QVideoFrame videoFrame(*image);
         //TODO warning if format not supported
         QVideoFrame::PixelFormat frameFormat
@@ -47,7 +50,6 @@ void FFmpegVideoRenderControl::setDisplayedFrame(
         qDebug() << "isFormatSupported: "<< isFormatSupported;
         this->_surface->present(
                     videoFrame);
-                    //*/
     }
 }
 //====================================
