@@ -10,6 +10,7 @@
 #include <QTime>
 #include <QQueue>
 #include <QTimer>
+#include <QDebug>
 
 
 extern "C"
@@ -38,7 +39,9 @@ class FFmpegProducer: public QThread{
         this->session = playerSession;
     }
     void pause(){
-        this->pauseMutex.lock();
+        if(!this->pauseMutex.tryLock(500)){
+            qWarning() << "FFmpegConsumer couldn't pause.";
+        }
     }
     void unpause(){
         this->pauseMutex.unlock();
@@ -61,10 +64,15 @@ class FFmpegConsumer: public QThread{
         this->session = playerSession;
     }
     void pause(){
-        this->pauseMutex.lock();
+        if(!this->pauseMutex.tryLock(500)){
+            qWarning() << "FFmpegConsumer couldn't pause.";
+        }
     }
+
     void unpause(){
+        qDebug() << "void FFmpegConsumer::unpause() called";
         this->pauseMutex.unlock();
+        qDebug() << "void FFmpegConsumer::unpause() end";
     }
 
     protected:
@@ -144,7 +152,7 @@ signals:
 
 
 public:
-    static const int bufferSize = 10;
+    static const int bufferSize = 5;
 protected:
     //virtual void run();
     void reset();

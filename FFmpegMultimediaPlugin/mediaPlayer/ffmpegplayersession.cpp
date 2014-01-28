@@ -246,7 +246,6 @@ void FFmpegProducer::run(){
     double msTimeBase = timeBase * 1000;
     while(av_read_frame(this->session->avFormatContex, &this->session->_avPacket) >= 0){
         qDebug() << "Reading frame...";
-        this->pauseMutex.lock();
         forever{
             this->session->emptyImagesMutex.lock();
             int nEmptyImages = this->session->bufferOfEmptyImages.size();
@@ -254,20 +253,22 @@ void FFmpegProducer::run(){
             qDebug() << "nEmptyImages: " << nEmptyImages;
             if(nEmptyImages == 0){
                 qDebug() << "Stopping before buffering...";
-                this->usleep(100);
+                this->msleep(100);
             }else{
                 break;
             }
         }
-        while(this->session->_state == QMediaPlayer::PausedState){
-            qDebug() << "Sleeping during pausing...";
-            this->usleep(100);
-        }
+        this->pauseMutex.lock();
+        //while(this->session->_state == QMediaPlayer::PausedState){
+            //qDebug() << "Sleeping during pausing...";
+            //this->usleep(100);
+        //}
         if(this->session->_state == QMediaPlayer::StoppedState){
             qDebug() << "Stopping...";
             break;
         }
         if(this->session->_toSeek != -1){
+            qDebug() << "if(this->session->_toSeek != -1){";
             this->session->consumer.pause();
             while(this->session->bufferOfImages.size() > 0){
                 FFmpegBufferedImage buffer
@@ -281,9 +282,9 @@ void FFmpegProducer::run(){
             qint64 toSeekFFmpeg = toSeek / msTimeBase;
             qDebug() << "toSeekFFmpeg: " << toSeekFFmpeg;
             if(this->session->videoStreamId != -1 || this->session->audioStreamId != -1){
-                int streamInedx = this->session->videoStreamId;
-                if(streamInedx == -1){
-                    int streamInedx = this->session->audioStreamId;
+                int streamInedex = this->session->videoStreamId;
+                if(streamInedex == -1){
+                    streamInedex = this->session->audioStreamId;
                 }
                 int seekFlag = 0;
                 if(toSeek < this->session->_position){
@@ -291,7 +292,7 @@ void FFmpegProducer::run(){
                 }
                 av_seek_frame(
                             this->session->avFormatContex,
-                            streamInedx,
+                            streamInedex,
                             toSeekFFmpeg,
                             seekFlag);
                 this->session->_setPosition(toSeek);
@@ -301,12 +302,11 @@ void FFmpegProducer::run(){
         //qint64 dts = this->session->timePosition.elapsed();
         //qint64 dts = this->session->_getElapsed();
         qint64 pts = this->session->_avPacket.pts * msTimeBase;
-        //QDateTime decodingDateTime = QDateTime::currentDateTime();
         int frameFinished = 0;
         qDebug() << "this->session->_avPacket.stream_index: " << this->session->_avPacket.stream_index;
         if(this->session->_avPacket.stream_index == this->session->videoStreamId){
             qDebug() << "if ok";
-            qDebug() << "this->session->_state: " << this->session->_state;
+            qDebug() << "this->session->_state in thread 1: " << this->session->_state;
             avcodec_decode_video2(this->session->avVideoCodecContex,
                                   avFrame,
                                   &frameFinished,
@@ -347,9 +347,9 @@ void FFmpegProducer::run(){
 void FFmpegConsumer::run(){
     qDebug() << "void FFmpegConsumer::run() called";
     while(this->session->_state != QMediaPlayer::StoppedState){
-        qDebug() << "Locking pause mutex...";
+        qDebug() << "Locking pause mutex in thread 2...";
         this->pauseMutex.lock();
-        qDebug() << "unlocking pause mutex...";
+        qDebug() << "Pause mutex locked in thread 2.";
         if(this->session->_state == QMediaPlayer::PlayingState
                 && this->session->bufferOfImages.size() > 0){
             qDebug() << "this->session->bufferOfImages.size() > 0";
@@ -368,7 +368,6 @@ void FFmpegConsumer::run(){
             //static int i = 0;
             //this->session->currentImage->save("/home/cedric/Images/atmp/qmediaLearner" + QString::number(i) + ".bmp");
             //i++;
-            qDebug() << "Sending new frame...";
             qint64 dts = this->session->_getElapsed();
             qint64 advance
                     = (bufferedImage.pts - dts)
@@ -376,16 +375,26 @@ void FFmpegConsumer::run(){
             if(advance > 1){
                 qDebug() << "Sleeping " << advance << " ms...";
                 this->msleep(advance);
+                qDebug() << "Sleeping done";
             }
+            qDebug() << "Sending new frame...";
+            qDebug() << "this->session->_state: " << this->session->_state;
             this->session->currentFrameChanged(this->session->currentImage);
+            qDebug() << "Frame sent.";
             this->session->_setPosition(bufferedImage.pts);
+            qDebug() << "this->session->emptyImagesMutex.lock()...";
             this->session->emptyImagesMutex.lock();
+            qDebug() << "this->session->emptyImagesMutex.lock().";
             this->session->bufferOfEmptyImages.enqueue(bufferedImage);
+            qDebug() << "this->session->emptyImagesMutex.unlock()...";
             this->session->emptyImagesMutex.unlock();
+            qDebug() << "this->session->emptyImagesMutex.unlock().";
         }else{
             this->msleep(100);
         }
+        qDebug() << "unlocking pause mutex in thread 2...";
         this->pauseMutex.unlock();
+        qDebug() << "Pause mutex unlocked in thread 2.";
     }
     qDebug() << "void FFmpegConsumer::run() end";
 }
