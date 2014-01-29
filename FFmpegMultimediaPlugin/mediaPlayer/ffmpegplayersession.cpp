@@ -32,7 +32,6 @@ void FFmpegPlayerSession::reset(){
     this->_toSeek = -1;
     this->videoStreamId = -1;
     this->audioStreamId = -1;
-    //TODO free memory eventually
     this->avFormatContex = NULL;
     this->avVideoCodecContex = NULL;
     this->avAudioCodecContex = NULL;
@@ -55,7 +54,7 @@ void FFmpegPlayerSession::freeMemory(){
     avcodec_close(this->avAudioCodecContex);
     this->avAudioCodecContex = NULL;
     qDebug() << "Closing this->avVideoCodecContex...";
-    avcodec_close(this->avVideoCodecContex); //TODO find why it crashes here
+    avcodec_close(this->avVideoCodecContex);
     qDebug() << "this->avVideoCodecContex closed.";
     this->avVideoCodecContex = NULL;
 
@@ -357,9 +356,6 @@ void FFmpegProducer::run(){
         av_free_packet(&this->session->_avPacket);
         this->pauseMutex.unlock();
     }
-    while(this->session->bufferOfImages.size() > 0){
-        break; //TODO
-    }
     av_free(avFrame);
     this->session->stop();
     this->session->_setMediaStatus(QMediaPlayer::EndOfMedia);
@@ -447,7 +443,9 @@ bool FFmpegPlayerSession::isVideoAvailable() const{
 }
 //====================================
 bool FFmpegPlayerSession::isSeekable() const{
-    return true; //TODO
+    bool seekable
+            = this->videoStreamId != -1;
+    return seekable;
 }
 //====================================
 qint64 FFmpegPlayerSession::position() const{
@@ -456,7 +454,6 @@ qint64 FFmpegPlayerSession::position() const{
 //====================================
 void FFmpegPlayerSession::setPosition(
         qint64 pos){
-    //process with a toSeek variable
     this->_toSeek = pos;
 }
 //====================================
