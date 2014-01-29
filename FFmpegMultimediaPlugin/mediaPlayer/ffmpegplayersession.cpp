@@ -71,9 +71,8 @@ QString FFmpegPlayerSession::mediaUrl() const{
 void FFmpegPlayerSession::setMediaUrl(
         QString mediaUrl){
     qDebug() << "void FFmpegPlayerSession::setMediaUrl(...) called";
+    this->stop();
     this->_setMediaStatus(QMediaPlayer::LoadingMedia);
-    this->freeMemory();
-    this->reset();
     this->_mediaUrl = mediaUrl;
     QByteArray filePathBytes
             = this->_mediaUrl.toUtf8();
@@ -192,6 +191,10 @@ void FFmpegPlayerSession::setMediaUrl(
 //====================================
 void FFmpegPlayerSession::play(){
     qDebug() << "void FFmpegPlayerSession::play() called";
+    if(this->avFormatContex == NULL){
+        qDebug() << "if(this->avFormatContex == NULL){ called";
+        this->setMediaUrl(this->_mediaUrl);
+    }
     if(this->_mediaStatus == QMediaPlayer::LoadedMedia
             || this->_mediaStatus == QMediaPlayer::BufferingMedia
             || this->_mediaStatus == QMediaPlayer::BufferedMedia
@@ -232,12 +235,21 @@ void FFmpegPlayerSession::pause(){
 //====================================
 void FFmpegPlayerSession::stop(){
     this->_setState(QMediaPlayer::StoppedState);
+    this->producer.stop();
+    this->consumer.stop();
+    this->producer.pause();
+    this->producer.unpause();
+    this->consumer.pause();
+    this->consumer.unpause();
     this->freeMemory();
     this->reset();
+    //this->positionChanged(0);
+    //this->durationChanged(0);
 }
 //====================================
 void FFmpegProducer::run(){
     qDebug() << "void FFmpegProducer::run() called";
+    this->stopAsked = false;
     AVFrame *avFrame = av_frame_alloc();
     double timeBase
             = av_q2d(
@@ -245,14 +257,23 @@ void FFmpegProducer::run(){
                 ->streams[this->session->videoStreamId]->time_base);
     double msTimeBase = timeBase * 1000;
     while(av_read_frame(this->session->avFormatContex, &this->session->_avPacket) >= 0){
+        if(this->stopAsked){
+            qDebug() << "stop asked";
+            av_free(avFrame);
+            return;
+        }
         qDebug() << "Reading frame...";
         forever{
             this->session->emptyImagesMutex.lock();
             int nEmptyImages = this->session->bufferOfEmptyImages.size();
             this->session->emptyImagesMutex.unlock();
             qDebug() << "nEmptyImages: " << nEmptyImages;
-            if(nEmptyImages == 0){
-                qDebug() << "Stopping before buffering...";
+            if(this->stopAsked){
+                qDebug() << "stop asked";
+                av_free(avFrame);
+                return;
+            }else if(nEmptyImages == 0){
+                qDebug() << "Waiting before buffering...";
                 this->msleep(100);
             }else{
                 break;
@@ -265,7 +286,8 @@ void FFmpegProducer::run(){
         //}
         if(this->session->_state == QMediaPlayer::StoppedState){
             qDebug() << "Stopping...";
-            break;
+            av_free(avFrame);
+            return;
         }
         if(this->session->_toSeek != -1){
             qDebug() << "if(this->session->_toSeek != -1){";
@@ -336,7 +358,7 @@ void FFmpegProducer::run(){
         this->pauseMutex.unlock();
     }
     while(this->session->bufferOfImages.size() > 0){
-        break;
+        break; //TODO
     }
     av_free(avFrame);
     this->session->stop();
@@ -345,8 +367,13 @@ void FFmpegProducer::run(){
 }
 //====================================
 void FFmpegConsumer::run(){
+    this->stopAsked = false;
     qDebug() << "void FFmpegConsumer::run() called";
     while(this->session->_state != QMediaPlayer::StoppedState){
+        if(this->stopAsked){
+            qDebug() << "stop asked";
+            return;
+        }
         qDebug() << "Locking pause mutex in thread 2...";
         this->pauseMutex.lock();
         qDebug() << "Pause mutex locked in thread 2.";

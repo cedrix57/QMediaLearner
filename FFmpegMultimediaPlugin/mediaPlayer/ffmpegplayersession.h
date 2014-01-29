@@ -34,6 +34,7 @@ class FFmpegProducer: public QThread{
     FFmpegProducer(QObject *parent = NULL)
         : QThread(parent){
         this->session = NULL;
+        this->stopAsked = false;
     }
     void init(FFmpegPlayerSession *playerSession){
         this->session = playerSession;
@@ -46,11 +47,15 @@ class FFmpegProducer: public QThread{
     void unpause(){
         this->pauseMutex.unlock();
     }
+    void stop(){
+        this->stopAsked = true;
+    }
 
     protected:
     virtual void run();
     FFmpegPlayerSession *session;
     QMutex pauseMutex;
+    bool stopAsked;
 };
 
 class FFmpegConsumer: public QThread{
@@ -59,6 +64,7 @@ class FFmpegConsumer: public QThread{
     FFmpegConsumer(QObject *parent = NULL)
         : QThread(parent){
         this->session = NULL;
+        this->stopAsked = false;
     }
     void init(FFmpegPlayerSession *playerSession){
         this->session = playerSession;
@@ -68,17 +74,20 @@ class FFmpegConsumer: public QThread{
             qWarning() << "FFmpegConsumer couldn't pause.";
         }
     }
-
     void unpause(){
         qDebug() << "void FFmpegConsumer::unpause() called";
         this->pauseMutex.unlock();
         qDebug() << "void FFmpegConsumer::unpause() end";
+    }
+    void stop(){
+        this->stopAsked = true;
     }
 
     protected:
     virtual void run();
     FFmpegPlayerSession *session;
     QMutex pauseMutex;
+    bool stopAsked;
 };
 
 
