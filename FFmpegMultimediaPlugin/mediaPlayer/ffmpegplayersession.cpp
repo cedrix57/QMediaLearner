@@ -19,6 +19,24 @@ FFmpegPlayerSession::FFmpegPlayerSession(
         isRegisteredFFmpegFormats = true;
     }
     this->reset();
+    this->alDevice = NULL;
+    this->alContext = NULL;
+    this->_initOpenAl();
+}
+//====================================
+void FFmpegPlayerSession::_initOpenAl(){
+    this->alDevice = alcOpenDevice(NULL);
+    if(this->alDevice != NULL){
+        this->alContext
+                = alcCreateContext(this->alDevice, NULL);
+    }
+    if(this->alDevice == NULL){
+        qWarning() << "Couldn't init OpenAL. No audio device found.";
+    }else if(this->alContext == NULL){
+        qWarning() << "Couldn't create OpenAL context";
+    }else if(!alcMakeContextCurrent(this->alContext)){
+        qWarning() << "Couldn't select the opened OpenAL context";
+    }
 }
 //====================================
 FFmpegPlayerSession::~FFmpegPlayerSession(){

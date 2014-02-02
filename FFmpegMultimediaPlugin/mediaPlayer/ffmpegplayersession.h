@@ -18,6 +18,8 @@ extern "C"
 #include <avcodec.h>
 #include <avformat.h>
 #include <swscale.h>
+#include <al.h>
+#include <alc.h>
 }
 
 struct FFmpegBufferedImage{
@@ -27,6 +29,7 @@ struct FFmpegBufferedImage{
 };
 
 class FFmpegPlayerSession;
+
 
 class FFmpegProducer: public QThread{
     Q_OBJECT
@@ -164,6 +167,9 @@ public:
     static const int bufferSize = 5;
 protected:
     //virtual void run();
+    void _initOpenAl();
+    ALCdevice* alDevice;
+    ALCcontext* alContext;
     void reset();
     void freeMemory();
     void _setState(QMediaPlayer::State state);

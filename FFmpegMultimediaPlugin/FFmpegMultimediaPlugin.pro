@@ -38,11 +38,13 @@ INCLUDEPATH += ffmpeg
 INCLUDEPATH += ffmpeg/libavcodec
 INCLUDEPATH += ffmpeg/libavformat
 INCLUDEPATH += ffmpeg/libswscale
+INCLUDEPATH += openal-soft-1.15.1/include/AL
 
 LIBS += -L$$PWD/ffmpeg/libavcodec -lavcodec
 LIBS += -L$$PWD/ffmpeg/libavformat -lavformat
 LIBS += -L$$PWD/ffmpeg/libavutil -lavutil
 LIBS += -L$$PWD/ffmpeg/libswscale -lswscale
+LIBS += -L$$PWD/openal-soft-1.15.1/build -lopenal
 #QMAKE_CXXFLAGS += -fPIC
 
 SOURCES += ffmpegmultimediaplugin.cpp \
